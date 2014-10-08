@@ -2,13 +2,23 @@
 /**
  * Module dependencies
  */
+
+var path = require('path');
 var http = require('http');
 var express = require('express');
-
 var errorHandler = require('errorhandler');
+var config = require(__dirname + '/config/config');
+var MongoConfig = require(config.db.config);
+
+
+/**
+ * Connection to mongodb
+ * It will auto connect
+ */
+var mongoConfig = new MongoConfig(config.db);
+
 
 var app = module.exports = express();
-var config = require(__dirname + '/config/config')
 /**
  * Configuration
  */
@@ -19,14 +29,13 @@ var env = process.env.NODE_ENV || 'DEV';
 
 // development only
 if (env === 'DEV') {
-  app.use(errorHandler());
+    app.use(errorHandler());
 }
 
 // production only
 if (env === 'PROD') {
   // TODO
 }
-
 
 /**
  * Start Server
