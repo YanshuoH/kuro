@@ -9,8 +9,9 @@ module.exports = {
         version: '0.0.1'
     },
     db: {
-        url: 'mongodb://localhost:27017/kuro',
+        uri: 'mongodb://localhost:27017/kuro',
         config: path.join(rootPath, '/db/mongo_config'),
+        modelPath: path.join(rootPath, 'models'),
         options: {
             server: {
                 auto_reconnect: true,

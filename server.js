@@ -16,7 +16,12 @@ var MongoConfig = require(config.db.config);
  * It will auto connect
  */
 var mongoConfig = new MongoConfig(config.db);
-
+mongoConfig.connect();
+/**
+ * After mongo connection
+ * Register all models
+ */
+require(config.db.modelPath + '/BaseModel')(config.db.modelPath);
 
 var app = module.exports = express();
 /**

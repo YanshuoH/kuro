@@ -32,7 +32,7 @@ var TaskModelSchema = new mongoose.Schema({
  * Validations
  */
 var required_fields = [
-    'owner',
+    // 'owner',
     'title',
     'description',
 ];

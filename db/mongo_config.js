@@ -4,13 +4,12 @@ var mongoose = require('mongoose');
 
 
 function MongoConfig(dbConfig) {
-    this.url = dbConfig.url;
+    this.uri = dbConfig.uri;
     this.options = dbConfig.options;
-    this.connect();
 }
 
 MongoConfig.prototype.connect = function() {
-    mongoose.connect(this.url, this.options);
+    mongoose.connect(this.uri, this.options);
 
     // Error handler
     mongoose.connection.on('error', function(err) {
@@ -23,5 +22,25 @@ MongoConfig.prototype.connect = function() {
     });
 }
 
+MongoConfig.prototype.connectThirdParty = function() {
+    this.options.server.auto_reconnect = false;
+    this.options.server.poolSize = 5;
+    console.log('==== Connect by Third Party ====');
+    var con = mongoose.createConnection(this.uri, this.options);
+    mongoose.connection.on('error', function(err) {
+        console.log(err);
+    });
+    this.con = con;
+    return con;
+}
+
+MongoConfig.prototype.disconnect = function() {
+    this.con.close();
+    console.log('==== Disconnect ====');
+}
+
+MongoConfig.prototype.getCon = function() {
+    return this.con;
+}
 
 module.exports = MongoConfig;
