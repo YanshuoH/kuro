@@ -2,68 +2,36 @@
 /**
  * Module dependencies
  */
+var http = require('http');
+var express = require('express');
 
-var express = require('express'),
-  bodyParser = require('body-parser'),
-  methodOverride = require('method-override'),
-  errorHandler = require('errorhandler'),
-  morgan = require('morgan'),
-  routes = require('./routes'),
-  api = require('./routes/api'),
-  http = require('http'),
-  path = require('path');
+var errorHandler = require('errorhandler');
 
 var app = module.exports = express();
-
-
+var config = require(__dirname + '/config/config')
 /**
  * Configuration
  */
+require('./config/express')(app, config);
+require('./config/routes')(app, config);
 
-// all environments
-app.set('port', process.env.PORT || 3000);
-app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
-app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
-app.use(bodyParser.json());
-app.use(methodOverride());
-app.use(express.static(path.join(__dirname, 'public')));
-
-var env = process.env.NODE_ENV || 'development';
+var env = process.env.NODE_ENV || 'DEV';
 
 // development only
-if (env === 'development') {
+if (env === 'DEV') {
   app.use(errorHandler());
 }
 
 // production only
-if (env === 'production') {
+if (env === 'PROD') {
   // TODO
 }
 
 
 /**
- * Routes
- */
-
-// serve index and view partials
-app.get('/', routes.index);
-app.get('/partials/:name', routes.partials);
-
-// JSON API
-app.get('/api/name', api.name);
-
-// redirect all others to the index (HTML5 history)
-app.get('*', routes.index);
-
-
-/**
  * Start Server
  */
-
+app.set('port', process.env.PORT || 3000);
 http.createServer(app).listen(app.get('port'), function () {
   console.log('Express server listening on port ' + app.get('port'));
 });

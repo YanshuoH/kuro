@@ -1,17 +1,22 @@
+var path = require('path');
+var express = require('express');
 var morgan = require('morgan');
+var cookieParser = require('cookie-parser');
+var session = require('express-session')
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
-var errorHandler = require('errorhandler');
+var serveStatic = require('serve-static')
+var favicon = require('serve-favicon');
 
 
 module.exports = function(app, config) {
-    app.set('views', __dirname + '/views');
+    app.set('views', path.join(config.root + '/views'));
     app.set('view engine', 'jade');
 
-    app.use(express.cookieParser());
+    app.use(cookieParser());
 
-    app.use(express.session());
-
+    // app.use(session({secret: 'keyboard cat'}));
+    app.use(favicon(path.join(config.root, 'public/favicon.ico')));
     app.use(bodyParser.urlencoded({
         extended: true
     }));
@@ -19,8 +24,6 @@ module.exports = function(app, config) {
     app.use(methodOverride());
 
     app.use(morgan('dev'));
-    app.use(express.favicon());
-    app.use(app.router);
 
-    app.use(express.static(path.join(__dirname, 'public')));
+    app.use(serveStatic(path.join(config.root, 'public')));
 }
