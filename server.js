@@ -5,6 +5,7 @@
 
 var path = require('path');
 var http = require('http');
+var async = require('async');
 var express = require('express');
 var errorHandler = require('errorhandler');
 var config = require(__dirname + '/config/config');
@@ -17,35 +18,57 @@ var MongoConfig = require(config.db.config);
  */
 var mongoConfig = new MongoConfig(config.db);
 mongoConfig.connect();
-/**
- * After mongo connection
- * Register all models
- */
-require(config.db.modelPath + '/BaseModel')(config.db.modelPath);
 
-var app = module.exports = express();
-/**
- * Configuration
- */
-require('./config/express')(app, config);
-require('./config/routes')(app, config);
+// According to the async property of nodejs
+// This flow must be in sequence
+async.waterfall([
+    function(callback) {
+        /**
+         * After mongo connection
+         * Register all models
+         */
+        require(config.db.modelPath + '/BaseModel')(config.db.modelPath, callback);
+    },
+    function(callback) {
+        /**
+         * Setup express config
+         * Start the server
+         */
+        runApp(callback);
+    }
+    ], function(err) {
+        if (err) {
+            console.log(err);
+        }
+    }
+);
 
-var env = process.env.NODE_ENV || 'DEV';
+var runApp = function(callback) {
+    var app = module.exports = express();
+    /**
+     * Configuration
+     */
+    require('./config/express')(app, config);
+    require('./config/routes')(app, config);
+    var env = process.env.NODE_ENV || 'DEV';
 
-// development only
-if (env === 'DEV') {
-    app.use(errorHandler());
+    // development only
+    if (env === 'DEV') {
+        app.use(errorHandler());
+    }
+
+    // production only
+    if (env === 'PROD') {
+      // TODO
+    }
+
+    /**
+     * Start Server
+     */
+    app.set('port', process.env.PORT || 3000);
+    http.createServer(app).listen(app.get('port'), function () {
+      console.log('Express server listening on port ' + app.get('port'));
+    });
+
+    callback(null);
 }
-
-// production only
-if (env === 'PROD') {
-  // TODO
-}
-
-/**
- * Start Server
- */
-app.set('port', process.env.PORT || 3000);
-http.createServer(app).listen(app.get('port'), function () {
-  console.log('Express server listening on port ' + app.get('port'));
-});
