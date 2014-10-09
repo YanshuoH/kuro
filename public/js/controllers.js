@@ -17,7 +17,6 @@ module.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
     // write Ctrl here
 
 module.controller('BoardCtrl', function($scope, $http) {
-    console.log('data');
     $http({
         method: 'GET',
         url: '/api/board'
@@ -27,3 +26,17 @@ module.controller('BoardCtrl', function($scope, $http) {
 
     });
 });
+
+
+module.controller('TaskCtrl', function($scope, $routeParams, $http) {
+    $http({
+        method: 'GET',
+        url: '/api/task/' + $routeParams.taskId
+    }).success(function(data, status, headers, config) {
+        $scope.task = data;
+    }).error(function(data, status, headers, config) {
+
+    });
+});
+
+

@@ -3,6 +3,6 @@ div(ng-include="'partials/navbar'")
   .row
     .col-sm-2(ng-repeat='task in tasks')
       .list-group
-        .list-group-item
+        a.list-group-item(href='/task/{{ task._id }}')
           h4.list-group-heading {{ task.title }}
           p.list-group-item-text {{ task.description }}
