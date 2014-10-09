@@ -1,0 +1,18 @@
+div(ng-include="'partials/navbar'")
+.container
+  .blog-header
+    h1.blog-title {{ task.title }}
+  .row
+    .col-sm-8
+      div(ng-if="task === null")
+        p Task not found
+      div(ng-if="task !== null")
+        table.table.table-striped
+          tr
+            td created at
+            td {{ task.date.created }}
+          tr
+            td updated at
+            td {{ task.date.updated }}
+        .blog-main
+          p {{ task.description }}

@@ -1,8 +1,8 @@
 'use strict';
 
-var myApp = angular.module('Kuro');
+var kuro = angular.module('Kuro');
 
-myApp.config(function ($routeProvider, $locationProvider) {
+kuro.config(function ($routeProvider, $locationProvider) {
     $routeProvider
         .when('/board', {
           templateUrl: 'partials/board',
@@ -13,8 +13,12 @@ myApp.config(function ($routeProvider, $locationProvider) {
             controller: 'TaskCtrl'
         })
         .when('/task/:taskId/edit', {
-            templateUrl: 'partials/taskEdit',
-            controller: 'TaskCtrl'
+            templateUrl: 'partials/taskForm',
+            controller: 'TaskFormCtrl'
+        })
+        .when('/task/create', {
+            templateurl: 'partials/taskForm',
+            controller: 'TaskFormCtrl'
         })
         .otherwise({
           redirectTo: '/'

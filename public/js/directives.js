@@ -1,7 +1,7 @@
 'use strict';
 
 /* Directives */
-var module = angular.module('Kuro');
+var kuro = angular.module('Kuro');
 
 // module.directive('appVersion', function () {
 //   });
