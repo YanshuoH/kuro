@@ -1,7 +1,7 @@
 'use strict';
 
 /* Filters */
-var module = angular.module('Kuro');
+var kuro = angular.module('Kuro');
 
 // module.filter('interpolate', function (version) {
 //     return function (text) {
