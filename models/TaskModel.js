@@ -8,7 +8,8 @@ var ObjectId = mongoose.Schema.ObjectId;
  * Schema Tree
  */
 var TaskModelSchema = new mongoose.Schema({
-    owner: {type: ObjectId, ref: 'user'},
+    user: {type: ObjectId, ref: 'user'},
+    project: {type: ObjectId, ref: 'project'},
     title: {type: String, trim: true},
     priority: {type: Number, default: 0},
     category: {
@@ -32,7 +33,8 @@ var TaskModelSchema = new mongoose.Schema({
  * Validations
  */
 var required_fields = [
-    // 'owner',
+    // 'user',
+    // 'project',
     'title',
     'description',
 ];
