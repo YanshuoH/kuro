@@ -1,0 +1,8 @@
+div(ng-include="'partials/navbar'")
+.container
+  .row
+    .col-sm-2(ng-repeat='task in tasks')
+      .list-group
+        .list-group-item
+          h4.list-group-heading {{ task.title }}
+          p.list-group-item-text {{ task.description }}

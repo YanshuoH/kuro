@@ -13,10 +13,17 @@ module.controller('appCtrl', ['$scope', '$http', function($scope, $http) {
         $sope.name = 'Error!';
     })
 }]);
-module.controller('MyCtrl1', function ($scope) {
-    // write Ctrl here
-})
-module.controller('MyCtrl2', function ($scope) {
 
-})
     // write Ctrl here
+
+module.controller('BoardCtrl', function($scope, $http) {
+    console.log('data');
+    $http({
+        method: 'GET',
+        url: '/api/board'
+    }).success(function(data, status, headers, config) {
+        $scope.tasks = data;
+    }).error(function(data, status, headers, config) {
+
+    });
+});

@@ -9,6 +9,7 @@ module.exports = function(app, config) {
 
     // JSON API
     app.get('/api/name', api.name);
+    app.get('/api/board', api.taskList);
 
     // redirect all others to the index (HTML5 history)
     app.get('*', routes.index);
