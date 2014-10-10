@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var TaskModel = mongoose.model('TaskModel');
-
+var ProjectModel = mongoose.model('ProjectModel');
 /*
  * RESTful API
  */
@@ -10,13 +10,24 @@ exports.name = function (req, res) {
   });
 };
 
+exports.projectLoad = function(req, res, next, id) {
+    ProjectModel.load(id.toString(), function(err, project) {
+        if (err) {
+            return next(err);
+        } else if (!project) {
+            return next(new Error('Failed to load Project ' + id));
+        }
+        req.project = project;
+        next();
+    });
+}
+
 exports.taskLoad = function(req, res, next, id) {
-    var taskId = req.params.taskId.toString()
-    TaskModel.load(taskId, function(err, task) {
+    TaskModel.load(id.toString(), function(err, task) {
         if (err) {
             return next(err);
         } else if (!task) {
-            return next(new Error('Failed to load Task ' + taskId));
+            return next(new Error('Failed to load Task ' + id));
         }
         req.task = task;
         next();
