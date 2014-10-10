@@ -12,31 +12,38 @@ var TaskModelFile = require(config.db.modelPath + '/TaskModel');
 var TaskModel = con.model('TaskModel', TaskModelFile.TaskModelSchema);
 var ProjectModelFile = require(config.db.modelPath + '/ProjectModel');
 var ProjectModel = con.model('ProjectModel', ProjectModelFile.ProjectModelSchema);
-// var taskFixture = [
-//     {
-//         title: "test1",
-//         description: "test description 1"
-//     },
-//     {
-//         title: "test2",
-//         description: "test description 2"
-//     },
-//     {
-//         title: "test3",
-//         description: "test description 3"
-//     }
-// ]
 
-var projectFixture = [
+var ObjectId = require('mongoose').Types.ObjectId; 
+
+var taskFixture = [
     {
-        ref: "DFT",
-        title: "default",
-        description: "default project"
+        title: "test1",
+        description: "test description 1",
+        project: "54354bee30a6f3341035d361"
+
     },
+    {
+        title: "test2",
+        description: "test description 2",
+        project: "54354bee30a6f3341035d361"
+    },
+    {
+        title: "test3",
+        description: "test description 3",
+        project: "54354bee30a6f3341035d361"
+    }
 ]
 
-var dataFixture = projectFixture;
-var model = ProjectModel;
+// var projectFixture = [
+//     {
+//         ref: "DFT",
+//         title: "default",
+//         description: "default project"
+//     },
+// ]
+
+var dataFixture = taskFixture;
+var model = TaskModel;
 // use async, close connection when all saves are done.
 async.each(dataFixture, function(data, callback) {
     var data = new model(data);

@@ -9,6 +9,10 @@ kuro.config(function ($routeProvider, $locationProvider) {
             templateUrl: 'partials/home',
             controller: 'HomeCtrl'
         })
+        .when('/user/signup', {
+            templateUrl: 'partials/user/signup',
+            controller: 'SignupCtrl'
+        })
         .when('/board', {
             templateUrl: 'partials/personal',
             controller: 'BoardCtrl'

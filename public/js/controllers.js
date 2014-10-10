@@ -7,6 +7,10 @@ kuroApp.controller('HomeCtrl', function($scope, $http) {
 
 });
 
+kuroApp.controller('SignupCtrl', function($scope, $http) {
+    
+})
+
 kuroApp.controller('BoardCtrl', function($scope, $http) {
     $http({
         method: 'GET',

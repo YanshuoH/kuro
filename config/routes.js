@@ -6,7 +6,7 @@ module.exports = function(app, config) {
     // serve index and view partials
     app.get('/', routes.index);
     app.get('/partials/:name', routes.partials);
-
+    app.get('/partials/user/:name', routes.userPartials);
     // JSON API
     // Project
     app.get('/api/project', api.projectList);
