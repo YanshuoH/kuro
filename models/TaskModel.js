@@ -68,7 +68,13 @@ TaskModelSchema.pre('save', function(next) {
  * Heritage basic functions
  */
 TaskModelSchema.statics = utils.modelStatics;
-
+TaskModelSchema.statics.loadByProjectId = function(projectId, cb) {
+    var criteria = {
+        project: projectId.toString()
+    }
+    var query = this.find(criteria);
+    query.exec(cb);
+}
 
 /**
  * Ending part

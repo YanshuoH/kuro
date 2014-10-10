@@ -9,6 +9,10 @@ kuro.config(function ($routeProvider, $locationProvider) {
             templateUrl: 'partials/home',
             controller: 'HomeCtrl'
         })
+        .when('/board', {
+            templateUrl: 'partials/personal',
+            controller: 'BoardCtrl'
+        })
         // be careful of the order create and :taskId
         .when('/project/create', {
             templateUrl: 'partials/projectForm',
@@ -23,9 +27,9 @@ kuro.config(function ($routeProvider, $locationProvider) {
             controller: 'ProjectFormCtrl'
         })
         // task board
-        .when('/taskboard', {
-          templateUrl: 'partials/board',
-          controller: 'BoardCtrl'
+        .when('/project/:projectId/taskboard', {
+          templateUrl: 'partials/taskboard',
+          controller: 'TaskBoardCtrl'
         })
         // be careful of the order create and :taskId
         .when('/task/create', {

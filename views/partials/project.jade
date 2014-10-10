@@ -4,15 +4,19 @@ div(ng-include="'partials/navbar'")
     h1.blog-title {{ project.title }}
   .row
     .col-sm-8
-      div(ng-if="task === null")
-        p Task not found
-      div(ng-if="task !== null")
-        table.table.table-striped
-          tr
-            td created at
-            td {{ project.date.created }}
-          tr
-            td updated at
-            td {{ project.date.updated }}
-        .blog-main
-          p {{ project.description }}
+      .row
+        div(ng-if="project === null")
+          p Task not found
+        div(ng-if="project !== null")
+          table.table.table-striped
+            tr
+              td created at
+              td {{ project.date.created }}
+            tr
+              td updated at
+              td {{ project.date.updated }}
+          .blog-main
+            p {{ project.description }}
+      .row
+        h3 Tasks
+        a.btn.btn-lg.btn-primary(href='/project/{{project._id}}/taskboard') TaskBoard

@@ -14,7 +14,7 @@ module.exports = function(app, config) {
     app.param('projectId', api.projectLoad);
 
     // Task
-    app.get('/api/board', api.taskList);
+    app.get('/api/project/:projectId/taskboard', api.taskList);
     app.get('/api/task/:taskId', api.taskShow);
     app.param('taskId', api.taskLoad);
 

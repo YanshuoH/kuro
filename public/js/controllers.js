@@ -3,6 +3,21 @@
 /* Controllers */
 var kuroApp = angular.module('Kuro');
 
+kuroApp.controller('HomeCtrl', function($scope, $http) {
+
+});
+
+kuroApp.controller('BoardCtrl', function($scope, $http) {
+    $http({
+        method: 'GET',
+        url: '/api/project'
+    }).success(function(data, status) {
+        $scope.projects = data;
+    }).error(function(data, status) {
+
+    });
+})
+
 kuroApp.controller('ProjectCtrl', function($scope, $http, $routeParams) {
     $scope.projectId = $routeParams.projectId;
     $http({
@@ -34,10 +49,11 @@ kuroApp.controller('ProjectFormCtrl', function($scope, $http, $routeParams) {
     }
 })
 
-kuroApp.controller('BoardCtrl', function($scope, $http, StorageService) {
+kuroApp.controller('TaskBoardCtrl', function($scope, $http, $routeParams, StorageService) {
+    $scope.projectId = $routeParams.projectId;
     $http({
         method: 'GET',
-        url: '/api/board'
+        url: '/api/project/' + $scope.projectId + '/taskboard'
     }).success(function(data, status, headers, config) {
         $scope.tasks = data;
     }).error(function(data, status, headers, config) {
