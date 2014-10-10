@@ -15,7 +15,12 @@ module.exports = function(app, config) {
 
     app.use(cookieParser());
 
-    // app.use(session({secret: 'keyboard cat'}));
+    var sessionOptions = {
+        secret: 'keyboard cat',
+        saveUninitialized: true,
+        resave: true
+    };
+    app.use(session(sessionOptions));
     app.use(favicon(path.join(config.root, 'public/favicon.ico')));
     app.use(bodyParser.urlencoded({
         extended: true

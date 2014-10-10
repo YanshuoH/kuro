@@ -10,7 +10,6 @@ exports.name = function (req, res) {
   });
 };
 
-
 exports.taskLoad = function(req, res, next, id) {
     var taskId = req.params.taskId.toString()
     TaskModel.load(taskId, function(err, task) {
