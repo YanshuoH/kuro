@@ -10,25 +10,37 @@ var con = mongoConfig.connectThirdParty();
 // register models
 var TaskModelFile = require(config.db.modelPath + '/TaskModel');
 var TaskModel = con.model('TaskModel', TaskModelFile.TaskModelSchema);
+var ProjectModelFile = require(config.db.modelPath + '/ProjectModel');
+var ProjectModel = con.model('ProjectModel', ProjectModelFile.ProjectModelSchema);
+// var taskFixture = [
+//     {
+//         title: "test1",
+//         description: "test description 1"
+//     },
+//     {
+//         title: "test2",
+//         description: "test description 2"
+//     },
+//     {
+//         title: "test3",
+//         description: "test description 3"
+//     }
+// ]
 
-var dataFixture = [
+var projectFixture = [
     {
-        title: "test1",
-        description: "test description 1"
+        ref: "DFT",
+        title: "default",
+        description: "default project"
     },
-    {
-        title: "test2",
-        description: "test description 2"
-    },
-    {
-        title: "test3",
-        description: "test description 3"
-    }
 ]
+
+var dataFixture = projectFixture;
+var model = ProjectModel;
 // use async, close connection when all saves are done.
 async.each(dataFixture, function(data, callback) {
-    var task = new TaskModel(data);
-    task.save(function(err) {
+    var data = new model(data);
+    data.save(function(err) {
         if (err) {
             callback(err);
         } else {
@@ -42,13 +54,3 @@ async.each(dataFixture, function(data, callback) {
         mongoConfig.disconnect();
     }
 });
-// for (var index=0; index<dataFixture.length; index++) {
-//     var task = new TaskModel(dataFixture[index]);
-//     task.save(function(err) {
-//         if (err) {
-//             console.log(err);
-//         }
-//     });
-// }
-
-// mongoConfig.disconnect();

@@ -8,7 +8,12 @@ module.exports = function(app, config) {
     app.get('/partials/:name', routes.partials);
 
     // JSON API
-    app.get('/api/name', api.name);
+    // Project
+    app.get('/api/project', api.projectList);
+    app.get('/api/project/:projectId', api.projectShow);
+    app.param('projectId', api.projectLoad);
+
+    // Task
     app.get('/api/board', api.taskList);
     app.get('/api/task/:taskId', api.taskShow);
     app.param('taskId', api.taskLoad);

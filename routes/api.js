@@ -4,12 +4,6 @@ var ProjectModel = mongoose.model('ProjectModel');
 /*
  * RESTful API
  */
-exports.name = function (req, res) {
-  res.json({
-    name: 'Bob'
-  });
-};
-
 exports.projectLoad = function(req, res, next, id) {
     ProjectModel.load(id.toString(), function(err, project) {
         if (err) {
@@ -22,8 +16,25 @@ exports.projectLoad = function(req, res, next, id) {
     });
 }
 
+exports.projectShow = function(req, res) {
+    var project = req.project;
+    res.json(project);
+}
+
+exports.projectList = function(req, res) {
+    // TODO, check/dispatch by identity
+    ProjectModel.listToJson({}, function(err, list) {
+        if (err) {
+            console.log(err);
+            res.send(err);
+        } else {
+            res.json(list);
+        }
+    });
+}
+
 exports.taskLoad = function(req, res, next, id) {
-    TaskModel.load(id.toString(), function(err, task) {
+    TaskModel.load(id, function(err, task) {
         if (err) {
             return next(err);
         } else if (!task) {
