@@ -17,7 +17,15 @@ kuroApp.controller('BoardCtrl', function($scope, $http, StorageService) {
 
 
 kuroApp.controller('TaskCtrl', function($scope, $http, $routeParams, StorageService, TaskService) {
-    $scope.task = TaskService.getById(StorageService.get('tasks'), $routeParams.taskId);
+    $scope.taskId = $routeParams.taskId
+    $http({
+        method: 'GET',
+        url: '/api/task/' + $scope.taskId
+    }).success(function(data, status, headers, config) {
+        $scope.task = data;
+    }).error(function(data, status) {
+        
+    });
 });
 
 kuroApp.controller('TaskFormCtrl', function($scope, $http, $routeParams, $location, StorageService, TaskService) {
@@ -34,17 +42,19 @@ kuroApp.controller('TaskFormCtrl', function($scope, $http, $routeParams, $locati
         } else {
             httpMethod = 'PUT'
         }
+        var url = '/api' + $location.$$path;
         $http({
             method: httpMethod,
-            url: $location.$$path,
+            url: url,
             data: $scope.formData
         }).success(function(response, status) {
             if ($scope.isNew) {
 
             } else {
                 var currentPath = $location.$$path;
-                var nextPath = currentPath.split('/').pop();
-                nextPath = nextPath.join('/');
+                var pathArr = currentPath.split('/');
+                pathArr.pop();
+                var nextPath = pathArr.join('/');
                 $location.path(nextPath);
             }
         }).error(function(err, status) {

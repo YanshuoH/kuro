@@ -8,16 +8,16 @@ kuro.config(function ($routeProvider, $locationProvider) {
           templateUrl: 'partials/board',
           controller: 'BoardCtrl'
         })
+        .when('/task/create', {
+            templateUrl: 'partials/taskForm',
+            controller: 'TaskFormCtrl'
+        })
         .when('/task/:taskId', {
             templateUrl: 'partials/task',
             controller: 'TaskCtrl'
         })
         .when('/task/:taskId/edit', {
             templateUrl: 'partials/taskForm',
-            controller: 'TaskFormCtrl'
-        })
-        .when('/task/create', {
-            templateurl: 'partials/taskForm',
             controller: 'TaskFormCtrl'
         })
         .otherwise({

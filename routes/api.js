@@ -24,7 +24,7 @@ exports.taskLoad = function(req, res, next, id) {
     });
 }
 
-exports.task = function(req, res) {
+exports.taskShow = function(req, res) {
     var task = req.task;
     res.json(task);
 }
@@ -41,4 +41,8 @@ exports.taskList = function(req, res) {
             res.json(list);
         }
     });
+}
+
+exports.taskEditor = function(req, res) {
+    res.send(true);
 }

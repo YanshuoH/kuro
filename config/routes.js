@@ -10,9 +10,12 @@ module.exports = function(app, config) {
     // JSON API
     app.get('/api/name', api.name);
     app.get('/api/board', api.taskList);
-    app.get('/api/task/:taskId', api.task);
+    app.get('/api/task/:taskId', api.taskShow);
     app.param('taskId', api.taskLoad);
 
+    // POST/PUT
+    app.put('/api/task/:taskId/edit', api.taskEditor);
+    app.post('/api/task/create', api.taskEditor)
     // redirect all others to the index (HTML5 history)
     app.get('*', routes.index);
 }
