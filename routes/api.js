@@ -4,6 +4,10 @@ var ProjectModel = mongoose.model('ProjectModel');
 /*
  * RESTful API
  */
+exports.userEditor = function(req, res) {
+    res.send(true);
+}
+
 exports.projectLoad = function(req, res, next, id) {
     ProjectModel.load(id.toString(), function(err, project) {
         if (err) {
@@ -31,6 +35,10 @@ exports.projectList = function(req, res) {
             res.json(list);
         }
     });
+}
+
+exports.projectEditor = function(req, res) {
+    res.send(true);
 }
 
 exports.taskLoad = function(req, res, next, id) {
