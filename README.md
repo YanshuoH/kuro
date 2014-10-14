@@ -5,8 +5,8 @@ A simple task manage app
 ---
 
 ##1. Requirement
-[NodeJS](http://nodejs.org/)
-[MongoDB](http://www.mongodb.org/)
+1.[NodeJS](http://nodejs.org/)
+2.[MongoDB](http://www.mongodb.org/)
 ##2. Installation
 When you got your NodeJs and MongoDB ready (dir in path if windows), it is about time to clone the project.Generally, all sub modules are included/installed in the project dir, so you don't have to download/install them. So, try to launch the mongodb engine by:
 ```
