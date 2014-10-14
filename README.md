@@ -26,7 +26,7 @@ npm update
 // If the below doesn't work
 npm install
 ```
-#3. Visualization
+##3. Visualization
 When you see the log in console "listning to port 3000". Open up your chrome/firefox (fuck ie), enter:
 ```
 localhost:3000
