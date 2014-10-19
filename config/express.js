@@ -9,7 +9,7 @@ var serveStatic = require('serve-static')
 var favicon = require('serve-favicon');
 
 
-module.exports = function(app, config) {
+module.exports = function(app, config, passport) {
     app.set('views', path.join(config.root + '/views'));
     app.set('view engine', 'jade');
 
@@ -21,6 +21,11 @@ module.exports = function(app, config) {
         resave: true
     };
     app.use(session(sessionOptions));
+
+    // use passport session
+    app.use(passport.initialize());
+    app.use(passport.session());
+
     app.use(favicon(path.join(config.root, 'public/favicon.ico')));
     app.use(bodyParser.urlencoded({
         extended: true

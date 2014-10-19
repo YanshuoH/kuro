@@ -1,5 +1,5 @@
 // models/UserModel.js
-
+var SECRET_KEY = 'KISSMYASS';
 var utils = require('../lib/utils');
 var mongoose = require('mongoose');
 var crypto = require('crypto');
@@ -44,12 +44,13 @@ var requiredFields = [
 
 UserModelSchema.methods = {
     encryptPassword: function(password) {
-        return crypto.createHmac('sha1', this.salt)
+        return crypto.createHmac('sha1', new Buffer(SECRET_KEY, 'utf-8'))
             .update(password)
             .digest('hex');
     },
     makeSalt: function() {
-      return Math.round((new Date().valueOf() * Math.random())) + '';
+        return SECRET_KEY;
+        // return Math.round((new Date().valueOf() * Math.random())) + '';
     },
     authenticate: function(plainText) {
         return this.encryptPassword(plainText) === this.hashed_password;

@@ -7,6 +7,7 @@ var path = require('path');
 var http = require('http');
 var async = require('async');
 var express = require('express');
+var passport = require('passport');
 var errorHandler = require('errorhandler');
 var config = require(__dirname + '/config/config');
 var MongoConfig = require(config.db.config);
@@ -48,8 +49,9 @@ var runApp = function(callback) {
     /**
      * Configuration
      */
-    require('./config/express')(app, config);
-    require('./config/routes')(app, config);
+    require('./config/passport')(passport, config);
+    require('./config/express')(app, config, passport);
+    require('./config/routes')(app, config, passport);
     var env = process.env.NODE_ENV || 'DEV';
 
     // development only

@@ -10,8 +10,12 @@ var con = mongoConfig.connectThirdParty();
 // register models
 var TaskModelFile = require(config.db.modelPath + '/TaskModel');
 var TaskModel = con.model('TaskModel', TaskModelFile.TaskModelSchema);
+
 var ProjectModelFile = require(config.db.modelPath + '/ProjectModel');
 var ProjectModel = con.model('ProjectModel', ProjectModelFile.ProjectModelSchema);
+
+var UserModelFile = require(config.db.modelPath + '/UserModel')
+var UserModel = con.model('UserModel', UserModelFile.UserModelSchema);
 
 var ObjectId = require('mongoose').Types.ObjectId; 
 
@@ -34,16 +38,24 @@ var taskFixture = [
     }
 ]
 
-// var projectFixture = [
-//     {
-//         ref: "DFT",
-//         title: "default",
-//         description: "default project"
-//     },
-// ]
+var projectFixture = [
+    {
+        ref: "DFT",
+        title: "default",
+        description: "default project"
+    },
+]
 
-var dataFixture = taskFixture;
-var model = TaskModel;
+var userFixture = [
+    {
+        username: "yanshuoh",
+        email: "hys@gmail.com",
+        password: "test"
+    }
+]
+
+var dataFixture = userFixture;
+var model = UserModel;
 // use async, close connection when all saves are done.
 async.each(dataFixture, function(data, callback) {
     var data = new model(data);

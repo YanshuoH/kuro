@@ -13,6 +13,14 @@ kuro.config(function ($routeProvider, $locationProvider) {
             templateUrl: 'partials/user/signup',
             controller: 'SignupCtrl'
         })
+        .when('/user/signin', {
+            templateUrl: 'partials/user/signin',
+            controller: 'SigninCtrl'
+        })
+        .when('/user/profile', {
+            templateUrl: 'partials/user/profile',
+            controller: 'ProfileCtrl'
+        })
         .when('/board', {
             templateUrl: 'partials/personal',
             controller: 'BoardCtrl'
