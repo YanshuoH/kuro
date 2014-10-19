@@ -1,0 +1,15 @@
+div(ng-include="'partials/navbar'")
+.container
+  .row
+    .col-sm-6.col-sm-offset-3
+      .page-header
+        h1 Sign In
+      form#signinForm(role='form' name='signinForm' novalidate='novalidate' ng-submit='submitForm()')
+        .form-group
+          label Email
+          input.form-control#email(type='email' name='email' ng-model='formData.email' placeholder='email')
+        .form-group
+          label Password
+          input.form-control(type='password' name='password' ng-model='formData.password' placeholder='password')
+        .form-group
+          button.btn.btn-primary(type='submit') Login

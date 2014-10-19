@@ -18,7 +18,10 @@ mongod --dbpath ./db/_assets/
 // In another console, run
 node server.js
 ```
-There's a sub-option by running the server.js which is nodemon server.js. [Nodemon](http://nodemon.io/) is a plugin nodejs who restart server when there's changes in the project dir.
+There's a sub-option by running the server.js which is nodemon server.js. [Nodemon](http://nodemon.io/) is a plugin nodejs who restart server when there's changes in the project dir. To install
+```
+npm install -g nodemon
+```
 If some errors occur, it might be the sub-modules unsuccessfully installed, so try this:
 ```
 // In your project dir
