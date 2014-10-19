@@ -9,6 +9,10 @@ kuro.config(function ($routeProvider, $locationProvider) {
             templateUrl: 'partials/home',
             controller: 'HomeCtrl'
         })
+        .when('/unauthorize', {
+            templateUrl: 'partials/error',
+            controller: 'ErrorCtrl'
+        })
         .when('/user/signup', {
             templateUrl: 'partials/user/signup',
             controller: 'SignupCtrl'
@@ -16,6 +20,10 @@ kuro.config(function ($routeProvider, $locationProvider) {
         .when('/user/signin', {
             templateUrl: 'partials/user/signin',
             controller: 'SigninCtrl'
+        })
+        .when('/user/signout', {
+            templateUrl: 'partials/user/signout',
+            controller: 'SignoutCtrl'
         })
         .when('/user/profile', {
             templateUrl: 'partials/user/profile',

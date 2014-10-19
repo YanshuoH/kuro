@@ -31,11 +31,24 @@ exports.session = function(req, res, next) {
             return next(err);
         }
         // Generate a JSON response reflecting authentication status
-        // This is eventually overwritten by passport middleware
-        // and not being used
         if (!user) {
-            return res.send({ success : false, message : 'authentication failed' });
+            return next('authentication failed');
         }
-        return res.send({ success : true, message : 'authentication succeeded' });
+        // When using custom middleware to handle the callback msg,
+        // It become the application's responsibility to call req.login
+        req.login(user, function(err) {
+            if (err) {
+                console.log(err);
+            }
+        });
+        return next();
+        // return res.send({ success : true, message : 'authentication succeeded' });
     })(req, res, next);
+}
+
+exports.signout = function(req, res) {
+    req.session.destroy();
+    // req.session.save();
+    req.logout();
+    res.send(true);
 }

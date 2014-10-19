@@ -9,7 +9,7 @@ kuroApp.controller('HomeCtrl', function($scope, $http) {
 
 kuroApp.controller('SignupCtrl', function($scope, $http) {
     
-})
+});
 
 kuroApp.controller('SigninCtrl', function($scope, $http) {
     $scope.formData = {};
@@ -25,7 +25,18 @@ kuroApp.controller('SigninCtrl', function($scope, $http) {
             console.log(err);
         });
     }
-})
+});
+
+kuroApp.controller('SignoutCtrl', function($scope, $http, $location) {
+    $http({
+        method: 'GET',
+        url: '/api/user/signout'
+    }).success(function(data, status) {
+        $location.path('/');
+    }).error(function(data, status) {
+
+    });
+});
 
 kuroApp.controller('ProfileCtrl', function($scope, $http) {
     $http({
@@ -38,14 +49,20 @@ kuroApp.controller('ProfileCtrl', function($scope, $http) {
     });
 })
 
-kuroApp.controller('BoardCtrl', function($scope, $http) {
+kuroApp.controller('BoardCtrl', function($scope, $http, $location) {
+    $scope.projects = [];
     $http({
         method: 'GET',
         url: '/api/project'
     }).success(function(data, status) {
-        $scope.projects = data;
+        if (data) {
+            if (data.status === 403) {
+                $location.path('/unauthorize');
+            }
+            $scope.projects = data;
+        }
     }).error(function(data, status) {
-
+        console.log(data);
     });
 })
 
@@ -173,5 +190,17 @@ kuroApp.controller('TaskFormCtrl', function($scope, $http, $routeParams, $locati
         }).error(function(err, status) {
 
         });
+    }
+});
+
+kuroApp.controller('ErrorCtrl', function($scope, $location) {
+    var wordingMap = {
+        '/unauthorize': 'You are not authorized',
+        '/error': 'Something went wrong'
+    }
+    if (typeof(wordingMap[$location.$$path]) !== 'undefined') {
+        $scope.wording = wordingMap[$location.$$path];
+    } else {
+        $scope.wording = wordingMap['/error'];
     }
 });

@@ -12,11 +12,11 @@ var favicon = require('serve-favicon');
 module.exports = function(app, config, passport) {
     app.set('views', path.join(config.root + '/views'));
     app.set('view engine', 'jade');
-
+    // cookie must before session
     app.use(cookieParser());
-
+    // session must before passport
     var sessionOptions = {
-        secret: 'keyboard cat',
+        secret: 'kissmyass',
         saveUninitialized: true,
         resave: true
     };
