@@ -19,6 +19,106 @@ var UserModel = con.model('UserModel', UserModelFile.UserModelSchema);
 
 var ObjectId = require('mongoose').Types.ObjectId; 
 
+/*
+ * Important params!!!
+ * Clear database or not
+ */
+var removeAll = true;
+
+async.waterfall([
+    // First, remove all data in db
+    function(callback) {
+        if (removeAll) {
+            clearDatabase(callback);
+        } else {
+            callback();
+        }
+    },
+    // Second, insert data in db in order
+    function(callback) {
+        handleInsertData(callback);
+    }
+    ], function(err, result) {
+        console.log('==== Finished ====');
+        mongoConfig.disconnect();
+    }
+);
+
+function clearDatabase(cb) {
+    async.waterfall([
+        function(callback) {
+            TaskModel.remove({}, function(err) {
+                if (err) {
+                    console.log(err);
+                }
+                console.log('>> Task collection clear');
+                callback(err);
+            });
+        },
+        function(callback) {
+            ProjectModel.remove({}, function(err) {
+                if (err) {
+                    console.log(err);
+                }
+                console.log('>> Project collection clear');
+                callback(err);
+            });
+        },
+        function(callback) {
+            UserModel.remove({}, function(err) {
+                if (err) {
+                    console.log(err);
+                }
+                console.log('>> User collection clear');
+                callback(err);
+            })
+        }
+    ], function(err) {
+        cb();
+    });
+}
+
+function handleInsertData(cb) {
+    async.waterfall([
+        // Insert User 
+        function(callback) {
+            console.log('>> Insert User');
+            insertAction(userFixture, UserModel, null, null, callback);
+        },
+        // Insert project 
+        function(userId, callback) {
+            console.log('>> Insert Project');
+            insertAction(projectFixture, ProjectModel, 'creator', userId.toString(), callback);
+        },
+        // Insert tasks
+        function(projectId, callback) {
+            console.log('>> Insert User');
+            insertAction(taskFixture, TaskModel, 'project', projectId.toString(), callback);
+        }
+    ], function(err) {
+        if (err) console.log(err);
+        cb();
+    })
+}
+
+function insertAction(dataFixture, dataModel, parentName, parentId, cb) {
+    async.each(dataFixture, function(data, callback) {
+        if (parentName && parentId) {
+            data[parentName] = parentId;
+        }
+        var unit = new dataModel(data);
+        unit.save(function(err) {
+            if (err) console.log(err);
+            if (parentName === 'project') {
+                callback();
+            } else {
+                callback(unit._id);
+            }
+        });
+    }, function(unitId) {
+        cb(null, unitId);
+    });
+}
 var taskFixture = [
     {
         title: "test1",
@@ -49,27 +149,29 @@ var projectFixture = [
 var userFixture = [
     {
         username: "yanshuoh",
-        email: "hys@gmail.com",
+        email: "test@test.com",
         password: "test"
     }
 ]
 
-var dataFixture = userFixture;
-var model = UserModel;
-// use async, close connection when all saves are done.
-async.each(dataFixture, function(data, callback) {
-    var data = new model(data);
-    data.save(function(err) {
-        if (err) {
-            callback(err);
-        } else {
-            callback();
-        }
-    });
-}, function(err) {
-    if (err) {
-        console.log(err);
-    } else {
-        mongoConfig.disconnect();
-    }
-});
+
+
+// var dataFixture = userFixture;
+// var model = UserModel;
+// // use async, close connection when all saves are done.
+// async.each(dataFixture, function(data, callback) {
+//     var data = new model(data);
+//     data.save(function(err) {
+//         if (err) {
+//             callback(err);
+//         } else {
+//             callback();
+//         }
+//     });
+// }, function(err) {
+//     if (err) {
+//         console.log(err);
+//     } else {
+//         mongoConfig.disconnect();
+//     }
+// });

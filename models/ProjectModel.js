@@ -15,9 +15,6 @@ var ProjectModelSchema = new mongoose.Schema({
     users: [{
         type: ObjectId, ref: 'user'
     }],
-    tasks: [{
-        type: ObjectId, ref: 'task'
-    }],
     title: {type: String, trim: true},
     description: {type: String},
     ref: {type: String, trim: true},
