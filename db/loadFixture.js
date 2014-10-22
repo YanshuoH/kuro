@@ -90,6 +90,16 @@ function handleInsertData(cb) {
             console.log('>> Insert Project');
             insertAction(projectFixture, ProjectModel, 'creator', userId.toString(), callback);
         },
+        function(projectId, userId, callback) {
+            UserModel.load(userId.toString(), function(err, user) {
+                if (err) console.log(err);
+                user.project.push(projectId);
+                user.save(function(err) {
+                    if (err) console.log(err);
+                    callback(null, projectId);
+                });
+            });
+        },
         // Insert tasks
         function(projectId, callback) {
             console.log('>> Insert User');
@@ -116,7 +126,11 @@ function insertAction(dataFixture, dataModel, parentName, parentId, cb) {
             }
         });
     }, function(unitId) {
-        cb(null, unitId);
+        if (parentName === 'creator') {
+            cb(null, unitId, parentId);
+        } else {
+            cb(null, unitId);
+        }
     });
 }
 var taskFixture = [
