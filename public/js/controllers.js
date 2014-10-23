@@ -115,13 +115,18 @@ kuroApp.controller('TaskBoardCtrl', function($scope, $http, $routeParams, Storag
 });
 
 
-kuroApp.controller('TaskCtrl', function($scope, $http, $routeParams, StorageService, TaskService) {
+kuroApp.controller('TaskCtrl', function($scope, $http, $routeParams, $location, StorageService, TaskService) {
     $scope.taskId = $routeParams.taskId;
     $http({
         method: 'GET',
         url: '/api/task/' + $scope.taskId
     }).success(function(data, status, headers, config) {
-        $scope.task = data;
+        if (data) {
+            if (data.status === 403) {
+                $location.path('/unauthorize');
+            }
+            $scope.task = data;
+        }
     }).error(function(data, status) {
         
     });

@@ -31,3 +31,13 @@ exports.project = {
         res.send(msgTemplate['403']);
     }
 }
+
+exports.task = {
+    hasAuthorization: function(req, res, next) {
+        var index = req.user.project.indexOf(req.task.project.toString());
+        if (index > -1) {
+            return next();
+        }
+        res.send(msgTemplate['403']);
+    }
+}

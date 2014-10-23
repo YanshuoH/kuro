@@ -10,6 +10,7 @@ var auth = require('./middlewares/authorization');
  */
 var globalAuth = [auth.requiresLogin];
 var projectAuth = [auth.requiresLogin, auth.project.hasAuthorization];
+var taskAuth = [auth.requiresLogin, auth.task.hasAuthorization];
 
 module.exports = function(app, config, passport) {
     // serve index and view partials
@@ -36,8 +37,8 @@ module.exports = function(app, config, passport) {
     app.post('/api/project/create', project.editor);
 
     // Task
-    app.get('/api/project/:projectId/taskboard', task.list);
-    app.get('/api/task/:taskId', task.show);
+    app.get('/api/project/:projectId/taskboard', projectAuth, task.listByProject);
+    app.get('/api/task/:taskId', taskAuth, task.show);
     app.param('taskId', task.load);
     app.put('/api/task/:taskId/edit', task.editor);
     app.post('/api/task/create', task.editor);

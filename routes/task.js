@@ -20,11 +20,9 @@ exports.show = function(req, res) {
 }
 
 exports.listByProject = function(req, res) {
-    console.log(req.project);
-    // TODO, dispatch by project id
-    // TODO, check the identity
+
     // TODO, only return title, description...except media sort of big thing
-    TaskModel.listToJson({}, function(err, list) {
+    TaskModel.loadByProjectId(req.project._id.toString(), function(err, list) {
         if (err) {
             console.log(err);
             res.send(err);
