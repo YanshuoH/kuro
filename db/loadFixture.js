@@ -23,7 +23,7 @@ var ObjectId = require('mongoose').Types.ObjectId;
  * Important params!!!
  * Clear database or not
  */
-var removeAll = true;
+var removeAll = false;
 
 async.waterfall([
     // First, remove all data in db
@@ -93,7 +93,7 @@ function handleInsertData(cb) {
         function(projectId, userId, callback) {
             UserModel.load(userId.toString(), function(err, user) {
                 if (err) console.log(err);
-                user.project.push(projectId);
+                user.project.push(projectId.toString());
                 user.save(function(err) {
                     if (err) console.log(err);
                     callback(null, projectId);
@@ -103,7 +103,7 @@ function handleInsertData(cb) {
         // Insert tasks
         function(projectId, callback) {
             console.log('>> Insert User');
-            insertAction(taskFixture, TaskModel, 'project', projectId.toString(), callback);
+            insertAction(taskFixture, TaskModel, 'project', projectId, callback);
         }
     ], function(err) {
         if (err) console.log(err);
@@ -137,32 +137,29 @@ var taskFixture = [
     {
         title: "test1",
         description: "test description 1",
-        project: "54354bee30a6f3341035d361"
 
     },
     {
         title: "test2",
         description: "test description 2",
-        project: "54354bee30a6f3341035d361"
     },
     {
         title: "test3",
         description: "test description 3",
-        project: "54354bee30a6f3341035d361"
     }
 ]
 
 var projectFixture = [
     {
-        ref: "DFT",
-        title: "default",
-        description: "default project"
+        ref: "DFT1",
+        title: "default1",
+        description: "default project 1"
     },
 ]
 
 var userFixture = [
     {
-        username: "yanshuoh",
+        username: "test",
         email: "test@test.com",
         password: "test"
     }
