@@ -25,12 +25,21 @@ module.exports = function (passport, config) {
                 UserModel.findOne({ email: email }, function (err, user) {
                     if (err) { return done(err); }
                     if (!user) {
-                        return done(null, false, { message: 'Unknown user' });
+                        return done(null, false, {
+                            status: 404,
+                            message: 'Unknown user'
+                        });
                     }
                     if (!user.authenticate(password)) {
-                        return done(null, false, { message: 'Invalid password' });
+                        return done(null, false, {
+                            status: 403,
+                            message: 'Invalid password'
+                        });
                     }
-                    return done(null, user, { message: 'Login succeed'});
+                    return done(null, user, {
+                        status: 200,
+                        message: 'Login succeed'
+                    });
                 });
             });
         }

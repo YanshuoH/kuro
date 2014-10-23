@@ -9,6 +9,7 @@ var auth = require('./middlewares/authorization');
  * Route authorization middlewares
  */
 var globalAuth = [auth.requiresLogin];
+var projectAuth = [auth.requiresLogin, auth.project.hasAuthorization];
 
 module.exports = function(app, config, passport) {
     // serve index and view partials
@@ -21,15 +22,15 @@ module.exports = function(app, config, passport) {
     */
     // User
     app.get('/api/user/signout', user.signout);
-    app.get('/api/user/:userId', user.show);
     // Custom passport autentication callback
-    app.post('/api/user/signin', user.session);
+    app.post('/api/user/signin', user.signin);
     app.post('/api/user/create', user.editor);
     app.put('/api/user/edit', user.editor);
+    app.get('/api/user/:userId', user.show);
     app.param('userId', user.load);
     // Project
-    app.get('/api/project', globalAuth, project.list);
-    app.get('/api/project/:projectId', project.show);
+    app.get('/api/project', globalAuth, project.listByIds);
+    app.get('/api/project/:projectId', projectAuth, project.show);
     app.param('projectId', project.load);
     app.put('/api/project/:projectId/edit', project.editor);
     app.post('/api/project/create', project.editor);
@@ -39,7 +40,7 @@ module.exports = function(app, config, passport) {
     app.get('/api/task/:taskId', task.show);
     app.param('taskId', task.load);
     app.put('/api/task/:taskId/edit', task.editor);
-    app.post('/api/task/create', task.editor)
+    app.post('/api/task/create', task.editor);
 
     // redirect all others to the index (HTML5 history)
     app.get('*', routes.index);

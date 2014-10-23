@@ -24,15 +24,14 @@ exports.editor = function(req, res) {
     res.send(true);
 }
 
-exports.session = function(req, res, next) {
+exports.signin = function(req, res, next) {
     passport.authenticate('local', function(err, user, info) {
-        console.log(info);
         if (err) {
-            return next(err);
+            return res.send(err);
         }
         // Generate a JSON response reflecting authentication status
         if (!user) {
-            return next('authentication failed');
+            return res.send(info);
         }
         // When using custom middleware to handle the callback msg,
         // It become the application's responsibility to call req.login
@@ -40,11 +39,15 @@ exports.session = function(req, res, next) {
             if (err) {
                 console.log(err);
             }
+            return res.send(info);
         });
-        return next();
-        // return res.send({ success : true, message : 'authentication succeeded' });
     })(req, res, next);
 }
+
+exports.session = function(req, res) {
+
+}
+
 
 exports.signout = function(req, res) {
     req.session.destroy();
