@@ -19,7 +19,8 @@ exports.show = function(req, res) {
     res.json(task);
 }
 
-exports.list = function(req, res) {
+exports.listByProject = function(req, res) {
+    console.log(req.project);
     // TODO, dispatch by project id
     // TODO, check the identity
     // TODO, only return title, description...except media sort of big thing

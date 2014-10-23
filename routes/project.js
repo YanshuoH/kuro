@@ -16,7 +16,6 @@ exports.load = function(req, res, next, id) {
 
 exports.show = function(req, res) {
     var project = req.project;
-    console.log(project);
     res.json(project);
 }
 
