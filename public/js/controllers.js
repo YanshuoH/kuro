@@ -66,15 +66,20 @@ kuroApp.controller('BoardCtrl', function($scope, $http, $location) {
     });
 })
 
-kuroApp.controller('ProjectCtrl', function($scope, $http, $routeParams) {
+kuroApp.controller('ProjectCtrl', function($scope, $http, $location, $routeParams) {
     $scope.projectId = $routeParams.projectId;
     $http({
         method: 'GET',
         url: '/api/project/' + $scope.projectId
     }).success(function(data, status) {
-        $scope.project = data;
+        if (data) {
+            if (data.status === 403) {
+                $location.path('/unauthorize');
+            }
+            $scope.project = data;
+        }
     }).error(function(data, status) {
-
+        console.log(data);
     });
 });
 

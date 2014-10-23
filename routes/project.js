@@ -16,12 +16,22 @@ exports.load = function(req, res, next, id) {
 
 exports.show = function(req, res) {
     var project = req.project;
+    console.log(project);
     res.json(project);
 }
 
-exports.list = function(req, res) {
-    // TODO, check/dispatch by identity
-    ProjectModel.listToJson({}, function(err, list) {
+/**
+ * Return an array of projects by userId
+ */
+exports.listByIds = function(req, res) {
+    var options = {
+        criteria: {
+            '_id': {
+                $in: req.user.project
+            }
+        }
+    }
+    ProjectModel.list(options, function(err, list) {
         if (err) {
             console.log(err);
             res.send(err);
