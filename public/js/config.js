@@ -30,38 +30,38 @@ kuro.config(function ($routeProvider, $locationProvider) {
             controller: 'ProfileCtrl'
         })
         .when('/board', {
-            templateUrl: 'partials/personal',
+            templateUrl: 'partials/project/personal',
             controller: 'BoardCtrl'
         })
         // be careful of the order create and :taskId
         .when('/project/create', {
-            templateUrl: 'partials/projectForm',
+            templateUrl: 'partials/project/projectForm',
             controller: 'ProjectFormCtrl'
         })
         .when('/project/:projectId', {
-            templateUrl: 'partials/project',
+            templateUrl: 'partials/project/project',
             controller: 'ProjectCtrl'
         })
         .when('/project/:projectId/edit', {
-            templateUrl: 'partials/projectForm',
+            templateUrl: 'partials/project/projectForm',
             controller: 'ProjectFormCtrl'
         })
         // task board
         .when('/project/:projectId/taskboard', {
-          templateUrl: 'partials/taskboard',
+          templateUrl: 'partials/task/taskboard',
           controller: 'TaskBoardCtrl'
         })
         // be careful of the order create and :taskId
         .when('/task/create', {
-            templateUrl: 'partials/taskForm',
+            templateUrl: 'partials/task/taskForm',
             controller: 'TaskFormCtrl'
         })
         .when('/task/:taskId', {
-            templateUrl: 'partials/task',
+            templateUrl: 'partials/task/task',
             controller: 'TaskCtrl'
         })
         .when('/task/:taskId/edit', {
-            templateUrl: 'partials/taskForm',
+            templateUrl: 'partials/task/taskForm',
             controller: 'TaskFormCtrl'
         })
         .otherwise({
