@@ -2,7 +2,11 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var UserModel = mongoose.model('UserModel');
 
-
+/*
+ * @param userId
+ *
+ * When :userId detected in url, load and fetch user in req
+ */
 exports.load = function(req, res, next, id) {
     UserModel.load(id.toString(), function(err, user) {
         if (err) {
@@ -15,15 +19,31 @@ exports.load = function(req, res, next, id) {
     });
 }
 
+/*
+ * @path('/api/user/:userId')
+ *
+ * Return JSON user
+ */
 exports.show = function(req, res) {
+    // TODO: do not return credential data
     var user = req.user;
     res.json(user);
 }
 
+/*
+ * @path('/api/user/edit')
+ *
+ */
 exports.editor = function(req, res) {
     res.send(true);
 }
 
+/*
+ * @path('/api/user/signin')
+ *
+ * Create user session
+ * Return String|Object login info
+ */
 exports.signin = function(req, res, next) {
     passport.authenticate('local', function(err, user, info) {
         if (err) {
@@ -49,6 +69,11 @@ exports.session = function(req, res) {
 }
 
 
+/*
+ * @path('/api/user/signout')
+ *
+ * Destroy user session
+ */
 exports.signout = function(req, res) {
     req.session.destroy();
     // req.session.save();
