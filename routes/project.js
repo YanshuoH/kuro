@@ -78,7 +78,7 @@ exports.create = function(req, res) {
                 if (err) {
                     callback(null, err);
                 } else {
-                    callbacl();
+                    callback(null, false);
                 }
             });
         },
@@ -88,7 +88,6 @@ exports.create = function(req, res) {
             } else {
                 var user = req.user;
                 user.project.push(project._id.toString());
-                console.log('user save');
                 user.save(function(err) {
                     if (err) {
                         callback(null, err);
