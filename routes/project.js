@@ -1,3 +1,5 @@
+var async = require('async');
+var utils = require('../lib/utils');
 var mongoose = require('mongoose');
 
 var ProjectModel = mongoose.model('ProjectModel');
@@ -54,10 +56,74 @@ exports.listByIds = function(req, res) {
 
 
 /*
+ * @path(/api/project/create)
+ *
+ * POST
+ */
+exports.create = function(req, res) {
+    var userId = req.user._id;
+    // initialize project user data
+    // TODO: fetch more users by frontend dropdown
+    var personal = {
+        creator: userId,
+        admin: [userId],
+        users: [userId]
+    }
+    var data = utils.mergeObj(req.body, personal);
+    var project = new ProjectModel(data);
+
+    async.waterfall([
+        function(callback) {
+            project.save(function(err) {
+                if (err) {
+                    callback(null, err);
+                } else {
+                    callbacl();
+                }
+            });
+        },
+        function(err, callback) {
+            if (err) {
+                callback(null, err);
+            } else {
+                var user = req.user;
+                user.project.push(project._id.toString());
+                console.log('user save');
+                user.save(function(err) {
+                    if (err) {
+                        callback(null, err);
+                    } else {
+                        callback(null, null);
+                    }
+                });
+            }
+        }
+    ], function(err, msg) {
+        if (err) {
+            console.log(msg);
+        }
+        if (msg) {
+            res.json({
+                status: 500,
+                message: msg
+            });
+        } else {
+            res.json({
+                status: 200,
+                project: {
+                    _id: project._id
+                }
+            });
+        }
+    });
+
+}
+
+/*
  * @path(/api/project/:projectId/edit)
  *
- * GET/PUT/POST
+ * PUT
  */
-exports.editor = function(req, res) {
-    res.send(true);
+exports.update = function(req, res) {
+
 }

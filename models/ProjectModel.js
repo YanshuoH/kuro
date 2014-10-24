@@ -17,7 +17,7 @@ var ProjectModelSchema = new mongoose.Schema({
     }],
     title: {type: String, trim: true},
     description: {type: String},
-    ref: {type: String, trim: true},
+    ref: {type: String, trim: true, unique: true},
     date: {
         created: {type: Date, default: Date.now},
         updated: {type: Date, default: Date.now}
@@ -30,10 +30,9 @@ var ProjectModelSchema = new mongoose.Schema({
  * Validations
  */
 var requiredFields = [
-    // 'creator'
-    // 'admin'
-    // 'users',
-    // 'project',
+    'creator',
+    'admin',
+    'users',
     'ref',
     'title',
     'description',
@@ -52,6 +51,16 @@ ProjectModelSchema.path('title').validate(function(title) {
     }
 }, 'Invalid title - title is too long (max.50)');
 
+// Limitation of Ref length
+ProjectModelSchema.path('ref').validate(function(ref) {
+    // 50 limitation
+    if (typeof(ref) !== 'undefined' && ref.length > 4) {
+        return false;
+    }
+    else {
+        true;
+    }
+}, 'Invalid ref - ref is too long (max.4)');
 
 /**
  * Pre save

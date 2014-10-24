@@ -4,7 +4,7 @@
 var msgTemplate = {
     '403' :
         {
-            status: 403,
+            status: 401,
             message: 'You are not authorized'
         },
     '404' :

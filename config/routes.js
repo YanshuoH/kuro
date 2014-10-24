@@ -34,8 +34,8 @@ module.exports = function(app, config, passport) {
     app.get('/api/project', globalAuth, project.listByIds);
     app.get('/api/project/:projectId', projectAuth, project.show);
     app.param('projectId', project.load);
-    app.put('/api/project/:projectId/edit', project.editor);
-    app.post('/api/project/create', project.editor);
+    app.put('/api/project/:projectId/edit', projectAuth, project.update);
+    app.post('/api/project/create', globalAuth, project.create);
 
     // Task
     app.get('/api/project/:projectId/taskboard', projectAuth, task.listByProject);

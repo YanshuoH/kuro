@@ -6,12 +6,17 @@ div(ng-include="'partials/navbar'")
         .panel-heading
           h3.panel-title Project Form
         .panel-body
-            .col-sm-5
-              form.form-horizontal#projectForm(role='form' name='projectForm' novalidate='novalidate' ng-submit='submitForm()')
-                .form-group
-                  label(for='title') Title
-                  input.form-control#title(type='text' name='title' ng-model='formData.title' placeholder='Title')
-                .form-group
-                  label(for='description') Description
-                  input.form-control#description(type='textarea' name='description' ng-model='formData.description' placeholder='Description')
+          .col-sm-12
+            form.form-horizontal#projectForm(role='form' name='projectForm' novalidate='novalidate' ng-submit='submitForm()')
+              .form-group
+                label(for='title') Title
+                input.form-control#title(type='text' name='title' ng-model='formData.title' placeholder='Title')
+              .form-group
+                label(for='description') Description
+                input.form-control#description(type='textarea' name='description' ng-model='formData.description' placeholder='Description')
+              .form-group
+                label(for='ref') Reference
+                input.form-control#ref(type='text' name='ref' ng-model='formData.ref' placeholder='Reference')
+                p TODO: add user in list
+              .form-group
                 button.btn.btn-default(type='submit') Submit
