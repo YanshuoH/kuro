@@ -66,7 +66,7 @@ exports.create = function(req, res) {
     // TODO: fetch more users by frontend dropdown
     var personal = {
         creator: userId,
-        admin: [userId],
+        admins: [userId],
         users: [userId]
     }
     var data = utils.mergeObj(req.body, personal);

@@ -27,7 +27,8 @@ module.exports = function(app, config, passport) {
     // Custom passport autentication callback
     app.post('/api/user/signin', user.signin);
     app.post('/api/user/create', user.editor);
-    app.put('/api/user/edit', user.editor);
+    app.put('/api/user/edit', globalAuth, user.editor);
+    app.get('/api/user/info', globalAuth, user.show);
     app.get('/api/user/:userId', user.show);
     app.param('userId', user.load);
     // Project

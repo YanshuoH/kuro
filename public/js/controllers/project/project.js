@@ -19,6 +19,18 @@ kuroApp.controller('BoardCtrl', function($scope, $http, $location) {
         console.log(data);
     });
 
+    $scope.user;
+    $http({
+        method: 'GET',
+        url: '/api/user/info'
+    }).success(function(data, status) {
+        if (data) {
+            $scope.user = data;
+        }
+    }).error(function(data, status) {
+        console.log(data);
+    })
+
     $scope.createProject = function() {
         $location.path('/project/create');
     }

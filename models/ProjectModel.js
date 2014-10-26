@@ -9,7 +9,7 @@ var ObjectId = mongoose.Schema.ObjectId;
  */
 var ProjectModelSchema = new mongoose.Schema({
     creator: {type: ObjectId, ref: 'user'},
-    admin: [{
+    admins: [{
         type: ObjectId, ref: 'user'
     }],
     users: [{
@@ -31,7 +31,7 @@ var ProjectModelSchema = new mongoose.Schema({
  */
 var requiredFields = [
     'creator',
-    'admin',
+    'admins',
     'users',
     'ref',
     'title',

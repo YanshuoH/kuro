@@ -8,7 +8,6 @@ var methodOverride = require('method-override');
 var serveStatic = require('serve-static')
 var favicon = require('serve-favicon');
 
-
 module.exports = function(app, config, passport) {
     app.set('views', path.join(config.root + '/views'));
     app.set('view engine', 'jade');

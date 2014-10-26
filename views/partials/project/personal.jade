@@ -1,22 +1,33 @@
 div(ng-include="'partials/navbar'")
-.container
-  .row
-    .col-sm-3.col-md-2.sidebar
-    .col-sm-9.col-sm-offset-3.col-md-10.col-md-offset-2.main
-      h1.page-header Your projects
-        button.btn.btn-primary(type='button' ng-click='createProject()')
-          span.glyphicon.glyphicon-plus
-          span New Project
-      .table-responsive
-        table.table.table-striped
-          thead
-            tr
-              th Reference
-              th Title
-              th Last Update
-          tbody
-            tr(ng-repeat='project in projects')
-              td
-                a(href="/project/{{project._id}}") {{ project.ref }}
-              td {{ project.title }}
-              td {{ project.date.updated }}
+.container.personal
+  .col-sm-3.sidebar
+    h2 {{ user.username }}
+    a.thumbnail(href='#')
+      img(holder-js='holder.js/100%x300' alt='...')
+    hr
+    span.glyphicon.glyphicon-envelope
+    | 
+    strong {{ user.email }}
+  .col-sm-9.main
+    h1.page-header Your projects
+      button.btn.btn-primary.btn-new-project(type='button' ng-click='createProject()')
+        span.glyphicon.glyphicon-plus
+        span New Project
+    .panel.panel-default
+      .panel-heading
+      .panel-body
+        .table-responsive
+          table.table
+            tbody
+              tr(ng-repeat='project in projects')
+                td
+                  .col-sm-8
+                    a(href="/project/{{project._id}}")
+                      strong {{ project.ref }} - {{ project.title }}
+                    p {{ project.description }}
+                  .col-sm-3
+                    strong Last update
+                    p {{project.date.updated | date:'yyyy-MM-dd HH:mm'}}
+                  .col-sm-1
+                    a(href="/project/{{project._id}}/edit")
+                    span.glyphicon.glyphicon-pencil

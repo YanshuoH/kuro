@@ -1,22 +1,56 @@
 div(ng-include="'partials/navbar'")
-.container
-  .blog-header
-    h1.blog-title {{ project.title }}
+.container-fluid.project
   .row
-    .col-sm-8
+    .col-sm-3.col-md-3.sidebar
+      ul.nav.nav-sidebar
+        li.active
+          a(href='#') overview
+        li
+          a(href='#') members
+        li
+          a(href='#') statistic
+        li
+          a(href='#') settings
+    .col-sm-9.col-sm-offset-3.col-md-9.col-md-offset-3.main
+      h1.page-header {{ project.ref }} - {{ project.title }}
+      p.lead {{ project.description }}
       .row
-        div(ng-if="project === null")
-          p Task not found
-        div(ng-if="project !== null")
-          table.table.table-striped
-            tr
-              td created at
-              td {{ project.date.created }}
-            tr
-              td updated at
-              td {{ project.date.updated }}
-          .blog-main
-            p {{ project.description }}
+        .col-xs-6.col-sm-3
+          ul.list-group
+            li.list-group-item Created at: {{ project.date.created | date:'yyyy-MM-dd HH:mm'}}
+            li.list-group-item Updated at: {{ project.date.updated | date:'yyyy-MM-dd HH:mm'}}
+        .col-xs-6.col-sm-3
+          ul.list-group
+            li.list-group-item Creator: {{ project.creator }}
+            li.list-group-item Administrators:
+              ul
+                li(ng-repeat='admin in project.admins')
+                  {{ admin }}
+      .row
+        .col-xs-6.col-sm-3
+          h3 Priority
+          ul.list-group
+            li.list-group-item Urgent
+              span.badge 12
+            li.list-group-item Critical
+              span.badge 12
+            li.list-group-item Normal
+              span.badge 12
+            li.list-group-item Low
+              span.badge 12
+        .col-xs-6.col-sm-3
+          h3 Status
+          ul.list-group
+            li.list-group-item Late
+              span.badge 12
+            li.list-group-item To do
+              span.badge 12
+            li.list-group-item In progress
+              span.badge 12
+            li.list-group-item Need Information
+              span.badge 12
+            li.list-group-item Done
+              span.badge 12
       .row
         h3 Tasks
         a.btn.btn-lg.btn-primary(href='/project/{{project._id}}/taskboard') TaskBoard

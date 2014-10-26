@@ -20,14 +20,19 @@ exports.load = function(req, res, next, id) {
 }
 
 /*
- * @path('/api/user/:userId')
+ * @path('/api/user/:userId') || @path('/api/user/info')
  *
  * Return JSON user
  */
 exports.show = function(req, res) {
     // TODO: do not return credential data
-    var user = req.user;
-    res.json(user);
+    if (typeof(req.user) !== 'undefined') {
+        var user = req.user;
+        res.json(user);
+    } else {
+        res.send(false);
+    }
+
 }
 
 /*
