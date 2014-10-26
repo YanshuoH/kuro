@@ -51,6 +51,15 @@ kuroApp.controller('ProjectCtrl', function($scope, $http, $location, $routeParam
     }).error(function(data, status) {
         console.log(data);
     });
+
+    $http({
+        method: 'GET',
+        url: '/api/project/' + $scope.projectId + '/taskboard'
+    }).success(function(data, status, headers, config) {
+        $scope.tasks = data;
+    }).error(function(data, status, headers, config) {
+
+    });
 });
 
 kuroApp.controller('ProjectFormCtrl', function($scope, $http, $routeParams, $location) {

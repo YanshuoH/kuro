@@ -12,6 +12,15 @@ kuroApp.controller('TaskBoardCtrl', function($scope, $http, $routeParams, Storag
     }).error(function(data, status, headers, config) {
 
     });
+
+    $http({
+        method: 'GET',
+        url: '/api/project/' + $scope.projectId
+    }).success(function(data, status, headers, config) {
+        $scope.project = data;
+    }).error(function(data, status, headers, config) {
+
+    });
 });
 
 

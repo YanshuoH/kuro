@@ -1,7 +1,7 @@
 div(ng-include="'partials/navbar'")
 .container-fluid.project
   .row
-    .col-sm-3.col-md-3.sidebar
+    .col-sm-2.col-md-2.sidebar
       ul.nav.nav-sidebar
         li.active
           a(href='#') overview
@@ -11,46 +11,63 @@ div(ng-include="'partials/navbar'")
           a(href='#') statistic
         li
           a(href='#') settings
-    .col-sm-9.col-sm-offset-3.col-md-9.col-md-offset-3.main
+    .col-sm-10.col-sm-offset-2.col-md-10.col-md-offset-2.main
       h1.page-header {{ project.ref }} - {{ project.title }}
-      p.lead {{ project.description }}
+      .row.content-header
+        .col-md-8.col-sm-8
+          p.lead.project-description {{ project.description }}
+        .col-md-4.col-sm-4
+          a.btn.btn-primary.btn-left(href='/project/{{project._id}}/taskboard') On Board
+          | 
+          a.btn.btn-success.btn-left(href='/task/create') Create Task
       .row
-        .col-xs-6.col-sm-3
-          ul.list-group
-            li.list-group-item Created at: {{ project.date.created | date:'yyyy-MM-dd HH:mm'}}
-            li.list-group-item Updated at: {{ project.date.updated | date:'yyyy-MM-dd HH:mm'}}
-        .col-xs-6.col-sm-3
-          ul.list-group
-            li.list-group-item Creator: {{ project.creator }}
-            li.list-group-item Administrators:
-              ul
-                li(ng-repeat='admin in project.admins')
-                  {{ admin }}
-      .row
-        .col-xs-6.col-sm-3
-          h3 Priority
-          ul.list-group
-            li.list-group-item Urgent
-              span.badge 12
-            li.list-group-item Critical
-              span.badge 12
-            li.list-group-item Normal
-              span.badge 12
-            li.list-group-item Low
-              span.badge 12
-        .col-xs-6.col-sm-3
-          h3 Status
-          ul.list-group
-            li.list-group-item Late
-              span.badge 12
-            li.list-group-item To do
-              span.badge 12
-            li.list-group-item In progress
-              span.badge 12
-            li.list-group-item Need Information
-              span.badge 12
-            li.list-group-item Done
-              span.badge 12
-      .row
-        h3 Tasks
-        a.btn.btn-lg.btn-primary(href='/project/{{project._id}}/taskboard') TaskBoard
+        .col-md-6.col-sm-12
+          .row
+            .col-md-6.col-sm-12
+              ul.list-group
+                li.list-group-item Created at: {{ project.date.created | date:'yyyy-MM-dd HH:mm'}}
+                li.list-group-item Updated at: {{ project.date.updated | date:'yyyy-MM-dd HH:mm'}}
+            .col-md-6.col-sm-12
+              ul.list-group
+                li.list-group-item Creator: {{ project.creator }}
+                li.list-group-item Administrators:
+                  ul
+                    li(ng-repeat='admin in project.admins') {{ admin }}
+          .row
+            .col-md-6.col-sm-12
+              h3 Priority
+              ul.list-group
+                li.list-group-item Urgent
+                  span.badge 12
+                li.list-group-item Critical
+                  span.badge 12
+                li.list-group-item Normal
+                  span.badge 12
+                li.list-group-item Low
+                  span.badge 12
+            .col-md-6.col-sm-12
+              h3 Status
+              ul.list-group
+                li.list-group-item Late
+                  span.badge 12
+                li.list-group-item To do
+                  span.badge 12
+                li.list-group-item In progress
+                  span.badge 12
+                li.list-group-item Need Information
+                  span.badge 12
+                li.list-group-item Done
+                  span.badge 12
+        .col-md-5.col-sm-12.main-right
+          .panel.panel-default
+            .panel-heading Tasks
+            .panel-body
+              .table-responsive
+                table.table
+                  tbody
+                    tr(ng-repeat='task in tasks')
+                      td
+                        a(href='/task/{{task._id}}')
+                          strong {{ task.title }}
+
+          //a.btn.btn-lg.btn-primary(href='/project/{{project._id}}/taskboard') TaskBoard

@@ -1,5 +1,25 @@
 div(ng-include="'partials/navbar'")
-.container
+.container-fluid.taskboard
+  .row
+    .col-md-12
+      h1.page-header {{ project.ref}} / {{ project.title }} Board
+      ul.nav.nav-pills
+        li
+          a Filters: 
+        li.active
+          a(href='#') All
+        li
+          a(href='#') Assigne To Me
+        li
+          a(href='#') Created By Me
+        li
+          a.dropdown-toggle(data-toggle='dropdown' href='#') Category
+            span.caret
+          ul.dropdown-menu(role='menu')
+            li
+              a(href='#') Cat 1
+              a(href='#') Cat 2
+              a(href='#') Cat 3
   .row
     .col-sm-2(ng-repeat='task in tasks')
       .list-group
