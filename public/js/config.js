@@ -49,7 +49,8 @@ kuro.config(function ($routeProvider, $locationProvider) {
         // task board
         .when('/project/:projectId/taskboard', {
           templateUrl: 'partials/task/taskboard',
-          controller: 'TaskBoardCtrl'
+          controller: 'TaskBoardCtrl',
+          reloadOnSearch: false
         })
         // be careful of the order create and :taskId
         .when('/task/create', {

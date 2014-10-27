@@ -73,3 +73,14 @@
   margin: 10px 0 0 20px;
   border-bottom: 0;
 }
+
+/*
+ * Taskboard
+ */
+.taskboard .seperator {
+    border-bottom: 1px solid #eee;
+}
+
+.taskboard .board-col {
+   border-right: 1px dashed #333;
+}
