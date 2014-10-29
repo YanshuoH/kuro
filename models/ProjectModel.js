@@ -8,11 +8,11 @@ var ObjectId = mongoose.Schema.ObjectId;
  * Schema Tree
  */
 var ProjectModelSchema = new mongoose.Schema({
-    creator: {type: ObjectId, ref: 'user'},
-    admins: [{
+    creatorId: {type: ObjectId, ref: 'user'},
+    adminIds: [{
         type: ObjectId, ref: 'user'
     }],
-    users: [{
+    userIds: [{
         type: ObjectId, ref: 'user'
     }],
     title: {type: String, trim: true},
@@ -30,9 +30,9 @@ var ProjectModelSchema = new mongoose.Schema({
  * Validations
  */
 var requiredFields = [
-    'creator',
-    'admins',
-    'users',
+    'creatorId',
+    'adminIds',
+    'userIds',
     'ref',
     'title',
     'description',

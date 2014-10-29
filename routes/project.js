@@ -10,7 +10,8 @@ var ProjectModel = mongoose.model('ProjectModel');
  * When :projectId detected in url, load and fetch project in req
  */
 exports.load = function(req, res, next, id) {
-    ProjectModel.load(id.toString(), function(err, project) {
+    var options = {};
+    ProjectModel.load(id.toString(), options, function(err, project) {
         if (err) {
             return next(err);
         } else if (!project) {
@@ -40,10 +41,10 @@ exports.listByIds = function(req, res) {
     var options = {
         criteria: {
             '_id': {
-                $in: req.user.project
+                $in: req.user.projectIds
             }
         }
-    }
+    };
     ProjectModel.list(options, function(err, list) {
         if (err) {
             console.log(err);
@@ -65,9 +66,9 @@ exports.create = function(req, res) {
     // initialize project user data
     // TODO: fetch more users by frontend dropdown
     var personal = {
-        creator: userId,
-        admins: [userId],
-        users: [userId]
+        creatorId: userId,
+        adminIds: [userId],
+        userIds: [userId]
     }
     var data = utils.mergeObj(req.body, personal);
     var project = new ProjectModel(data);
@@ -87,7 +88,7 @@ exports.create = function(req, res) {
                 callback(null, err);
             } else {
                 var user = req.user;
-                user.project.push(project._id.toString());
+                user.projectIds.push(project._id.toString());
                 user.save(function(err) {
                     if (err) {
                         callback(null, err);

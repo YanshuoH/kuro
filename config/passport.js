@@ -22,7 +22,8 @@ module.exports = function (passport, config) {
         },
         function(email, password, done) {
             process.nextTick(function() {
-                UserModel.findOne({ email: email }, function (err, user) {
+                var options = {};
+                UserModel.findOne({ email: email }, options, function (err, user) {
                     if (err) { return done(err); }
                     if (!user) {
                         return done(null, false, {

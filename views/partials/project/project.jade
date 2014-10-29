@@ -25,8 +25,12 @@ div(ng-include="'partials/navbar'")
           .row
             .col-md-6.col-sm-12
               ul.list-group
-                li.list-group-item Created at: {{ project.date.created | date:'yyyy-MM-dd HH:mm'}}
-                li.list-group-item Updated at: {{ project.date.updated | date:'yyyy-MM-dd HH:mm'}}
+                li.list-group-item Created at:
+                  br
+                  {{ project.date.created | date:'yyyy-MM-dd HH:mm'}}
+                li.list-group-item Updated at:
+                  br
+                  {{ project.date.updated | date:'yyyy-MM-dd HH:mm'}}
             .col-md-6.col-sm-12
               ul.list-group
                 li.list-group-item Creator: {{ project.creator }}

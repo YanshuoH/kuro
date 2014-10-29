@@ -13,7 +13,7 @@ var UserModelSchema = new mongoose.Schema({
     username: {type: String, unique: true, trim: true},
     hashed_password: {type: String},
     email: {type: String, unique: true},
-    project: [{type: ObjectId, ref: 'project'}],
+    projectIds: [{type: ObjectId, ref: 'project'}],
     date: {
         created: {type: Date, default: Date.now},
         updated: {type: Date, default: Date.now},

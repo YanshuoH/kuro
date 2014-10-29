@@ -8,7 +8,8 @@ var UserModel = mongoose.model('UserModel');
  * When :userId detected in url, load and fetch user in req
  */
 exports.load = function(req, res, next, id) {
-    UserModel.load(id.toString(), function(err, user) {
+    var options = {};
+    UserModel.load(id.toString(), options, function(err, user) {
         if (err) {
             return next(err);
         } else if (!user) {

@@ -24,7 +24,7 @@ exports.requiresLogin = function (req, res, next) {
 
 exports.project = {
     hasAuthorization: function(req, res, next) {
-        var index = req.user.project.indexOf(req.project._id.toString());
+        var index = req.user.projectIds.indexOf(req.project._id.toString());
         if (index > -1) {
             return next();
         }
@@ -34,7 +34,7 @@ exports.project = {
 
 exports.task = {
     hasAuthorization: function(req, res, next) {
-        var index = req.user.project.indexOf(req.task.project.toString());
+        var index = req.user.projectIds.indexOf(req.task.projectId.toString());
         if (index > -1) {
             return next();
         }

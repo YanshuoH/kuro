@@ -36,7 +36,7 @@ kuroApp.controller('TaskCtrl', function($scope, $http, $routeParams, $location, 
                 $location.path('/unauthorize');
             }
             $scope.isNew = false;
-            $scope.task = data;
+            $scope.task = data
         }
     }).error(function(data, status) {
         

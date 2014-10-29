@@ -23,7 +23,7 @@ var ObjectId = require('mongoose').Types.ObjectId;
  * Important params!!!
  * Clear database or not
  */
-var removeAll = false;
+var removeAll = true;
 
 async.waterfall([
     // First, remove all data in db
@@ -88,22 +88,22 @@ function handleInsertData(cb) {
         // Insert project 
         function(userId, callback) {
             console.log('>> Insert Project');
-            insertAction(projectFixture, ProjectModel, 'creator', userId.toString(), callback);
+            insertAction(projectFixture, ProjectModel, 'creatorId', userId.toString(), callback);
         },
         function(projectId, userId, callback) {
-            UserModel.load(userId.toString(), function(err, user) {
+            UserModel.load(userId.toString(), {}, function(err, user) {
                 if (err) console.log(err);
-                user.project.push(projectId.toString());
+                user.projectIds.push(projectId.toString());
                 user.save(function(err) {
                     if (err) console.log(err);
-                    callback(null, projectId);
+                    callback(null, projectId, userId);
                 });
             });
         },
         // Insert tasks
-        function(projectId, callback) {
-            console.log('>> Insert User');
-            insertAction(taskFixture, TaskModel, 'project', projectId, callback);
+        function(projectId, userId, callback) {
+            console.log('>> Insert Task');
+            insertAction(taskFixture, TaskModel, 'projectId', projectId, callback, userId);
         }
     ], function(err) {
         if (err) console.log(err);
@@ -111,22 +111,30 @@ function handleInsertData(cb) {
     })
 }
 
-function insertAction(dataFixture, dataModel, parentName, parentId, cb) {
+function insertAction(dataFixture, dataModel, parentName, parentId, cb, userId) {
     async.each(dataFixture, function(data, callback) {
         if (parentName && parentId) {
             data[parentName] = parentId;
         }
+        if (parentName == 'creatorId') {
+            data.adminIds = [parentId];
+            data.userIds = [parentId];
+        }
+        if (parentName == 'projectId') {
+            data.creatorId = userId;
+            data.projectId = parentId;
+        }
         var unit = new dataModel(data);
         unit.save(function(err) {
             if (err) console.log(err);
-            if (parentName === 'project') {
+            if (parentName === 'projectId') {
                 callback();
             } else {
                 callback(unit._id);
             }
         });
     }, function(unitId) {
-        if (parentName === 'creator') {
+        if (parentName === 'creatorId') {
             cb(null, unitId, parentId);
         } else {
             cb(null, unitId);

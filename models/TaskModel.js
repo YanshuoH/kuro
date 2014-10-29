@@ -8,8 +8,8 @@ var ObjectId = mongoose.Schema.ObjectId;
  * Schema Tree
  */
 var TaskModelSchema = new mongoose.Schema({
-    user: {type: ObjectId, ref: 'user'},
-    project: {type: ObjectId, ref: 'project'},
+    creatorId: {type: ObjectId, ref: 'user'},
+    projectId: {type: ObjectId, ref: 'project'},
     ref: {type: String, trim: true},
     title: {type: String, trim: true},
     priority: {type: Number, default: 0},
@@ -34,8 +34,8 @@ var TaskModelSchema = new mongoose.Schema({
  * Validations
  */
 var requiredFields = [
-    // 'user',
-    // 'project',
+    'creatorId',
+    'projectId',
     // 'ref',
     'title',
     'description',
@@ -68,10 +68,12 @@ TaskModelSchema.pre('save', function(next) {
  * Heritage basic functions
  */
 TaskModelSchema.statics = utils.modelStatics;
-TaskModelSchema.statics.loadByProjectId = function(projectId, cb) {
-    var criteria = {
-        project: projectId.toString()
+TaskModelSchema.statics.loadByProjectId = function(projectId, options, cb) {
+    var criteria = options.criteria || {};
+    var projectCriteria = {
+        projectId: projectId.toString()
     }
+    criteria = utils.mergeObj(criteria, projectCriteria);
     var query = this.find(criteria);
     query.exec(cb);
 }
