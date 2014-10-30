@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var TaskModel = mongoose.model('TaskModel');
 var ProjectModel = mongoose.model('ProjectModel');
+
 /*
  * @param taskId
  *
@@ -20,7 +21,7 @@ exports.load = function(req, res, next, id) {
                 fiedls: 'title, description, ref'
             }
         };
-        ProjectModel.load(task.projectId.toString(), projectOptions, function(err, project) {
+        ProjectModel.loadJson(task.projectId.toString(), projectOptions, function(err, project) {
             if (err) {
                 return next(err);
             } else if (!project) {
@@ -40,6 +41,10 @@ exports.load = function(req, res, next, id) {
  */
 exports.show = function(req, res) {
     var task = req.task;
+    // Change mongoose document to plain object
+    // in order to insert project json in response
+    task = task.toObject();
+    task.project = req.task.project;
     res.json(task);
 }
 
@@ -52,7 +57,6 @@ exports.listByProject = function(req, res) {
     var options = {};
     // TODO, only return title, description...except media sort of big thing
     TaskModel.loadByProjectId(req.project._id.toString(), options, function(err, list) {
-        console.log(req.project);
         if (err) {
             console.log(err);
             res.send(err);
