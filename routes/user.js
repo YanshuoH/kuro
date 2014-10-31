@@ -81,7 +81,8 @@ exports.session = function(req, res) {
  * Destroy user session
  */
 exports.signout = function(req, res) {
-    req.session.destroy();
+    // req.session.destroy();
+    req.session = null;
     // req.session.save();
     req.logout();
     res.send(true);

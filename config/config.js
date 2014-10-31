@@ -25,6 +25,7 @@ module.exports = {
     },
     session: {
         sessionOptions: {
+            keys: ['whoismostpowerfulinmarvelword', 'ofcoursestanlee'],
             secret: 'kissmyass',
             saveUninitialized: true,
             resave: true,
