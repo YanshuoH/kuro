@@ -2,7 +2,8 @@ var path = require('path');
 var express = require('express');
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
-var session = require('express-session')
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var serveStatic = require('serve-static')
@@ -13,13 +14,13 @@ module.exports = function(app, config, passport) {
     app.set('view engine', 'jade');
     // cookie must before session
     app.use(cookieParser());
+
+    var sessionOptions = config.session.sessionOptions;
+    sessionOptions.store = new MongoStore({
+        db: config.db.name
+    })
     // session must before passport
-    var sessionOptions = {
-        secret: 'kissmyass',
-        saveUninitialized: true,
-        resave: true
-    };
-    app.use(session(sessionOptions));
+    app.use(session(config.session.sessionOptions));
 
     // use passport session
     app.use(passport.initialize());
