@@ -1,6 +1,8 @@
 // models/UserModel.js
 var SECRET_KEY = 'KISSMYASS';
-var utils = require('../lib/utils');
+
+var config = require('../config/config');
+var utils = require(config.path.lib + '/utils');
 var mongoose = require('mongoose');
 var crypto = require('crypto');
 // Shortcut

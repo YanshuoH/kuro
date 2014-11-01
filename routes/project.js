@@ -1,5 +1,9 @@
 var async = require('async');
-var utils = require('../lib/utils');
+
+var config = require('../config/config');
+var projectRepository = require(config.path.repository + '/project');
+var utils = require(config.path.lib + '/utils');
+
 var mongoose = require('mongoose');
 
 var ProjectModel = mongoose.model('ProjectModel');
@@ -14,8 +18,6 @@ exports.load = function(req, res, next, id) {
     ProjectModel.load(id.toString(), options, function(err, project) {
         if (err) {
             return next(err);
-        } else if (!project) {
-            return next(new Error('Failed to load Project ' + id));
         }
         req.project = project;
         next();
@@ -45,7 +47,7 @@ exports.listByIds = function(req, res) {
             }
         }
     };
-    ProjectModel.list(options, function(err, list) {
+    projectRepository.listByIds(req.user.projectIds, function(err, list) {
         if (err) {
             console.log(err);
             res.send(err);
@@ -61,6 +63,7 @@ exports.listByIds = function(req, res) {
  *
  * POST
  */
+// TODO: migrate to repository
 exports.create = function(req, res) {
     var userId = req.user._id;
     // initialize project user data

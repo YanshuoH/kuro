@@ -33,5 +33,11 @@ module.exports = {
                 maxAge: 7*24*3600000
             }
         }
+    },
+    path: {
+        lib: path.join(rootPath, '/lib'),
+        models: path.join(rootPath, '/models'),
+        repository: path.join(rootPath, '/repository'),
+        routes: path.join(rootPath, '/routes')
     }
 };

@@ -1,5 +1,6 @@
 // models/ProjecdtModel.js
-var utils = require('../lib/utils');
+var config = require('../config/config');
+var utils = require(config.path.lib + '/utils');
 var mongoose = require('mongoose');
 // For shortcut
 var ObjectId = mongoose.Schema.ObjectId;
