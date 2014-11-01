@@ -1,5 +1,6 @@
-var mongoose = require('mongoose');
 var passport = require('passport');
+
+var mongoose = require('mongoose');
 var UserModel = mongoose.model('UserModel');
 
 /*
@@ -12,8 +13,6 @@ exports.load = function(req, res, next, id) {
     UserModel.load(id.toString(), options, function(err, user) {
         if (err) {
             return next(err);
-        } else if (!user) {
-            return next(new Error('Failed to load User ' + id));
         }
         req.user = user;
         next();
@@ -26,14 +25,8 @@ exports.load = function(req, res, next, id) {
  * Return JSON user
  */
 exports.show = function(req, res) {
-    // TODO: do not return credential data
-    if (typeof(req.user) !== 'undefined') {
-        var user = req.user;
-        res.json(user);
-    } else {
-        res.send(false);
-    }
-
+    var user = req.user;
+    res.json(user);
 }
 
 /*
