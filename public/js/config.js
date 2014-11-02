@@ -59,7 +59,8 @@ kuro.config(function ($routeProvider, $locationProvider) {
         })
         .when('/task/:taskId', {
             templateUrl: 'partials/task/task',
-            controller: 'TaskCtrl'
+            controller: 'TaskCtrl',
+            reloadOnSearch: false
         })
         .when('/task/:taskId/edit', {
             templateUrl: 'partials/task/taskForm',

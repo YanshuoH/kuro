@@ -24,7 +24,7 @@ kuroApp.controller('TaskBoardCtrl', function($scope, $http, $routeParams, Storag
 });
 
 
-kuroApp.controller('TaskCtrl', function($scope, $http, $routeParams, $location, StorageService, TaskService) {
+kuroApp.controller('TaskCtrl', function($scope, $http, $route, $routeParams, $location, StorageService, TaskService) {
     $scope.taskId = $routeParams.taskId;
     $scope.isNew = false;
     $http({
@@ -42,6 +42,9 @@ kuroApp.controller('TaskCtrl', function($scope, $http, $routeParams, $location, 
         
     });
 
+    $scope.changeHash = function(hash) {
+        $location.hash(hash);
+    }
     $scope.submitForm = function() {
         var httpMethod;
         if ($scope.isNew) {
