@@ -2,10 +2,13 @@
 var async = require('async');
 var config = require('../config/config');
 var MongoConfig = require(config.db.config);
+var autoIncrement = require(config.path.lib + '/mongoose-auto-increment');
 
 // load mongo config and create connection
 var mongoConfig = new MongoConfig(config.db);
 var con = mongoConfig.connectThirdParty();
+
+autoIncrement.initialize(con);
 
 // register models
 var TaskModelFile = require(config.db.modelPath + '/TaskModel');
