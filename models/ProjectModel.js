@@ -74,7 +74,7 @@ ProjectModelSchema.statics = utils.modelStatics;
 // Ugly part: generae autoIncrement module settings
 var autoIncrementSettings = autoIncrement.makeSettings({
     model: 'ProjectModel',
-    field: 'id'
+    field: 'projectId'
 });
 // Add field into schema
 ProjectModelSchema.plugin(autoIncrement.plugin, autoIncrementSettings);

@@ -58,8 +58,8 @@ TaskModelSchema.path('title').validate(function(title) {
 
 // Ugly part: generae autoIncrement module settings
 var autoIncrementSettings = autoIncrement.makeSettings({
-    model: 'ProjectModel',
-    field: 'id'
+    model: 'TaskModel',
+    field: 'taskId'
 });
 // Add field into schema
 TaskModelSchema.plugin(autoIncrement.plugin, autoIncrementSettings);

@@ -70,7 +70,7 @@ UserModelSchema.statics = utils.mergeObj(utils.modelStatics, customStatics);
 // Ugly part: generae autoIncrement module settings
 var autoIncrementSettings = autoIncrement.makeSettings({
     model: 'UserModel',
-    field: 'id'
+    field: 'userId'
 });
 // Add field into schema
 UserModelSchema.plugin(autoIncrement.plugin, autoIncrementSettings);
