@@ -22,6 +22,7 @@ var UserModel = con.model('UserModel', UserModelFile.UserModelSchema);
 
 var ObjectId = require('mongoose').Types.ObjectId; 
 
+var IdentityCounter = con.model('IdentityCounter');
 /*
  * Important params!!!
  * Clear database or not
@@ -43,12 +44,18 @@ async.waterfall([
     }
     ], function(err, result) {
         console.log('==== Finished ====');
-        mongoConfig.disconnect();
+       //  mongoConfig.disconnect();
     }
 );
 
 function clearDatabase(cb) {
     async.waterfall([
+        function(callback) {
+            IdentityCounter.remove({}, function(err) {
+                console.log('>> IdentityCounter  collectionclear');
+                callback();
+            })
+        },
         function(callback) {
             TaskModel.remove({}, function(err) {
                 if (err) {
