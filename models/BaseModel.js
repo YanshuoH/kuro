@@ -1,7 +1,13 @@
 var fs = require('fs');
 
-var baseModel = function(modelPath, callback) {
-    // Register all models
+var baseModel = function(config, callback) {
+    var con = require('mongoose');
+    var modelPath = config.db.modelPath;
+    var autoIncrement = require(config.path.lib + '/mongoose-auto-increment');
+    // Initialize autoIncrement module for connection
+    autoIncrement.initialize(con);
+
+    // Then register all models
     fs.readdir(modelPath, function(err, files) {
         if (err) {
             console.log(err);

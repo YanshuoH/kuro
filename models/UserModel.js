@@ -3,6 +3,8 @@ var SECRET_KEY = 'KISSMYASS';
 
 var config = require('../config/config');
 var utils = require(config.path.lib + '/utils');
+var autoIncrement = require(config.path.lib + '/mongoose-auto-increment');
+
 var mongoose = require('mongoose');
 var crypto = require('crypto');
 // Shortcut
@@ -65,13 +67,25 @@ var customStatics = {
 
 UserModelSchema.statics = utils.mergeObj(utils.modelStatics, customStatics);
 
+// Ugly part: generae autoIncrement module settings
+var autoIncrementSettings = autoIncrement.makeSettings({
+    model: 'UserModel',
+    field: 'id'
+});
+// Add field into schema
+UserModelSchema.plugin(autoIncrement.plugin, autoIncrementSettings);
+
 /**
  * Pre save
  */
 UserModelSchema.pre('save', function(next) {
     // update updated date
     this.date.updated = Date.now();
-    next();
+    // distribute a increment id by autoIncrement
+    autoIncrement.proceedIncrementField(this, autoIncrementSettings, function(err, res) {
+        next();
+    });
+
 });
 
 /**

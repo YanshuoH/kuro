@@ -28,7 +28,7 @@ async.waterfall([
          * After mongo connection
          * Register all models
          */
-        require(config.db.modelPath + '/BaseModel')(config.db.modelPath, callback);
+        require(config.db.modelPath + '/BaseModel')(config, callback);
     },
     function(callback) {
         /**
