@@ -33,9 +33,9 @@ var ProjectModelSchema = new mongoose.Schema({
  * Validations
  */
 var requiredFields = [
-    // 'creatorId',
-    // 'adminIds',
-    // 'userIds',
+    'creatorId',
+    'adminIds',
+    'userIds',
     'ref',
     'title',
     'description',

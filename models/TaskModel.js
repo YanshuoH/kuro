@@ -1,6 +1,7 @@
 // models/TaskModel.js
 var config = require('../config/config');
 var utils = require(config.path.lib + '/utils');
+var autoIncrement = require(config.path.lib + '/mongoose-auto-increment');
 var mongoose = require('mongoose');
 // For shortcut
 var ObjectId = mongoose.Schema.ObjectId;
@@ -55,13 +56,23 @@ TaskModelSchema.path('title').validate(function(title) {
     }
 }, 'Invalid title - title is too long (max.50)');
 
+// Ugly part: generae autoIncrement module settings
+var autoIncrementSettings = autoIncrement.makeSettings({
+    model: 'ProjectModel',
+    field: 'id'
+});
+// Add field into schema
+TaskModelSchema.plugin(autoIncrement.plugin, autoIncrementSettings);
+
 /**
  * Pre save
  */
 TaskModelSchema.pre('save', function(next) {
     // update updated date
     this.date.updated = Date.now();
-    next();
+    autoIncrement.proceedIncrementField(this, autoIncrementSettings, function(err, res) {
+        next();
+    });
 });
 
 /**
