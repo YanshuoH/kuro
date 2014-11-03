@@ -21,6 +21,7 @@
     "passport": "0.*",
     "passport-local": "1.*",
     "nodemailer": "1.*",
+    "extend": "2.*",
     "nodemon": "1.*"
   }
 }
