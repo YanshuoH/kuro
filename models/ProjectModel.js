@@ -1,6 +1,8 @@
 // models/ProjecdtModel.js
 var config = require('../config/config');
 var utils = require(config.path.lib + '/utils');
+var autoIncrement = require(config.path.lib + '/mongoose-auto-increment');
+
 var mongoose = require('mongoose');
 // For shortcut
 var ObjectId = mongoose.Schema.ObjectId;
@@ -31,9 +33,9 @@ var ProjectModelSchema = new mongoose.Schema({
  * Validations
  */
 var requiredFields = [
-    'creatorId',
-    'adminIds',
-    'userIds',
+    // 'creatorId',
+    // 'adminIds',
+    // 'userIds',
     'ref',
     'title',
     'description',
@@ -64,19 +66,30 @@ ProjectModelSchema.path('ref').validate(function(ref) {
 }, 'Invalid ref - ref is too long (max.4)');
 
 /**
+ * Static functions
+ * Heritage basic functions
+ */
+ProjectModelSchema.statics = utils.modelStatics;
+
+// Ugly part: generae autoIncrement module settings
+var autoIncrementSettings = autoIncrement.makeSettings({
+    model: 'ProjectModel',
+    field: 'id'
+});
+// Add field into schema
+ProjectModelSchema.plugin(autoIncrement.plugin, autoIncrementSettings);
+
+/**
  * Pre save
  */
 ProjectModelSchema.pre('save', function(next) {
     // update updated date
     this.date.updated = Date.now();
-    next();
+    autoIncrement.proceedIncrementField(this, autoIncrementSettings, function(err, res) {
+        next();
+    });
 });
 
-/**
- * Static functions
- * Heritage basic functions
- */
-ProjectModelSchema.statics = utils.modelStatics;
 
 
 /**
