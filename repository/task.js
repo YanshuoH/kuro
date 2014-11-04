@@ -43,3 +43,11 @@ exports.listByProject = function(projectId, cb) {
     // TODO, only return title, description...except media sort of big thing
     TaskModel.loadByProjectId(projectId, options, cb);
 }
+
+/*
+ * Maybe this part shall called entity/manager
+ */
+exports.save = function(task, callback) {
+    task.date.updated = Date.now();
+    task.save(callback);
+}

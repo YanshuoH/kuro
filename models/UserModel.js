@@ -67,26 +67,14 @@ var customStatics = {
 
 UserModelSchema.statics = utils.mergeObj(utils.modelStatics, customStatics);
 
-// Ugly part: generae autoIncrement module settings
-var autoIncrementSettings = autoIncrement.makeSettings({
-    model: 'UserModel',
+
+var autoIncrementSettings = {
+    model: 'ProjectModel',
     field: 'userId'
-});
+}
 // Add field into schema
 UserModelSchema.plugin(autoIncrement.plugin, autoIncrementSettings);
 
-/**
- * Pre save
- */
-UserModelSchema.pre('save', function(next) {
-    // update updated date
-    this.date.updated = Date.now();
-    // distribute a increment id by autoIncrement
-    autoIncrement.proceedIncrementField(this, autoIncrementSettings, function(err, res) {
-        next();
-    });
-
-});
 
 /**
  * Ending part

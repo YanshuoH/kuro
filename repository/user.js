@@ -18,3 +18,11 @@ exports.load = function(userId, cb) {
         }
     ], cb);
 }
+
+/*
+ * Maybe this part shall called entity/manager
+ */
+exports.save = function(user, callback) {
+    user.date.updated = Date.now();
+    user.save(callback);
+}

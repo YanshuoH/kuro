@@ -23,6 +23,10 @@ var UserModel = con.model('UserModel', UserModelFile.UserModelSchema);
 var ObjectId = require('mongoose').Types.ObjectId; 
 
 var IdentityCounter = con.model('IdentityCounter');
+
+var ProjectRepository = require(config.path.repository + '/project');
+var TaskRepository = require(config.path.repository + '/task');
+var UserRepository = require(config.path.repository + '/user');
 /*
  * Important params!!!
  * Clear database or not
@@ -44,18 +48,18 @@ async.waterfall([
     }
     ], function(err, result) {
         console.log('==== Finished ====');
-       //  mongoConfig.disconnect();
+        mongoConfig.disconnect();
     }
 );
 
 function clearDatabase(cb) {
     async.waterfall([
-        function(callback) {
-            IdentityCounter.remove({}, function(err) {
-                console.log('>> IdentityCounter  collectionclear');
-                callback();
-            })
-        },
+        // function(callback) {
+        //     IdentityCounter.remove({}, function(err) {
+        //         console.log('>> IdentityCounter  collectionclear');
+        //         callback();
+        //     })
+        // },
         function(callback) {
             TaskModel.remove({}, function(err) {
                 if (err) {
@@ -93,18 +97,18 @@ function handleInsertData(cb) {
         // Insert User 
         function(callback) {
             console.log('>> Insert User');
-            insertAction(userFixture, UserModel, null, null, callback);
+            insertAction(userFixture, UserRepository, UserModel, null, null, callback);
         },
         // Insert project 
         function(userId, callback) {
             console.log('>> Insert Project');
-            insertAction(projectFixture, ProjectModel, 'creatorId', userId.toString(), callback);
+            insertAction(projectFixture, ProjectRepository, ProjectModel, 'creatorId', userId.toString(), callback);
         },
         function(projectId, userId, callback) {
             UserModel.load(userId.toString(), {}, function(err, user) {
                 if (err) console.log(err);
                 user.projectIds.push(projectId.toString());
-                user.save(function(err) {
+                UserRepository.save(user, function(err) {
                     if (err) console.log(err);
                     callback(null, projectId, userId);
                 });
@@ -113,7 +117,7 @@ function handleInsertData(cb) {
         // Insert tasks
         function(projectId, userId, callback) {
             console.log('>> Insert Task');
-            insertAction(taskFixture, TaskModel, 'projectId', projectId, callback, userId);
+            insertAction(taskFixture, TaskRepository, TaskModel, 'projectId', projectId, callback, userId);
         }
     ], function(err) {
         if (err) console.log(err);
@@ -121,7 +125,7 @@ function handleInsertData(cb) {
     })
 }
 
-function insertAction(dataFixture, dataModel, parentName, parentId, cb, userId) {
+function insertAction(dataFixture, dataRepository, dataModel, parentName, parentId, cb, userId) {
     async.each(dataFixture, function(data, callback) {
         if (parentName && parentId) {
             data[parentName] = parentId;
@@ -135,7 +139,7 @@ function insertAction(dataFixture, dataModel, parentName, parentId, cb, userId) 
             data.projectId = parentId;
         }
         var unit = new dataModel(data);
-        unit.save(function(err) {
+        dataRepository.save(unit, function(err) {
             if (err) console.log(err);
             if (parentName === 'projectId') {
                 callback();

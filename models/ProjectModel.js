@@ -71,25 +71,12 @@ ProjectModelSchema.path('ref').validate(function(ref) {
  */
 ProjectModelSchema.statics = utils.modelStatics;
 
-// Ugly part: generae autoIncrement module settings
-var autoIncrementSettings = autoIncrement.makeSettings({
+var autoIncrementSettings = {
     model: 'ProjectModel',
     field: 'projectId'
-});
+}
 // Add field into schema
 ProjectModelSchema.plugin(autoIncrement.plugin, autoIncrementSettings);
-
-/**
- * Pre save
- */
-ProjectModelSchema.pre('save', function(next) {
-    // update updated date
-    this.date.updated = Date.now();
-    autoIncrement.proceedIncrementField(this, autoIncrementSettings, function(err, res) {
-        next();
-    });
-});
-
 
 
 /**

@@ -56,24 +56,14 @@ TaskModelSchema.path('title').validate(function(title) {
     }
 }, 'Invalid title - title is too long (max.50)');
 
-// Ugly part: generae autoIncrement module settings
-var autoIncrementSettings = autoIncrement.makeSettings({
-    model: 'TaskModel',
+
+var autoIncrementSettings = {
+    model: 'ProjectModel',
     field: 'taskId'
-});
+}
 // Add field into schema
 TaskModelSchema.plugin(autoIncrement.plugin, autoIncrementSettings);
 
-/**
- * Pre save
- */
-TaskModelSchema.pre('save', function(next) {
-    // update updated date
-    this.date.updated = Date.now();
-    autoIncrement.proceedIncrementField(this, autoIncrementSettings, function(err, res) {
-        next();
-    });
-});
 
 /**
  * Static functions

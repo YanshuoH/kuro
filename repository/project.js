@@ -29,3 +29,11 @@ exports.listByIds = function(projectIds, cb) {
     };
     ProjectModel.list(options, cb);
 }
+
+/*
+ * Maybe this part shall called entity/manager
+ */
+exports.save = function(project, callback) {
+    project.date.updated = Date.now();
+    project.save(callback);
+}
