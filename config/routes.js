@@ -33,16 +33,16 @@ module.exports = function(app, config, passport) {
     app.param('userId', user.load);
     // Project
     app.get('/api/project', globalAuth, project.listByIds);
-    app.get('/api/project/:projectId', projectAuth, project.show);
-    app.param('projectId', project.load);
-    app.put('/api/project/:projectId/edit', projectAuth, project.update);
+    app.get('/api/project/:projectShortId', projectAuth, project.show);
+    app.param('projectShortId', project.loadByShortId);
+    app.put('/api/project/:projectShortId/edit', projectAuth, project.update);
     app.post('/api/project/create', globalAuth, project.create);
 
     // Task
-    app.get('/api/project/:projectId/taskboard', projectAuth, task.listByProject);
-    app.get('/api/task/:taskId', taskAuth, task.show);
-    app.param('taskId', task.load);
-    app.put('/api/task/:taskId/edit', task.editor);
+    app.get('/api/project/:projectShortId/taskboard', projectAuth, task.listByProject);
+    app.get('/api/task/:taskShortId', taskAuth, task.show);
+    app.param('taskShortId', task.loadByShortId);
+    app.put('/api/task/:taskShortId/edit', task.editor);
     app.post('/api/task/create', task.editor);
 
     // redirect all others to the index (HTML5 history)

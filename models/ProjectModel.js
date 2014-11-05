@@ -73,7 +73,7 @@ ProjectModelSchema.statics = utils.modelStatics;
 
 var autoIncrementSettings = {
     model: 'ProjectModel',
-    field: 'projectId'
+    field: 'shortId'
 }
 // Add field into schema
 ProjectModelSchema.plugin(autoIncrement.plugin, autoIncrementSettings);

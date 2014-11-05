@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 
 var ProjectModel = mongoose.model('ProjectModel');
 
+
 exports.load = function(id, cb) {
     async.waterfall([
         function(callback) {
@@ -14,6 +15,23 @@ exports.load = function(id, cb) {
                     callback(new Error('Failed to load Project ' + id));
                 }
                 callback(null, project);
+            });
+        }
+    ], cb);
+}
+
+exports.loadByShortId = function(projectShortId, cb) {
+    async.waterfall([
+        function(callback) {
+            var options = {};
+            ProjectModel.loadByShortId(projectShortId, options, function(err, project) {
+                if (err) {
+                    callback(err);
+                } else if (!project) {
+                   callback(new Error('Failed to load Project by shortId ' + id));
+                } else {
+                    callback(null, project);
+                }
             });
         }
     ], cb);

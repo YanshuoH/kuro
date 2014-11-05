@@ -1,7 +1,7 @@
 var async = require('async');
 
 var config = require('../config/config');
-var projectRepository = require(config.path.repository + '/project');
+var ProjectRepository = require(config.path.repository + '/project');
 var utils = require(config.path.lib + '/utils');
 
 var mongoose = require('mongoose');
@@ -9,13 +9,12 @@ var mongoose = require('mongoose');
 var ProjectModel = mongoose.model('ProjectModel');
 
 /*
- * @param projectId
+ * @param projectShortId
  *
- * When :projectId detected in url, load and fetch project in req
+ * When :projectShortId detected in url, load and fetch project in req
  */
-exports.load = function(req, res, next, id) {
-    var options = {};
-    ProjectModel.load(id.toString(), options, function(err, project) {
+exports.loadByShortId = function(req, res, next, id) {
+    ProjectRepository.loadByShortId(id, function(err, project) {
         if (err) {
             return next(err);
         }
@@ -25,7 +24,7 @@ exports.load = function(req, res, next, id) {
 }
 
 /*
- * @path('/api/project/:projectId')
+ * @path('/api/project/:projectShortId')
  *
  * Return JSON project
  */
@@ -47,7 +46,7 @@ exports.listByIds = function(req, res) {
             }
         }
     };
-    projectRepository.listByIds(req.user.projectIds, function(err, list) {
+    ProjectRepository.listByIds(req.user.projectIds, function(err, list) {
         if (err) {
             console.log(err);
             res.send(err);

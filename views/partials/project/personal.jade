@@ -22,12 +22,12 @@ div(ng-include="'partials/navbar'")
               tr(ng-repeat='project in projects')
                 td
                   .col-sm-8
-                    a(href='/project/{{project._id}}')
+                    a(href='/project/{{project.shortId}}')
                       strong {{ project.ref }} - {{ project.title }}
                     p {{ project.description }}
                   .col-sm-3
                     strong Last update
                     p {{project.date.updated | date:'yyyy-MM-dd HH:mm'}}
                   .col-sm-1
-                    a(href='/project/{{project._id}}/edit')
+                    a(href='/project/{{project.shortId}}/edit')
                     span.glyphicon.glyphicon-pencil

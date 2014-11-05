@@ -1,15 +1,15 @@
 var config = require('../config/config');
-var taskRepository = require(config.path.repository + '/task');
+var TaskRepository = require(config.path.repository + '/task');
 
 
 /*
- * @param taskId
+ * @param taskShortId
  *
- * When :taskId detected in url, load and fetch task in req
+ * When :taskShortId detected in url, load and fetch task in req
  * Fetch parent project info into task data, only return project fields in criteria
  */
-exports.load = function(req, res, next, id) {
-    taskRepository.loadTaskFetchProject(id, function(err, task) {
+exports.loadByShortId = function(req, res, next, id) {
+    TaskRepository.loadTaskFetchProject(id, function(err, task) {
         if (err) {
             return next(err);
         }
@@ -19,7 +19,7 @@ exports.load = function(req, res, next, id) {
 }
 
 /*
- * @path('/api/task/:taskId')
+ * @path('/api/task/:taskShortId')
  *
  * Return JSON task
  */
@@ -40,7 +40,7 @@ exports.show = function(req, res) {
 exports.listByProject = function(req, res) {
     var options = {};
     // TODO, only return title, description...except media sort of big thing
-    taskRepository.listByProject(req.project._id.toString(), function(err, tasks) {
+    TaskRepository.listByProject(req.project._id.toString(), function(err, tasks) {
         if (err) {
             console.log(err);
             res.send(err);

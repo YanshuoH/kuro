@@ -4,15 +4,30 @@ var mongoose = require('mongoose');
 var TaskModel = mongoose.model('TaskModel');
 var ProjectModel = mongoose.model('ProjectModel');
 
-exports.loadTaskFetchProject = function(taskId, cb) {
+
+exports.loadByShortId = function(taskShortId, cb) {
     async.waterfall([
         function(callback) {
             var options = {};
-            TaskModel.load(taskId, options, function(err, task) {
+            TaskModel.loadByShortId(taskShortId, options, function(err, task) {
                 if (err) {
                     callback(err);
                 } else if (!task) {
-                    callback(new Error('Failed to load Task ' + taskId));
+                    callback(new Error('Failed to load Task by shortId ' + id));
+                } else {
+                    callback(null, task);
+                }
+            })
+        }
+    ], cb);
+}
+
+exports.loadTaskFetchProject = function(taskShortId, cb) {
+    async.waterfall([
+        function(callback) {
+            exports.loadByShortId(taskShortId, function(err, task) {
+                if (err) {
+                    callback(err);
                 } else {
                     callback(null, task);
                 }

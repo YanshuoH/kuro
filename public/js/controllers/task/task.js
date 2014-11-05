@@ -39,7 +39,7 @@ kuroApp.controller('TaskCtrl', function($scope, $http, $route, $routeParams, $lo
             $scope.task = data;
         }
     }).error(function(data, status) {
-        
+        console.log(data);
     });
 
     $scope.changeHash = function(hash) {

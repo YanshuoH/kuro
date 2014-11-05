@@ -53,4 +53,5 @@ module.exports = function(app, config, passport) {
     app.use(morgan('dev'));
 
     app.use(serveStatic(path.join(config.root, 'public')));
+
 }

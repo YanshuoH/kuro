@@ -51,7 +51,7 @@ div(ng-include="'partials/navbar'")
         .row.else
           .col-md-12.col-sm-12.board-col
             .list-group
-                a.list-group-item(ng-repeat='task in tasks' href='/task/{{ task._id }}')
+                a.list-group-item(ng-repeat='task in tasks' href='/task/{{ task.shortId }}')
                   h4.list-group-heading {{ task.title }}
                   p.list-group-item-text {{ task.description }}
       .col-md-3.col-sm-6
@@ -62,7 +62,7 @@ div(ng-include="'partials/navbar'")
         .row.critical
           .col-md-12.col-sm-12.board-col
             .list-group
-                a.list-group-item(ng-repeat='task in tasks' href='/task/{{ task._id }}')
+                a.list-group-item(ng-repeat='task in tasks' href='/task/{{ task.shortId }}')
                   h4.list-group-heading {{ task.title }}
                   p.list-group-item-text {{ task.description }}
         .row.else

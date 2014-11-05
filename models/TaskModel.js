@@ -58,8 +58,8 @@ TaskModelSchema.path('title').validate(function(title) {
 
 
 var autoIncrementSettings = {
-    model: 'ProjectModel',
-    field: 'taskId'
+    model: 'TaskModel',
+    field: 'shortId'
 }
 // Add field into schema
 TaskModelSchema.plugin(autoIncrement.plugin, autoIncrementSettings);

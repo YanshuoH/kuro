@@ -69,8 +69,8 @@ UserModelSchema.statics = utils.mergeObj(utils.modelStatics, customStatics);
 
 
 var autoIncrementSettings = {
-    model: 'ProjectModel',
-    field: 'userId'
+    model: 'UserModel',
+    field: 'shortId'
 }
 // Add field into schema
 UserModelSchema.plugin(autoIncrement.plugin, autoIncrementSettings);
