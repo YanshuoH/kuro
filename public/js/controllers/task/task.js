@@ -2,16 +2,12 @@
 
 var kuroApp = angular.module('Kuro');
 
-kuroApp.controller('TaskBoardCtrl', function($scope, $http, $routeParams, StorageService) {
+kuroApp.controller('TaskBoardCtrl', function($scope, $http, $routeParams, apiService) {
     $scope.projectId = $routeParams.projectId;
-    $http({
-        method: 'GET',
-        url: '/api/project/' + $scope.projectId + '/taskboard'
-    }).success(function(data, status, headers, config) {
-        $scope.tasks = data;
-    }).error(function(data, status, headers, config) {
-
-    });
+    apiService.getTaskList($scope.projectId)
+        .then(function(tasks) {
+            $scope.tasks = tasks;
+        })
 
     $http({
         method: 'GET',

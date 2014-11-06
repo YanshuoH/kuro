@@ -28,7 +28,7 @@ exports.loadByShortId = function(projectShortId, cb) {
                 if (err) {
                     callback(err);
                 } else if (!project) {
-                   callback(new Error('Failed to load Project by shortId ' + id));
+                   callback(new Error('Failed to load Project by shortId ' + projectShortId));
                 } else {
                     callback(null, project);
                 }

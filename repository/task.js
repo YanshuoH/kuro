@@ -13,7 +13,7 @@ exports.loadByShortId = function(taskShortId, cb) {
                 if (err) {
                     callback(err);
                 } else if (!task) {
-                    callback(new Error('Failed to load Task by shortId ' + id));
+                    callback(new Error('Failed to load Task by shortId ' + taskShortId));
                 } else {
                     callback(null, task);
                 }
