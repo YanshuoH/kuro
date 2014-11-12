@@ -3,81 +3,48 @@
 var kuroApp = angular.module('Kuro');
 
 
-kuroApp.controller('BoardCtrl', function($scope, $http, $location) {
+kuroApp.controller('BoardCtrl', function($scope, $http, $location, apiService) {
     $scope.projects = [];
-    $http({
-        method: 'GET',
-        url: '/api/project'
-    }).success(function(data, status) {
-        if (data) {
-            if (data.status === 401) {
-                $location.path('/unauthorize');
-            }
-            $scope.projects = data;
-        }
-    }).error(function(data, status) {
-        console.log(data);
-    });
+    apiService.getProjectList()
+        .then(function(projects) {
+            $scope.projects = projects;
+        });
 
     $scope.user;
-    $http({
-        method: 'GET',
-        url: '/api/user/info'
-    }).success(function(data, status) {
-        if (data) {
-            $scope.user = data;
-        }
-    }).error(function(data, status) {
-        console.log(data);
-    })
+    apiService.getUserInfo()
+        .then(function(user) {
+            $scope.user = user;
+        });
 
     $scope.createProject = function() {
         $location.path('/project/create');
     }
 })
 
-kuroApp.controller('ProjectCtrl', function($scope, $http, $location, $routeParams) {
+kuroApp.controller('ProjectCtrl', function($scope, $http, $location, $routeParams, apiService) {
     $scope.projectId = $routeParams.projectId;
-    $http({
-        method: 'GET',
-        url: '/api/project/' + $scope.projectId
-    }).success(function(data, status) {
-        if (data) {
-            if (data.status === 401) {
-                $location.path('/unauthorize');
-            }
-            $scope.project = data;
-        }
-    }).error(function(data, status) {
-        console.log(data);
-    });
+    apiService.getProject($scope.projectId)
+        .then(function(project) {
+            $scope.project = project;
+        })
 
-    $http({
-        method: 'GET',
-        url: '/api/project/' + $scope.projectId + '/taskboard'
-    }).success(function(data, status, headers, config) {
-        $scope.tasks = data;
-    }).error(function(data, status, headers, config) {
-
-    });
+    apiService.getProjectList($scope.projectId)
+        .then(function(tasks) {
+            $scope.tasks = tasks;
+        });
 });
 
-kuroApp.controller('ProjectFormCtrl', function($scope, $http, $routeParams, $location) {
+kuroApp.controller('ProjectFormCtrl', function($scope, $http, $routeParams, $location, apiService) {
     $scope.projectId = $routeParams.projectId;
     $scope.formData = {}
     $scope.isNew = true;
     if (typeof($routeParams.projectId) !== 'undefined') {
-        $scope.projectId = $routeParams.projectId;
-        $http({
-            method: 'GET',
-            url: '/api/project/' + $scope.projectId
-        }).success(function(data, status) {
-            $scope.project = data;
-            $scope.formData = $scope.project;
-            $scope.isNew = false;
-        }).error(function(data, status) {
-            console.log(data);
-        });
+        apiService.getProject($scope.projectId)
+            .then(function(project) {
+                $scope.project = project;
+                $scope.formData = $scope.project;
+                $scope.isNew = false;
+            });
     }
 
     $scope.submitForm = function() {

@@ -7,36 +7,22 @@ kuroApp.controller('TaskBoardCtrl', function($scope, $http, $routeParams, apiSer
     apiService.getTaskList($scope.projectId)
         .then(function(tasks) {
             $scope.tasks = tasks;
-        })
+        });
 
-    $http({
-        method: 'GET',
-        url: '/api/project/' + $scope.projectId
-    }).success(function(data, status, headers, config) {
-        $scope.project = data;
-    }).error(function(data, status, headers, config) {
-
-    });
+    apiService.getProject($scope.projectId)
+        .then(function(project) {
+            $scope.project = project;
+        });
 });
 
 
-kuroApp.controller('TaskCtrl', function($scope, $http, $route, $routeParams, $location, StorageService, TaskService) {
+kuroApp.controller('TaskCtrl', function($scope, $http, $route, $routeParams, $location, apiService) {
     $scope.taskId = $routeParams.taskId;
     $scope.isNew = false;
-    $http({
-        method: 'GET',
-        url: '/api/task/' + $scope.taskId
-    }).success(function(data, status, headers, config) {
-        if (data) {
-            if (data.status === 403) {
-                $location.path('/unauthorize');
-            }
-            $scope.isNew = false;
-            $scope.task = data;
-        }
-    }).error(function(data, status) {
-        console.log(data);
-    });
+    apiService.getTask($scope.taskId)
+        .then(function(task) {
+            $scope.task = task;
+        });
 
     $scope.changeHash = function(hash) {
         $location.hash(hash);
@@ -69,21 +55,17 @@ kuroApp.controller('TaskCtrl', function($scope, $http, $route, $routeParams, $lo
     }
 });
 
-kuroApp.controller('TaskFormCtrl', function($scope, $http, $routeParams, $location, StorageService, TaskService) {
+kuroApp.controller('TaskFormCtrl', function($scope, $http, $routeParams, $location, StorageService) {
     $scope.formData = {};
     $scope.isNew = true;
     if (typeof($routeParams.taskId) !== 'undefined') {
         $scope.taskId = $routeParams.taskId;
-        $http({
-            method: 'GET',
-            url: '/api/task/' + $scope.taskId
-        }).success(function(data, status, headers, config) {
-            $scope.task = data;
-            $scope.formData = $scope.task;
-            $scope.isNew = false;
-        }).error(function(data, status) {
-            
-        });
+        apiService.getTask($scope.taskId)
+            .then(function(task) {
+                $scope.task = task;
+                $scope.formData = $scope.task;
+                $scope.isNew = false;
+            });
     }
     $scope.submitForm = function() {
         var httpMethod;

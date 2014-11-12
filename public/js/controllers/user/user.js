@@ -6,31 +6,23 @@ kuroApp.controller('SignupCtrl', function($scope, $http) {
     
 });
 
-kuroApp.controller('SigninCtrl', function($scope, $http) {
+kuroApp.controller('SigninCtrl', function($scope, $http, $location, userApiService) {
     $scope.formData = {};
     $scope.submitForm = function() {
+        userApiService.signin($scope.formData)
+            .then(function(response) {
+                console.log(response);
+                $location.path('/board');
+            });
         var url = '/api/user/signin';
-        $http({
-            method: 'POST',
-            url: url,
-            data: $scope.formData
-        }).success(function(response, status) {
-            console.log(response);
-        }).error(function(err, status) {
-            console.log(err);
-        });
     }
 });
 
-kuroApp.controller('SignoutCtrl', function($scope, $http, $location) {
-    $http({
-        method: 'GET',
-        url: '/api/user/signout'
-    }).success(function(data, status) {
-        $location.path('/');
-    }).error(function(data, status) {
-
-    });
+kuroApp.controller('SignoutCtrl', function($scope, $http, $location, userApiService) {
+    userApiService.signout()
+        .then(function(response) {
+            $location.path('/');
+        })
 });
 
 kuroApp.controller('ProfileCtrl', function($scope, $http) {

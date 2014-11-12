@@ -33,28 +33,31 @@ kuroApp.factory('TaskService', function() {
     }
 });
 
-// http://www.bennadel.com/blog/2612-using-the-http-service-in-angularjs-to-make-ajax-requests.htm
-kuroApp.service('apiService', function($http, $q) {
+kuroApp.service('userApiService', function($http, $q) {
     return {
-        getTask: getTask,
-        getTaskList: getTaskList
-        // getProject: getProject,
-        // getProjectList: getProjectList
+        signin: signin,
+        signup: signup,
+        signout: signout
     };
 
-    function getTask(taskShortId) {
+    function signin(formData) {
         var request = $http({
-            method: 'GET',
-            url: '/api/task/' + taskShortId
+            method: 'POST',
+            url: '/api/user/signin',
+            data: formData
         });
 
         return request.then(handleSuccess, handleError);
-    };
+    }
 
-    function getTaskList(projectShortId) {
+    function signup(formData) {
+
+    }
+
+    function signout() {
         var request = $http({
             method: 'GET',
-            url: '/api/project/' + projectShortId + '/taskboard'
+            url: '/api/user/signout'
         });
 
         return request.then(handleSuccess, handleError);
@@ -77,4 +80,76 @@ kuroApp.service('apiService', function($http, $q) {
         return response.data;
     }
 
+});
+
+// http://www.bennadel.com/blog/2612-using-the-http-service-in-angularjs-to-make-ajax-requests.htm
+kuroApp.service('apiService', function($http, $q) {
+    return {
+        getTask: getTask,
+        getTaskList: getTaskList,
+        getProject: getProject,
+        getProjectList: getProjectList,
+        getUserInfo: getUserInfo
+    };
+
+    function getTask(taskShortId) {
+        var request = $http({
+            method: 'GET',
+            url: '/api/user/signout'
+        });
+
+        return request.then(handleSuccess, handleError);
+    };
+
+    function getTaskList(projectShortId) {
+        var request = $http({
+            method: 'GET',
+            url: '/api/project/' + projectShortId + '/taskboard'
+        });
+
+        return request.then(handleSuccess, handleError);
+    }
+
+    function getProject(projectShortId) {
+        var request = $http({
+            method: 'GET',
+            url: '/api/project/' + projectShortId
+        });
+
+        return request.then(handleSuccess, handleError);
+    }
+
+    function getProjectList() {
+        var request = $http({
+            method: 'GET',
+            url: '/api/project'
+        });
+
+        return request.then(handleSuccess, handleError);
+    }
+
+    function getUserInfo() {
+        var request = $http({
+            method: 'GET',
+            url: '/api/user/info'
+        });
+
+        return request.then(handleSuccess, handleError);
+    }
+    // Private
+    function handleError(response, status) {
+        if (!angular.isObject(response.data) || !response.data.error) {
+            return $q.reject("An unknown error occurred");
+        }
+
+        // TODO: location redirect to error page
+        // Or render error content
+        // Two type of error: 500, failed to load by id
+        // Error response with status code
+    }
+
+    // Private
+    function handleSuccess(response) {
+        return response.data;
+    }
 })
