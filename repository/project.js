@@ -55,3 +55,26 @@ exports.save = function(project, callback) {
     project.date.updated = Date.now();
     project.save(callback);
 }
+
+exports.createDefaultProject = function(user, callback) {
+    var data = {
+        creatorId: user._id,
+        adminIds: [user._id],
+        userIds: [user._id],
+        ref: 'REF',
+        title: 'My Project',
+        description: 'My first project'
+    }
+    var project = new ProjectModel(data);
+    async.waterfall([
+        function(saveCallback) {
+            exports.save(project, function(err) {
+                if (err) {
+                    saveCallback(err);
+                } else {
+                    saveCallback(null, project);
+                }
+            })
+        }
+    ], callback);
+}

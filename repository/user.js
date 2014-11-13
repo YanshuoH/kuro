@@ -1,4 +1,8 @@
+var config = require('../config/config');
+
 var async = require('async');
+
+var ProjectRepository = require(config.path.repository + '/project');
 
 var mongoose = require('mongoose');
 var UserModel = mongoose.model('UserModel');
@@ -25,4 +29,30 @@ exports.load = function(userId, cb) {
 exports.save = function(user, callback) {
     user.date.updated = Date.now();
     user.save(callback);
+}
+
+// create user, then create default project
+// callback returns (err, user, project)
+exports.create = function(formData, callback) {
+    async.waterfall([
+        function(userCallback) {
+            var user = new UserModel(formData);
+            exports.save(user, function(err) {
+                if (err) {
+                    userCallback(err);
+                } else {
+                    userCallback(null, user);
+                }
+            })
+        },
+        function(user, projectCallback) {
+            ProjectRepository.createDefaultProject(user, function(err, project) {
+                if (err) {
+                    projectCallback(err);
+                } else {
+                    projectCallback(null, user, project);
+                }
+            });
+        }
+    ], callback);
 }

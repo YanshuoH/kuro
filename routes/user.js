@@ -1,7 +1,7 @@
+var config = require('../config/config');
 var passport = require('passport');
 
-var mongoose = require('mongoose');
-var UserModel = mongoose.model('UserModel');
+var UserRepository = require(config.path.repository + '/user')
 
 /*
  * @param userId
@@ -9,8 +9,7 @@ var UserModel = mongoose.model('UserModel');
  * When :userId detected in url, load and fetch user in req
  */
 exports.load = function(req, res, next, id) {
-    var options = {};
-    UserModel.load(id.toString(), options, function(err, user) {
+    UserRepository.load(id, function(err, user) {
         if (err) {
             return next(err);
         }
@@ -34,7 +33,18 @@ exports.show = function(req, res) {
  *
  */
 exports.editor = function(req, res) {
-    res.send(true);
+    if (req.method === 'POST') {
+        var formData = req.body;
+        UserRepository.create(formData, function(err, user, project) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.send(true);
+            }
+        });
+    } else if (req.method === 'PUT') {
+
+    }
 }
 
 /*

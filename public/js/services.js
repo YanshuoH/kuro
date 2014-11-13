@@ -51,7 +51,13 @@ kuroApp.service('userApiService', function($http, $q) {
     }
 
     function signup(formData) {
+        var request = $http({
+            method: 'POST',
+            url: '/api/user/create',
+            data: formData
+        });
 
+        return request.then(handleSuccess, handleError);
     }
 
     function signout() {
@@ -66,6 +72,7 @@ kuroApp.service('userApiService', function($http, $q) {
     // Private
     function handleError(response, status) {
         if (!angular.isObject(response.data) || !response.data.error) {
+            console.log(response.data);
             return $q.reject("An unknown error occurred");
         }
 

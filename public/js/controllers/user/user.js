@@ -2,8 +2,15 @@
 
 var kuroApp = angular.module('Kuro');
 
-kuroApp.controller('SignupCtrl', function($scope, $http) {
-    
+kuroApp.controller('SignupCtrl', function($scope, $http, $location, userApiService) {
+    $scope.formData = {};
+    $scope.submitForm = function() {
+        userApiService.signup($scope.formData)
+            .then(function(response) {
+                console.log(response);
+                // $location.path('/board');
+            })
+    }
 });
 
 kuroApp.controller('SigninCtrl', function($scope, $http, $location, userApiService) {
@@ -14,7 +21,6 @@ kuroApp.controller('SigninCtrl', function($scope, $http, $location, userApiServi
                 console.log(response);
                 $location.path('/board');
             });
-        var url = '/api/user/signin';
     }
 });
 

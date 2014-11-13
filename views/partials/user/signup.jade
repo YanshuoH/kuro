@@ -4,21 +4,21 @@ div(ng-include="'partials/navbar'")
     .col-sm-6.col-sm-offset-3
       .page-header
         h1 Sign Up
-      form#userForm
+      form#signupForm(role='form' name='signupForm' novalidate='novalidate' ng-submit='submitForm()')
         .form-group
           label Username
-          input.form-control#username(type='text' name='username')
+          input.form-control#username(type='text' name='username' ng-model='formData.username')
         .form-group
           label Email
-          input.form-control#email(type='email' name='email')
+          input.form-control#email(type='email' name='email' ng-model='formData.email')
         .form-group
           label Email Confirmation
-          input.form-control#emailConfirmation(type='email' name='emailConfirmation')
+          input.form-control#emailConfirmation(type='email' name='emailConfirmation' ng-model='formData.emailConfirmation')
         .form-group
           label Password
-          input.form-control(type='password' name='password')
+          input.form-control(type='password' name='password' ng-model='formData.password')
         .form-group
           label Password Confirmation
-          input.form-control(type='password' name='passwordConfirmation')
+          input.form-control(type='password' name='passwordConfirmation' ng-model='formData.passwordConfirmation')
         .form-group
-          button.btn.btn-primary(type='button') Create Account
+          button.btn.btn-primary(type='submit') Create Account

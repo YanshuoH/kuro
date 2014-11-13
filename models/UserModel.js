@@ -41,10 +41,10 @@ UserModelSchema
 var requiredFields = [
     'username',
     'email',
-    'password'
+    'hashed_password'
 ];
 // Passing schema by ref, add required field validation
-// utils.addRequiredValidation(UserModelSchema, requiredFields);
+utils.addRequiredValidation(UserModelSchema, requiredFields);
 
 
 UserModelSchema.methods = {
