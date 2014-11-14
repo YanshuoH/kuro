@@ -32,14 +32,14 @@ exports.show = function(req, res) {
  * @path('/api/user/edit')
  *
  */
-exports.editor = function(req, res) {
+exports.editor = function(req, res, next) {
     if (req.method === 'POST') {
         var formData = req.body;
         UserRepository.create(formData, function(err, user, project) {
             if (err) {
                 res.send(err);
             } else {
-                res.send(true);
+                exports.signin(req, res, next);
             }
         });
     } else if (req.method === 'PUT') {
@@ -54,7 +54,7 @@ exports.editor = function(req, res) {
  * Return String|Object login info
  */
 exports.signin = function(req, res, next) {
-    passport.authenticate('local', function(err, user, info) {
+    passport.authenticate('local-signin', function(err, user, info) {
         if (err) {
             return res.send(err);
         }

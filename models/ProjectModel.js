@@ -20,7 +20,7 @@ var ProjectModelSchema = new mongoose.Schema({
     }],
     title: {type: String, trim: true},
     description: {type: String},
-    ref: {type: String, trim: true, unique: true},
+    ref: {type: String, trim: true},
     date: {
         created: {type: Date, default: Date.now},
         updated: {type: Date, default: Date.now}

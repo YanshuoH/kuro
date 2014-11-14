@@ -4,11 +4,12 @@ var kuroApp = angular.module('Kuro');
 
 kuroApp.controller('SignupCtrl', function($scope, $http, $location, userApiService) {
     $scope.formData = {};
+    window.formData = $scope.formData;
     $scope.submitForm = function() {
         userApiService.signup($scope.formData)
             .then(function(response) {
                 console.log(response);
-                // $location.path('/board');
+                $location.path('/board');
             })
     }
 });

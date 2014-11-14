@@ -1,6 +1,10 @@
-var async = require('async');
-var mongoose = require('mongoose');
+var config = require('../config/config');
 
+var async = require('async');
+
+var UserRepository = require(config.path.repository + '/user');
+
+var mongoose = require('mongoose');
 var ProjectModel = mongoose.model('ProjectModel');
 
 
@@ -72,9 +76,19 @@ exports.createDefaultProject = function(user, callback) {
                 if (err) {
                     saveCallback(err);
                 } else {
-                    saveCallback(null, project);
+                    saveCallback(null, project, user);
                 }
-            })
+            });
+        },
+        function(project, user, userCallback) {
+            UserRepository.addProjectToUser(project._id, user, function(err) {
+                console.log(user);
+                if (err) {
+                    userCallback(err);
+                } else {
+                    userCallback(null, project, user);
+                }
+            });
         }
     ], callback);
 }

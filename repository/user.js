@@ -46,7 +46,7 @@ exports.create = function(formData, callback) {
             })
         },
         function(user, projectCallback) {
-            ProjectRepository.createDefaultProject(user, function(err, project) {
+            ProjectRepository.createDefaultProject(user, function(err, project, user) {
                 if (err) {
                     projectCallback(err);
                 } else {
@@ -55,4 +55,13 @@ exports.create = function(formData, callback) {
             });
         }
     ], callback);
+}
+
+
+// ObjectId @project
+// UserModel @user
+exports.addProjectToUser = function(projectId, user, callback) {
+    user.projectIds.push(projectId);
+    console.log(user);
+    user.save(callback);
 }
