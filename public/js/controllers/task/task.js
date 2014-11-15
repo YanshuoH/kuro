@@ -21,6 +21,7 @@ kuroApp.controller('TaskCtrl', function($scope, $http, $route, $routeParams, $lo
     $scope.isNew = false;
     apiService.getTask($scope.taskId)
         .then(function(task) {
+            console.log(task);
             $scope.task = task;
         });
 

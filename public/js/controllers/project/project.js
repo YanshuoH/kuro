@@ -7,6 +7,7 @@ kuroApp.controller('BoardCtrl', function($scope, $http, $location, apiService) {
     $scope.projects = [];
     apiService.getProjectList()
         .then(function(projects) {
+            console.log(projects);
             $scope.projects = projects;
         });
 
@@ -28,7 +29,7 @@ kuroApp.controller('ProjectCtrl', function($scope, $http, $location, $routeParam
             $scope.project = project;
         })
 
-    apiService.getProjectList($scope.projectId)
+    apiService.getTaskList($scope.projectId)
         .then(function(tasks) {
             $scope.tasks = tasks;
         });

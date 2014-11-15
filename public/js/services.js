@@ -102,7 +102,7 @@ kuroApp.service('apiService', function($http, $q) {
     function getTask(taskShortId) {
         var request = $http({
             method: 'GET',
-            url: '/api/user/signout'
+            url: '/api/task/' + taskShortId
         });
 
         return request.then(handleSuccess, handleError);
