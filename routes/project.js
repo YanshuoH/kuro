@@ -1,11 +1,10 @@
 var async = require('async');
 
 var config = require('../config/config');
-var ProjectRepository = require(config.path.repository + '/project');
 var utils = require(config.path.lib + '/utils');
+var ProjectRepository = require(config.path.repository + '/project');
 
 var mongoose = require('mongoose');
-
 var ProjectModel = mongoose.model('ProjectModel');
 
 /*
@@ -64,61 +63,13 @@ exports.listByIds = function(req, res) {
  */
 // TODO: migrate to repository
 exports.create = function(req, res) {
-    var userId = req.user._id;
-    // initialize project user data
-    // TODO: fetch more users by frontend dropdown
-    var personal = {
-        creatorId: userId,
-        adminIds: [userId],
-        userIds: [userId]
-    }
-    var data = utils.mergeObj(req.body, personal);
-    var project = new ProjectModel(data);
-
-    async.waterfall([
-        function(callback) {
-            project.save(function(err) {
-                if (err) {
-                    callback(null, err);
-                } else {
-                    callback(null, false);
-                }
-            });
-        },
-        function(err, callback) {
-            if (err) {
-                callback(null, err);
-            } else {
-                var user = req.user;
-                user.projectIds.push(project._id.toString());
-                user.save(function(err) {
-                    if (err) {
-                        callback(null, err);
-                    } else {
-                        callback(null, null);
-                    }
-                });
-            }
-        }
-    ], function(err, msg) {
+    ProjectRepository.create(req, function(err, project) {
         if (err) {
-            console.log(msg);
-        }
-        if (msg) {
-            res.json({
-                status: 500,
-                message: msg
-            });
+            res.send(err);
         } else {
-            res.json({
-                status: 200,
-                project: {
-                    _id: project._id
-                }
-            });
+            res.json(project);
         }
     });
-
 }
 
 /*
@@ -127,5 +78,11 @@ exports.create = function(req, res) {
  * PUT
  */
 exports.update = function(req, res) {
-
+    ProjectRepository.update(req, function(err, project) {
+        if (err) {
+            res.send(err);
+        } else {
+            res.json(project);
+        }
+    });
 }

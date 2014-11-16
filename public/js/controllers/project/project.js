@@ -49,33 +49,16 @@ kuroApp.controller('ProjectFormCtrl', function($scope, $http, $routeParams, $loc
     }
 
     $scope.submitForm = function() {
-        var httpMethod;
         if ($scope.isNew) {
-            httpMethod = 'POST';
+            apiService.createProject($scope.formData)
+                .then(function(response) {
+                    console.log(response);
+                })
         } else {
-            httpMethod = 'PUT';
+            apiService.putProject($scope.formData, $scope.projectId)
+                .then(function(response) {
+                    console.log(response);
+                });
         }
-        var url = '/api' + $location.$$path;
-        $http({
-            method: httpMethod,
-            url: url,
-            data: $scope.formData
-        }).success(function(response, status) {
-            console.log(response);
-            if (typeof(response.status) !== 'undefined') {
-                if (response.status === 401) {
-                    $location.path('/unauthorize');
-                } else if (response.status == 500) {
-                    // TODO: err message.
-                    // normally it wouldn't have to be done,
-                    // because already check in angular form control
-                } else if (response.status === 200) {
-                    $location.path('/project/' + response.project._id);
-                }
-            }
-        }).error(function(err, status) {
-            console.log('Error!');
-            console.log(err);
-        });
     }
 })

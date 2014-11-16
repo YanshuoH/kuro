@@ -62,6 +62,5 @@ exports.create = function(formData, callback) {
 // UserModel @user
 exports.addProjectToUser = function(projectId, user, callback) {
     user.projectIds.push(projectId);
-    console.log(user);
     user.save(callback);
 }

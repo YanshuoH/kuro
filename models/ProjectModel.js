@@ -71,6 +71,15 @@ ProjectModelSchema.path('ref').validate(function(ref) {
  */
 ProjectModelSchema.statics = utils.modelStatics;
 
+ProjectModelSchema.methods = {
+    update: function(data, cb) {
+        for (property in data) {
+            this[property] = data[property];
+        }
+        this.save(cb);
+    }
+}
+
 var autoIncrementSettings = {
     model: 'ProjectModel',
     field: 'shortId'

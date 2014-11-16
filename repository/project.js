@@ -1,8 +1,8 @@
 var config = require('../config/config');
+var utils = require(config.path.lib + '/utils');
+var UserRepository = require(config.path.repository + '/user');
 
 var async = require('async');
-
-var UserRepository = require(config.path.repository + '/user');
 
 var mongoose = require('mongoose');
 var ProjectModel = mongoose.model('ProjectModel');
@@ -60,6 +60,55 @@ exports.save = function(project, callback) {
     project.save(callback);
 }
 
+exports.create = function(req, callback) {
+    var userId = req.user._id;
+    var personal = {
+        creatorId: userId,
+        adminIds: [userId],
+        userIds: [userId]
+    };
+
+    var data = utils.mergeObj(req.body, personal);
+    var project = new ProjectModel(data);
+
+    async.waterfall([
+        function(projectCallback) {
+            exports.save(project, function(err) {
+                if (err) {
+                    projectCallback(err);
+                } else {
+                    projectCallback(null, project);
+                }
+            });
+        },
+        function(project, userCallback) {
+            UserRepository.addProjectToUser(project._id, req.user, function(err) {
+                if (err) {
+                    userCallback(err);
+                } else {
+                    userCallback(null, project);
+                }
+            });
+        }
+    ], callback);
+}
+
+exports.update = function(req, callback) {
+    var project = req.project;
+    var formData = req.body;
+    async.waterfall([
+        function(projectCallback) {
+            project.update(formData, function(err) {
+                if (err) {
+                    projectCallback(err);
+                } else {
+                    projectCallback(null, project);
+                }
+            });
+        }
+    ], callback)
+}
+
 exports.createDefaultProject = function(user, callback) {
     var data = {
         creatorId: user._id,
@@ -82,7 +131,6 @@ exports.createDefaultProject = function(user, callback) {
         },
         function(project, user, userCallback) {
             UserRepository.addProjectToUser(project._id, user, function(err) {
-                console.log(user);
                 if (err) {
                     userCallback(err);
                 } else {
