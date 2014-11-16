@@ -42,8 +42,8 @@ module.exports = function(app, config, passport) {
     app.get('/api/project/:projectShortId/taskboard', projectAuth, task.listByProject);
     app.get('/api/task/:taskShortId', taskAuth, task.show);
     app.param('taskShortId', task.loadByShortId);
-    app.put('/api/task/:taskShortId/edit', task.editor);
-    app.post('/api/task/create', task.editor);
+    app.put('/api/task/:taskShortId/edit', taskAuth, task.update);
+    app.post('/api/project/:projectShortId/task/create', projectAuth, task.create);
 
     // redirect all others to the index (HTML5 history)
     app.get('*', routes.index);

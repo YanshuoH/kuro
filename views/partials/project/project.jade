@@ -19,7 +19,7 @@ div(ng-include="'partials/navbar'")
         .col-md-4.col-sm-4
           a.btn.btn-primary.btn-left(href='/project/{{project.shortId}}/taskboard') On Board
           | 
-          a.btn.btn-success.btn-left(href='/task/create') Create Task
+          a.btn.btn-success.btn-left(href='/project/{{project.shortId}}/task/create') Create Task
       .row
         .col-md-6.col-sm-12
           .row
@@ -71,7 +71,7 @@ div(ng-include="'partials/navbar'")
                   tbody
                     tr(ng-repeat='task in tasks')
                       td
-                        a(href='/task/{{task.shortId}}')
+                        a(href='/project/{{project.shortId}}/task/{{task.shortId}}')
                           strong {{ task.title }}
 
           //a.btn.btn-lg.btn-primary(href='/project/{{project._id}}/taskboard') TaskBoard

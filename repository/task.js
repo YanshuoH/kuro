@@ -1,3 +1,5 @@
+var config = require('../config/config');
+var utils = require(config.path.lib + '/utils');
 var async = require('async');
 
 var mongoose = require('mongoose');
@@ -63,6 +65,43 @@ exports.listByProject = function(projectId, cb) {
  * Maybe this part shall called entity/manager
  */
 exports.save = function(task, callback) {
-    task.date.updated = Date.now();
+    // task.date.updated = Date.now();
     task.save(callback);
+}
+
+exports.create = function(req, callback) {
+    var ids = {
+        creatorId: req.user._id,
+        projectId: req.project._id
+    }
+    var data = utils.mergeObj(req.body, ids);
+
+    async.waterfall([
+        function(taskCallback) {
+            var task = new TaskModel(data);
+            exports.save(task, function(err) {
+                if (err) {
+                    callback(err);
+                } else {
+                    taskCallback(null, task);
+                }
+            });
+        }
+    ], callback);
+}
+
+exports.update = function(req, callback) {
+    var task =req.task;
+    var formData = req.body;
+    async.waterfall([
+        function(taskCallback) {
+            task.update(formData, function(err) {
+                if (err) {
+                    taskCallback(err);
+                } else {
+                    taskCallback(null, task)
+                }
+            });
+        }
+    ], callback);
 }

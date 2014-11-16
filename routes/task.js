@@ -51,10 +51,31 @@ exports.listByProject = function(req, res) {
 }
 
 /*
+ * @path(/api/task/create)
+ *
+ * POST
+ */
+exports.create = function(req, res) {
+    TaskRepository.create(req, function(err, task) {
+        if (err) {
+            res.send(err);
+        } else {
+            res.json(task);
+        }
+    });
+}
+
+/*
  * @path(/api/task/:taskId/edit)
  *
- * GET/PUT/POST
+ * PUT
  */
-exports.editor = function(req, res) {
-    res.send(true);
+exports.update = function(req, res) {
+    TaskRepository.update(req, function(err, task) {
+        if (err) {
+            res.send(err);
+        } else {
+            res.json(task);
+        }
+    });
 }

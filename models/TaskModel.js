@@ -56,6 +56,15 @@ TaskModelSchema.path('title').validate(function(title) {
     }
 }, 'Invalid title - title is too long (max.50)');
 
+TaskModelSchema.methods = {
+    update: function(data, cb) {
+        for (property in data) {
+            this[property] = data[property];
+        }
+        this.date.updated = Date.now();
+        this.save(cb);
+    }
+}
 
 var autoIncrementSettings = {
     model: 'TaskModel',

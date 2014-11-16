@@ -76,6 +76,7 @@ ProjectModelSchema.methods = {
         for (property in data) {
             this[property] = data[property];
         }
+        this.date.updated = Date.now();
         this.save(cb);
     }
 }

@@ -93,6 +93,8 @@ kuroApp.service('userApiService', function($http, $q) {
 kuroApp.service('apiService', function($http, $q) {
     return {
         getTask: getTask,
+        createTask: createTask,
+        putTask: putTask,
         getTaskList: getTaskList,
         getProject: getProject,
         createProject: createProject,
@@ -109,6 +111,26 @@ kuroApp.service('apiService', function($http, $q) {
 
         return request.then(handleSuccess, handleError);
     };
+
+    function createTask(formData, projectShortId) {
+        var request = $http({
+            method: 'POST',
+            url: '/api/project/' + projectShortId + '/task/create',
+            data: formData
+        });
+
+        return request.then(handleSuccess, handleError);
+    }
+
+    function putTask(formData, taskShortId) {
+        var request = $http({
+            method: 'PUT',
+            url: '/api/task/' + taskShortId + '/edit',
+            data: formData
+        });
+
+        return request.then(handleSuccess, handleError);
+    }
 
     function getTaskList(projectShortId) {
         var request = $http({

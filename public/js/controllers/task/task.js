@@ -18,47 +18,32 @@ kuroApp.controller('TaskBoardCtrl', function($scope, $http, $routeParams, apiSer
 
 kuroApp.controller('TaskCtrl', function($scope, $http, $route, $routeParams, $location, apiService) {
     $scope.taskId = $routeParams.taskId;
-    $scope.isNew = false;
+
+    $scope.isNew = true;
+    $scope.formData = {};
     apiService.getTask($scope.taskId)
         .then(function(task) {
-            console.log(task);
+            $scope.isNew = false;
             $scope.task = task;
+            $scope.formData = task;
         });
 
     $scope.changeHash = function(hash) {
         $location.hash(hash);
     }
-    $scope.submitForm = function() {
-        var httpMethod;
-        if ($scope.isNew) {
-            httpMethod = 'POST'
-        } else {
-            httpMethod = 'PUT'
-        }
-        var url = '/api' + $location.$$path;
-        $http({
-            method: httpMethod,
-            url: url,
-            data: $scope.formData
-        }).success(function(response, status) {
-            if ($scope.isNew) {
 
-            } else {
-                var currentPath = $location.$$path;
-                var pathArr = currentPath.split('/');
-                pathArr.pop();
-                var nextPath = pathArr.join('/');
-                $location.path(nextPath);
-            }
-        }).error(function(err, status) {
-
-        });
-    }
 });
 
-kuroApp.controller('TaskFormCtrl', function($scope, $http, $routeParams, $location, StorageService) {
+kuroApp.controller('TaskFormCtrl', function($scope, $http, $routeParams, $location, apiService) {
     $scope.formData = {};
+    $scope.projectId = $routeParams.projectId;
     $scope.isNew = true;
+
+    // apiService.getProject($scope.projectId)
+    //     .then(function(project) {
+    //         $scope.project = project;
+    //     })
+
     if (typeof($routeParams.taskId) !== 'undefined') {
         $scope.taskId = $routeParams.taskId;
         apiService.getTask($scope.taskId)
@@ -68,30 +53,19 @@ kuroApp.controller('TaskFormCtrl', function($scope, $http, $routeParams, $locati
                 $scope.isNew = false;
             });
     }
+
     $scope.submitForm = function() {
-        var httpMethod;
         if ($scope.isNew) {
-            httpMethod = 'POST'
+            apiService.createTask($scope.formData, $scope.projectId)
+                .then(function(response) {
+                    console.log(response);
+                });
         } else {
-            httpMethod = 'PUT'
+            console.log($scope.formData);
+            apiService.putTask($scope.formData, $scope.task.shortId)
+                .then(function(response) {
+                    console.log(response);
+                })
         }
-        var url = '/api' + $location.$$path;
-        $http({
-            method: httpMethod,
-            url: url,
-            data: $scope.formData
-        }).success(function(response, status) {
-            if ($scope.isNew) {
-
-            } else {
-                var currentPath = $location.$$path;
-                var pathArr = currentPath.split('/');
-                pathArr.pop();
-                var nextPath = pathArr.join('/');
-                $location.path(nextPath);
-            }
-        }).error(function(err, status) {
-
-        });
     }
 });

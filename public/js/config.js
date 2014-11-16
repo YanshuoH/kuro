@@ -53,16 +53,16 @@ kuro.config(function ($routeProvider, $locationProvider) {
           reloadOnSearch: false
         })
         // be careful of the order create and :taskId
-        .when('/task/create', {
+        .when('/project/:projectId/task/create', {
             templateUrl: 'partials/task/taskForm',
             controller: 'TaskFormCtrl'
         })
-        .when('/task/:taskId', {
+        .when('/project/:projectId/task/:taskId', {
             templateUrl: 'partials/task/task',
             controller: 'TaskCtrl',
             reloadOnSearch: false
         })
-        .when('/task/:taskId/edit', {
+        .when('/project/:projectId/task/:taskId/edit', {
             templateUrl: 'partials/task/taskForm',
             controller: 'TaskFormCtrl'
         })
