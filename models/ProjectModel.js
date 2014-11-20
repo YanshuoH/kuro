@@ -83,7 +83,8 @@ ProjectModelSchema.methods = {
 
 var autoIncrementSettings = {
     model: 'ProjectModel',
-    field: 'shortId'
+    field: 'shortId',
+    idField: '_id'
 }
 // Add field into schema
 ProjectModelSchema.plugin(autoIncrement.plugin, autoIncrementSettings);

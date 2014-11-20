@@ -68,7 +68,8 @@ TaskModelSchema.methods = {
 
 var autoIncrementSettings = {
     model: 'TaskModel',
-    field: 'shortId'
+    field: 'shortId',
+    idField: 'projectId'
 }
 // Add field into schema
 TaskModelSchema.plugin(autoIncrement.plugin, autoIncrementSettings);

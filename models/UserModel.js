@@ -3,7 +3,6 @@ var SECRET_KEY = 'KISSMYASS';
 
 var config = require('../config/config');
 var utils = require(config.path.lib + '/utils');
-var autoIncrement = require(config.path.lib + '/mongoose-auto-increment');
 
 var mongoose = require('mongoose');
 var crypto = require('crypto');
@@ -66,15 +65,6 @@ var customStatics = {
 }
 
 UserModelSchema.statics = utils.mergeObj(utils.modelStatics, customStatics);
-
-
-var autoIncrementSettings = {
-    model: 'UserModel',
-    field: 'shortId'
-}
-// Add field into schema
-UserModelSchema.plugin(autoIncrement.plugin, autoIncrementSettings);
-
 
 /**
  * Ending part
