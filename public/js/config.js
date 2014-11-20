@@ -40,7 +40,8 @@ kuro.config(function ($routeProvider, $locationProvider) {
         })
         .when('/project/:projectId', {
             templateUrl: 'partials/project/project',
-            controller: 'ProjectCtrl'
+            controller: 'ProjectCtrl',
+            reloadOnSearch: false
         })
         .when('/project/:projectId/edit', {
             templateUrl: 'partials/project/projectForm',

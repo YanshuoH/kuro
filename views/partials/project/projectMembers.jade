@@ -1,0 +1,10 @@
+h1.page-header {{ project.ref }} - {{ project.title }} / Members
+.row
+  .col-md-12
+    ul.list-group
+      li.list-group-item(ng-repeat='user in project.users')
+        strong {{ user.username }}
+
+.row
+  .col-md-12
+    

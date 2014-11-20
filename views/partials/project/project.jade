@@ -4,74 +4,16 @@ div(ng-include="'partials/navbar'")
     .col-sm-2.col-md-2.sidebar
       ul.nav.nav-sidebar
         li.active
-          a(href='#') overview
+          a(href='' ng-click="changeHash('')") overview
         li
-          a(href='#') members
+          a(href='' ng-click="changeHash('members')") members
         li
-          a(href='#') statistic
+          a(href='' ng-click="changeHash('statistic')") statistic
         li
-          a(href='#') settings
-    .col-sm-10.col-sm-offset-2.col-md-10.col-md-offset-2.main
-      h1.page-header {{ project.ref }} - {{ project.title }}
-      .row.content-header
-        .col-md-8.col-sm-8
-          p.lead.project-description {{ project.description }}
-        .col-md-4.col-sm-4
-          a.btn.btn-primary.btn-left(href='/project/{{project.shortId}}/taskboard') On Board
-          | 
-          a.btn.btn-success.btn-left(href='/project/{{project.shortId}}/task/create') Create Task
-      .row
-        .col-md-6.col-sm-12
-          .row
-            .col-md-6.col-sm-12
-              ul.list-group
-                li.list-group-item Created at:
-                  br
-                  {{ project.date.created | date:'yyyy-MM-dd HH:mm'}}
-                li.list-group-item Updated at:
-                  br
-                  {{ project.date.updated | date:'yyyy-MM-dd HH:mm'}}
-            .col-md-6.col-sm-12
-              ul.list-group
-                li.list-group-item Creator: {{ project.creator }}
-                li.list-group-item Administrators:
-                  ul
-                    li(ng-repeat='admin in project.admins') {{ admin }}
-          .row
-            .col-md-6.col-sm-12
-              h3 Priority
-              ul.list-group
-                li.list-group-item Urgent
-                  span.badge 12
-                li.list-group-item Critical
-                  span.badge 12
-                li.list-group-item Normal
-                  span.badge 12
-                li.list-group-item Low
-                  span.badge 12
-            .col-md-6.col-sm-12
-              h3 Status
-              ul.list-group
-                li.list-group-item Late
-                  span.badge 12
-                li.list-group-item To do
-                  span.badge 12
-                li.list-group-item In progress
-                  span.badge 12
-                li.list-group-item Need Information
-                  span.badge 12
-                li.list-group-item Done
-                  span.badge 12
-        .col-md-5.col-sm-12.main-right
-          .panel.panel-default
-            .panel-heading Tasks
-            .panel-body
-              .table-responsive
-                table.table
-                  tbody
-                    tr(ng-repeat='task in tasks')
-                      td
-                        a(href='/project/{{project.shortId}}/task/{{task.shortId}}')
-                          strong {{ task.title }}
+          a(href='' ng-click="changeHash('settings')") settings
 
+    .col-sm-10.col-sm-offset-2.col-md-10.col-md-offset-2.main(ng-include="'partials/project/projectOverview'" ng-show="currentHash === ''")
+    .col-sm-10.col-sm-offset-2.col-md-10.col-md-offset-2.main(ng-include="'partials/project/projectMembers'" ng-show="currentHash === 'members'")
+    .col-sm-10.col-sm-offset-2.col-md-10.col-md-offset-2.main(ng-include="'partials/project/projectStatistic'" ng-show="currentHash === 'statistic'")
+    .col-sm-10.col-sm-offset-2.col-md-10.col-md-offset-2.main(ng-include="'partials/project/projectSettings'" ng-show="currentHash === 'settings'")
           //a.btn.btn-lg.btn-primary(href='/project/{{project._id}}/taskboard') TaskBoard

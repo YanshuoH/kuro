@@ -1,6 +1,7 @@
 var config = require('../config/config');
 var utils = require(config.path.lib + '/utils');
 var UserRepository = require(config.path.repository + '/user');
+var TaskRepository = require(config.path.repository + '/task');
 
 var async = require('async');
 
@@ -39,6 +40,56 @@ exports.loadByShortId = function(projectShortId, cb) {
             });
         }
     ], cb);
+}
+
+exports.loadProjectAndFetch = function(projectShortId, fetchOptions, cb) {
+    var fetchOptions = fetchOptions || [];
+
+    var loadByShortId = function(callback) {
+        exports.loadByShortId(projectShortId, function(err, project) {
+            if (err) {
+                callback(err);
+            } else {
+                callback(null, project.toObject());
+            }
+        });
+    };
+
+    var fetchUser = function(project, callback) {
+        UserRepository.listByIds(project.userIds, function(err, users) {
+            if (err) {
+                callback(err);
+            } else {
+                project.users = users;
+                callback(null, project);
+            }
+        });
+    };
+
+    var fetchTask = function(project, callback) {
+        TaskRepository.jsonListByProjectFetch(project._id, function(err, tasks) {
+            if (err) {
+                callback(err);
+            } else {
+                project.tasks = tasks;
+                callback(null, project);
+            }
+        });
+    }
+
+    // generate query series
+    var functions = [loadByShortId];
+    if (fetchOptions.length > 0) {
+        if (utils.inArray('fetchUser', fetchOptions)) {
+            functions.push(fetchUser);
+        }
+
+        if (utils.inArray('fetchTask', fetchOptions)) {
+            functions.push(fetchTask);
+        }
+    }
+
+    async.waterfall(functions, cb);
 }
 
 exports.listByIds = function(projectIds, cb) {

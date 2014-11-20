@@ -13,7 +13,8 @@ var ProjectModel = mongoose.model('ProjectModel');
  * When :projectShortId detected in url, load and fetch project in req
  */
 exports.loadByShortId = function(req, res, next, id) {
-    ProjectRepository.loadByShortId(id, function(err, project) {
+    var fetchOptions = ['fetchUser', 'fetchTask'];
+    ProjectRepository.loadProjectAndFetch(id, fetchOptions, function(err, project) {
         if (err) {
             return next(err);
         }

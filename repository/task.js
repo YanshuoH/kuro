@@ -61,6 +61,12 @@ exports.listByProject = function(projectId, cb) {
     TaskModel.loadByProjectId(projectId, options, cb);
 }
 
+exports.jsonListByProjectFetch = function(projectId, cb) {
+    var options = {};
+    // TODO, only return title, description...except media sort of big thing
+    TaskModel.loadByProjectId(projectId, options, cb);
+}
+
 /*
  * Maybe this part shall called entity/manager
  */

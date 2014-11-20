@@ -23,6 +23,34 @@ exports.load = function(userId, cb) {
     ], cb);
 }
 
+exports.jsonListByIds = function(userIds, cb) {
+    var options = {
+        criteria: {
+            '_id': {
+                $in: userIds
+            }
+        },
+        select: {
+            fields: '_id shortId username email'
+        }
+    };
+    UserModel.listToJson(options, cb);
+}
+
+exports.listByIds = function(userIds, cb) {
+    var options = {
+        criteria: {
+            '_id': {
+                $in: userIds
+            }
+        },
+        select: {
+            fields: '_id shortId username email'
+        }
+    };
+    UserModel.list(options, cb);
+}
+
 /*
  * Maybe this part shall called entity/manager
  */

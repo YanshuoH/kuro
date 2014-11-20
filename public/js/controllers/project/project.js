@@ -23,16 +23,19 @@ kuroApp.controller('BoardCtrl', function($scope, $http, $location, apiService) {
 })
 
 kuroApp.controller('ProjectCtrl', function($scope, $http, $location, $routeParams, apiService) {
+    $scope.currentHash = '';
     $scope.projectId = $routeParams.projectId;
+
+    $scope.changeHash = function(hash) {
+        $scope.currentHash = hash;
+        $location.hash(hash);
+    };
+
     apiService.getProject($scope.projectId)
         .then(function(project) {
+            console.log(project)
             $scope.project = project;
         })
-
-    apiService.getTaskList($scope.projectId)
-        .then(function(tasks) {
-            $scope.tasks = tasks;
-        });
 });
 
 kuroApp.controller('ProjectFormCtrl', function($scope, $http, $routeParams, $location, apiService) {
