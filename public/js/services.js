@@ -100,6 +100,7 @@ kuroApp.service('apiService', function($http, $q) {
         createProject: createProject,
         putProject: putProject,
         getProjectList: getProjectList,
+        addUserToProject: addUserToProject,
         getUserInfo: getUserInfo
     };
 
@@ -179,6 +180,16 @@ kuroApp.service('apiService', function($http, $q) {
         return request.then(handleSuccess, handleError);
     }
 
+    function addUserToProject(formData, projectShortId) {
+        var request = $http({
+            method: 'POST',
+            url: '/api/project/' + projectShortId + '/user/add',
+            data: formData
+        });
+
+        return request.then(handleSuccess, handleError);
+    }
+
     function getUserInfo() {
         var request = $http({
             method: 'GET',
@@ -190,6 +201,7 @@ kuroApp.service('apiService', function($http, $q) {
     // Private
     function handleError(response, status) {
         if (!angular.isObject(response.data) || !response.data.error) {
+            console.log(response);
             return $q.reject("An unknown error occurred");
         }
 

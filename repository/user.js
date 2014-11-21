@@ -8,19 +8,43 @@ var mongoose = require('mongoose');
 var UserModel = mongoose.model('UserModel');
 
 exports.load = function(userId, cb) {
+    var options = {};
+
     async.waterfall([
         function(callback) {
-            var options = {};
             UserModel.load(userId, options, function(err, user) {
                 if (err) {
                     callback(err);
                 } else if (!user) {
                     callback(new Error('Failed to load User ' + userId));
+                } else {
+                    callback(null, user);
                 }
-                callback(null, user);
             });
         }
     ], cb);
+}
+
+exports.loadByUsername = function(username, cb) {
+    var options = {
+        select: {
+            fields: '_id shortId username email projectIds'
+        }
+    };
+
+    async.waterfall([
+        function(callback) {
+            UserModel.loadByUsername(username, options, function(err, user) {
+                if (err) {
+                    callback(err);
+                } else if (!user) {
+                    callback(new Error('Failed to load User ' + username));
+                } else {
+                    callback(null, user);
+                }
+            });
+        }
+    ], cb)
 }
 
 exports.jsonListByIds = function(userIds, cb) {

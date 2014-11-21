@@ -54,7 +54,6 @@ exports.listByIds = function(req, res) {
     };
     ProjectRepository.listByIds(req.user.projectIds, function(err, list) {
         if (err) {
-            console.log(err);
             res.send(err);
         } else {
             res.json(list);
@@ -93,3 +92,18 @@ exports.update = function(req, res) {
         }
     });
 }
+
+/*
+ * @path(/api/project/:projectShortId/user/add)
+ *
+ * POST
+ */
+exports.addUser = function(req, res) {
+    ProjectRepository.addUser(req, function(err, user) {
+        if (err) {
+            res.status(500).json(err);
+        } else {
+            res.json(user);
+        }
+    })
+};

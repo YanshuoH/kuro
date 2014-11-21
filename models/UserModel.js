@@ -62,6 +62,25 @@ UserModelSchema.methods = {
 }
 
 var customStatics = {
+    loadByUsernameQuery: function(username, options) {
+        var criteria = options.criteria || {};
+        criteria.username = username;
+
+        var query = this.findOne(criteria);
+        if (options.select) {
+            query.select(options.select.fields);
+        }
+
+        return query;
+    },
+    loadByUsername: function(username, options, cb) {
+        var query = this.loadByUsernameQuery(username, options);
+        query.exec(cb);
+    },
+    loadJsonByUsername: function(username, options, cb) {
+        var query = this.loadByUsernameQuery(username, options);
+        query.lean().exec(cb);
+    }
 }
 
 UserModelSchema.statics = utils.mergeObj(utils.modelStatics, customStatics);

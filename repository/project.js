@@ -100,9 +100,9 @@ exports.listByIds = function(projectIds, cb) {
 /*
  * Maybe this part shall called entity/manager
  */
-exports.save = function(project, callback) {
+exports.save = function(project, cb) {
     project.date.updated = Date.now();
-    project.save(callback);
+    project.save(cb);
 }
 
 exports.create = function(req, callback) {
@@ -158,7 +158,6 @@ exports.createDefaultProject = function(user, callback) {
     var data = {
         creatorId: user._id,
         adminIds: [user._id],
-        userIds: [user._id],
         ref: 'REF',
         title: 'My Project',
         description: 'My first project'
@@ -175,13 +174,70 @@ exports.createDefaultProject = function(user, callback) {
             });
         },
         function(project, user, userCallback) {
-            UserRepository.addProjectToUser(project._id, user, function(err) {
+            exports.createLinkProjectUser(project, user, function(err, results) {
                 if (err) {
                     userCallback(err);
                 } else {
-                    userCallback(null, project, user);
+                    userCallback(null, results.project, results.user);
                 }
             });
         }
     ], callback);
+}
+
+/*
+ * @param project ProjectModel
+ * @param user UserModel
+ *
+ * Callback: (err, results) - results { user: user, project: project }
+ */
+exports.createLinkProjectUser = function(project, user, cb) {
+    async.parallel({
+        user: function(callback) {
+            UserRepository.addProjectToUser(project._id, user, function(err) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null, user);
+                }
+            });
+        },
+        project: function(callback) {
+            project.userIds.push(user._id);
+            exports.save(project, function(err) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null, project);
+                }
+            })
+        }
+    }, cb);
+}
+
+exports.addUser = function(req, cb) {
+    var project = req.project;
+    var username = req.body.username;
+    async.waterfall([
+        // load user by username
+        function(callback) {
+            UserRepository.loadByUsername(username, function(err, user) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null, user);
+                }
+            });
+        },
+        // add user to project
+        function(user, callback) {
+            exports.createLinkProjectUser(project, user, function(err, results) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null, results.user);
+                }
+            });
+        }
+    ], cb);
 }

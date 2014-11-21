@@ -37,6 +37,7 @@ module.exports = function(app, config, passport) {
     app.param('projectShortId', project.loadByShortId);
     app.put('/api/project/:projectShortId/edit', projectAuth, project.update);
     app.post('/api/project/create', globalAuth, project.create);
+    app.post('/api/project/:projectShortId/user/add', projectAuth, project.addUser);
 
     // Task
     app.get('/api/project/:projectShortId/taskboard', projectAuth, task.listByProject);

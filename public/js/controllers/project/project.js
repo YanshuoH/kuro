@@ -36,6 +36,14 @@ kuroApp.controller('ProjectCtrl', function($scope, $http, $location, $routeParam
             console.log(project)
             $scope.project = project;
         })
+
+    $scope.formData = {};
+    $scope.addUserSubmitForm = function() {
+        apiService.addUserToProject($scope.formData, $scope.projectId)
+            .then(function(user) {
+                $scope.project.users.push(user);
+            });
+    }
 });
 
 kuroApp.controller('ProjectFormCtrl', function($scope, $http, $routeParams, $location, apiService) {
