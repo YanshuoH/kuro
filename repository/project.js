@@ -42,17 +42,11 @@ exports.loadByShortId = function(projectShortId, cb) {
     ], cb);
 }
 
-exports.loadProjectAndFetch = function(projectShortId, fetchOptions, cb) {
+exports.fetch = function(project, fetchOptions, cb) {
     var fetchOptions = fetchOptions || [];
 
-    var loadByShortId = function(callback) {
-        exports.loadByShortId(projectShortId, function(err, project) {
-            if (err) {
-                callback(err);
-            } else {
-                callback(null, project.toObject());
-            }
-        });
+    var init = function(callback) {
+        callback(null, project.toObject());
     };
 
     var fetchUser = function(project, callback) {
@@ -78,7 +72,7 @@ exports.loadProjectAndFetch = function(projectShortId, fetchOptions, cb) {
     }
 
     // generate query series
-    var functions = [loadByShortId];
+    var functions = [init];
     if (fetchOptions.length > 0) {
         if (utils.inArray('fetchUser', fetchOptions)) {
             functions.push(fetchUser);

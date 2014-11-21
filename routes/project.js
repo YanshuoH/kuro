@@ -13,8 +13,7 @@ var ProjectModel = mongoose.model('ProjectModel');
  * When :projectShortId detected in url, load and fetch project in req
  */
 exports.loadByShortId = function(req, res, next, id) {
-    var fetchOptions = ['fetchUser', 'fetchTask'];
-    ProjectRepository.loadProjectAndFetch(id, fetchOptions, function(err, project) {
+    ProjectRepository.loadByShortId(id, function(err, project) {
         if (err) {
             return next(err);
         }
@@ -26,11 +25,18 @@ exports.loadByShortId = function(req, res, next, id) {
 /*
  * @path('/api/project/:projectShortId')
  *
- * Return JSON project
+ * Return JSON project with tasks and users affected
  */
 exports.show = function(req, res) {
+    var fetchOptions = ['fetchUser', 'fetchTask'];
     var project = req.project;
-    res.json(project);
+    ProjectRepository.fetch(project, fetchOptions, function(err, project) {
+        if (err) {
+            res.send(err);
+        } else {
+            res.json(project);
+        }
+    });
 }
 
 /*
