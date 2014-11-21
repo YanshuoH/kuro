@@ -103,10 +103,10 @@ kuroApp.service('apiService', function($http, $q) {
         getUserInfo: getUserInfo
     };
 
-    function getTask(taskShortId) {
+    function getTask(projectShortId, taskShortId) {
         var request = $http({
             method: 'GET',
-            url: '/api/task/' + taskShortId
+            url: '/api/project/' + projectShortId + '/task/' + taskShortId
         });
 
         return request.then(handleSuccess, handleError);
@@ -122,10 +122,10 @@ kuroApp.service('apiService', function($http, $q) {
         return request.then(handleSuccess, handleError);
     }
 
-    function putTask(formData, taskShortId) {
+    function putTask(formData, projectShortId, taskShortId) {
         var request = $http({
             method: 'PUT',
-            url: '/api/task/' + taskShortId + '/edit',
+            url: '/api/project/' + projectShortId + '/task/' + taskShortId + '/edit',
             data: formData
         });
 

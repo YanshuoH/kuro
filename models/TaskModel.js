@@ -88,6 +88,38 @@ TaskModelSchema.statics.loadByProjectId = function(projectId, options, cb) {
     criteria = utils.mergeObj(criteria, projectCriteria);
     var query = this.find(criteria);
     query.exec(cb);
+};
+
+
+/*
+ * Overwrite
+ */
+TaskModelSchema.statics.loadByShortIdQuery = function(taskShortId, projectId, options, cb) {
+    var criteria = options.criteria || {};
+    var taskCriteria = {
+        projectId: projectId.toString(),
+        shortId: taskShortId.toString()
+    }
+    criteria = utils.mergeObj(criteria, taskCriteria);
+    var query = this.findOne(criteria);
+
+    return query;
+}
+
+/*
+ * Overwrite
+ */
+TaskModelSchema.statics.loadByShortId = function(taskShortId, projectId, options, cb) {
+    var query = this.loadByShortIdQuery(taskShortId, projectId, options);
+    query.exec(cb);
+}
+
+/*
+ * Overwrite
+ */
+TaskModelSchema.statics.loadJsonByShortId = function(taskShortId, projectId, options, cb) {
+    var query = this.loadByShortIdQuery(taskShortId, projectId, options);
+    query.lean().exec(cb);
 }
 
 /**

@@ -9,7 +9,8 @@ var TaskRepository = require(config.path.repository + '/task');
  * Fetch parent project info into task data, only return project fields in criteria
  */
 exports.loadByShortId = function(req, res, next, id) {
-    TaskRepository.loadTaskFetchProject(id, function(err, task) {
+    var projectId = req.project._id;
+    TaskRepository.loadTaskFetchProject(id, projectId, function(err, task) {
         if (err) {
             return next(err);
         }

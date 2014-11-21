@@ -18,10 +18,11 @@ kuroApp.controller('TaskBoardCtrl', function($scope, $http, $routeParams, apiSer
 
 kuroApp.controller('TaskCtrl', function($scope, $http, $route, $routeParams, $location, apiService) {
     $scope.taskId = $routeParams.taskId;
+    $scope.projectId = $routeParams.projectId;
 
     $scope.isNew = true;
     $scope.formData = {};
-    apiService.getTask($scope.taskId)
+    apiService.getTask($scope.projectId, $scope.taskId)
         .then(function(task) {
             $scope.isNew = false;
             $scope.task = task;
@@ -46,7 +47,7 @@ kuroApp.controller('TaskFormCtrl', function($scope, $http, $routeParams, $locati
 
     if (typeof($routeParams.taskId) !== 'undefined') {
         $scope.taskId = $routeParams.taskId;
-        apiService.getTask($scope.taskId)
+        apiService.getTask($scope.projectId, $scope.taskId)
             .then(function(task) {
                 $scope.task = task;
                 $scope.formData = $scope.task;
@@ -61,8 +62,7 @@ kuroApp.controller('TaskFormCtrl', function($scope, $http, $routeParams, $locati
                     console.log(response);
                 });
         } else {
-            console.log($scope.formData);
-            apiService.putTask($scope.formData, $scope.task.shortId)
+            apiService.putTask($scope.formData, $scope.projectId, $scope.task.shortId)
                 .then(function(response) {
                     console.log(response);
                 })

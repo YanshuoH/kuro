@@ -6,12 +6,15 @@ var mongoose = require('mongoose');
 var TaskModel = mongoose.model('TaskModel');
 var ProjectModel = mongoose.model('ProjectModel');
 
-
-exports.loadByShortId = function(taskShortId, cb) {
+/*
+ * @param taskShortId Integer
+ * @param projectId ObjectId
+ */
+exports.loadByShortId = function(taskShortId, projectId, cb) {
     async.waterfall([
         function(callback) {
             var options = {};
-            TaskModel.loadByShortId(taskShortId, options, function(err, task) {
+            TaskModel.loadByShortId(taskShortId, projectId, options, function(err, task) {
                 if (err) {
                     callback(err);
                 } else if (!task) {
@@ -24,10 +27,10 @@ exports.loadByShortId = function(taskShortId, cb) {
     ], cb);
 }
 
-exports.loadTaskFetchProject = function(taskShortId, cb) {
+exports.loadTaskFetchProject = function(taskShortId, projectId, cb) {
     async.waterfall([
         function(callback) {
-            exports.loadByShortId(taskShortId, function(err, task) {
+            exports.loadByShortId(taskShortId, projectId, function(err, task) {
                 if (err) {
                     callback(err);
                 } else {

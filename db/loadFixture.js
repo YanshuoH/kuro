@@ -31,7 +31,7 @@ var UserRepository = require(config.path.repository + '/user');
  * Important params!!!
  * Clear database or not
  */
-var removeAll = true;
+var removeAll = false;
 
 async.waterfall([
     // First, remove all data in db
@@ -181,8 +181,8 @@ var projectFixture = [
 
 var userFixture = [
     {
-        username: "test",
-        email: "test@test.com",
+        username: "test1",
+        email: "test1@test.com",
         password: "test"
     }
 ]
