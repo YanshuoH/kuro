@@ -35,7 +35,7 @@ var ProjectModelSchema = new mongoose.Schema({
 var requiredFields = [
     'creatorId',
     'adminIds',
-    'userIds',
+    // 'userIds',
     'ref',
     'title',
     'description',
