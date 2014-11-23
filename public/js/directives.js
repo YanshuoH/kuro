@@ -11,5 +11,13 @@ kuro.directive('holderJs', function() {
         }
     };
 });
-// module.directive('appVersion', function () {
-//   });
+
+kuro.directive('resizeProject', function () {
+    return {
+        link: function(scope, element, attrs) {
+            element.bind('click', function(e) {
+                $('#projectList').toggleClass('col-sm-4', 500);
+            })
+        }
+    }
+});

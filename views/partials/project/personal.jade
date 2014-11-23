@@ -1,5 +1,5 @@
-.container.personal
-  .col-sm-9.main
+.personal
+  .col-sm-9.main#projectList
     h1.page-header Your projects
       button.btn.btn-primary.btn-new-project(type='button' ng-click='createProject()')
         span.glyphicon.glyphicon-plus
@@ -13,7 +13,7 @@
               tr(ng-repeat='project in projects')
                 td
                   .col-sm-8
-                    a(href='/project/{{project.shortId}}')
+                    a(resize-project)
                       strong {{ project.ref }} - {{ project.title }}
                     p {{ project.description }}
                   .col-sm-3
