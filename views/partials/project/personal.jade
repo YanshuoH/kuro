@@ -1,13 +1,4 @@
-div(ng-include="'partials/navbar'")
 .container.personal
-  .col-sm-3.sidebar
-    h2 {{ user.username }}
-    a.thumbnail(href='#')
-      img(holder-js='holder.js/100%x300' alt='...')
-    hr
-    span.glyphicon.glyphicon-envelope
-    | 
-    strong {{ user.email }}
   .col-sm-9.main
     h1.page-header Your projects
       button.btn.btn-primary.btn-new-project(type='button' ng-click='createProject()')
