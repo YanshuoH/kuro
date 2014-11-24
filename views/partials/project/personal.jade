@@ -1,24 +1,3 @@
-.personal
-  .col-sm-9.main#projectList
-    h1.page-header Your projects
-      button.btn.btn-primary.btn-new-project(type='button' ng-click='createProject()')
-        span.glyphicon.glyphicon-plus
-        span New Project
-    .panel.panel-default
-      .panel-heading
-      .panel-body
-        .table-responsive
-          table.table
-            tbody
-              tr(ng-repeat='project in projects')
-                td
-                  .col-sm-8
-                    a(resize-project)
-                      strong {{ project.ref }} - {{ project.title }}
-                    p {{ project.description }}
-                  .col-sm-3
-                    strong Last update
-                    p {{project.date.updated | date:'yyyy-MM-dd HH:mm'}}
-                  .col-sm-1
-                    a(href='/project/{{project.shortId}}/edit')
-                      span.glyphicon.glyphicon-pencil
+.archive
+  .col-sm-8#projectList(ng-include="'partials/project/projectList'")
+  .col-sm-8#taskboard(ng-show='{{showTaskboard}}' ng-include="'partials/task/taskBoard'")

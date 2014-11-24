@@ -31,7 +31,8 @@ kuro.config(function ($routeProvider, $locationProvider) {
         })
         .when('/board', {
             templateUrl: 'partials/project/personal',
-            controller: 'BoardCtrl'
+            controller: 'BoardCtrl',
+            reloadOnSearch: false
         })
         // be careful of the order create and :taskId
         .when('/project/create', {
@@ -50,7 +51,7 @@ kuro.config(function ($routeProvider, $locationProvider) {
         // task board
         .when('/project/:projectId/taskboard', {
           templateUrl: 'partials/task/taskboard',
-          controller: 'TaskBoardCtrl',
+          controller: 'BoardCtrl',
           reloadOnSearch: false
         })
         // be careful of the order create and :taskId
