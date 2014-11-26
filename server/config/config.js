@@ -35,6 +35,9 @@ module.exports = {
         }
     },
     path: {
+        // introduce client side static path
+        client: path.normalize(rootPath + '/../client'),
+        config: path.join(rootPath, '/config'),
         lib: path.join(rootPath, '/lib'),
         models: path.join(rootPath, '/models'),
         repository: path.join(rootPath, '/repository'),

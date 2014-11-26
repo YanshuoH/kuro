@@ -43,7 +43,7 @@ module.exports = function(app, config, passport) {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    app.use(favicon(path.join(config.root, 'public/favicon.ico')));
+    app.use(favicon(path.join(config.path.client, 'web/favicon.ico')));
     app.use(bodyParser.urlencoded({
         extended: true
     }));
@@ -52,6 +52,6 @@ module.exports = function(app, config, passport) {
 
     app.use(morgan('dev'));
 
-    app.use(serveStatic(path.join(config.root, 'public')));
+    app.use(serveStatic(path.join(config.path.client, 'web')));
 
 }
