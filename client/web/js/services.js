@@ -33,6 +33,21 @@ kuroApp.factory('TaskService', function() {
     }
 });
 
+kuroApp.service('urlParserService', function() {
+    return {
+        getProjectId: getProjectId
+    }
+
+    function getProjectId(url) {
+        var match = url.match(/\/project\/(\d+)/);
+
+        if (match && match.length > 0) {
+            return url.match(/\/project\/(\d+)/)[1];
+        }
+        return undefined;
+    }
+});
+
 kuroApp.service('userApiService', function($http, $q) {
     return {
         signin: signin,

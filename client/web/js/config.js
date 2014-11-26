@@ -50,7 +50,7 @@ kuro.config(function ($routeProvider, $locationProvider) {
         })
         // task board
         .when('/project/:projectId/taskboard', {
-          templateUrl: 'partials/task/taskboard',
+          templateUrl: 'partials/project/archive',
           controller: 'BoardCtrl',
           reloadOnSearch: false
         })

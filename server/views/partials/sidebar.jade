@@ -1,10 +1,10 @@
-.sidebar.nav.nav-sidebar
+.sidebar.nav.nav-sidebar(ng-controller='SidebarCtrl')
   ul
     li
       a(href='')
         span.glyphicon.custom-glyphicon.glyphicon-ok-circle(aria-hidden='true')
     li
-      a(href='/archive')
+      a(href='/archive' ng-click='reload("/archive")')
         span.glyphicon.custom-glyphicon.glyphicon-folder-open(aria-hidden='true')
     li
       a(href='')
