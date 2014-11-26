@@ -29,8 +29,8 @@ kuro.config(function ($routeProvider, $locationProvider) {
             templateUrl: 'partials/user/profile',
             controller: 'ProfileCtrl'
         })
-        .when('/board', {
-            templateUrl: 'partials/project/personal',
+        .when('/archive', {
+            templateUrl: 'partials/project/archive',
             controller: 'BoardCtrl',
             reloadOnSearch: false
         })

@@ -38,6 +38,10 @@
   margin-bottom: 20px;
 }
 
+.nav-logo {
+  border: 0;
+  border-right: 2px #5c5c5c solid;
+}
 /* Hide for mobile, show later */
 .nav-sidebar {
   display: none;

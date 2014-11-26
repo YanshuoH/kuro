@@ -19,7 +19,6 @@ kuroApp.controller('BoardCtrl', function($scope, $http, $location, apiService) {
             $scope.user = user;
         });
 
-    
     $scope.showTaskboardFunc = function(projectShortId) {
         console.log(projectShortId);
         apiService.getTaskList(projectShortId)
