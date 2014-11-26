@@ -5,6 +5,8 @@ var kuroApp = angular.module('Kuro');
 
 kuroApp.controller('BoardCtrl', function($scope, $http, $location, apiService) {
     $scope.projects = [];
+    $scope.showTaskboard = false;
+
     apiService.getProjectList()
         .then(function(projects) {
             console.log(projects);
@@ -17,6 +19,16 @@ kuroApp.controller('BoardCtrl', function($scope, $http, $location, apiService) {
             $scope.user = user;
         });
 
+    
+    $scope.showTaskboardFunc = function(projectShortId) {
+        console.log(projectShortId);
+        apiService.getTaskList(projectShortId)
+          .then(function(tasks) {
+            $location.path('/project/' + projectShortId + '/taskboard', false);
+            $scope.showTaskboard = true;
+            $scope.tasks = projectShortId;
+          })
+    }
     $scope.createProject = function() {
         $location.path('/project/create');
     }
