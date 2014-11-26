@@ -1,0 +1,25 @@
+.navbar.navbar-default
+  .navbar-header
+    a.navbar-brand(href="/") Kuro
+  .navbar-collapse.collapse
+    ul.nav.navbar-nav
+      li.active
+        a(href='/board') Projets
+    ul.nav.navbar-nav.navbar-right
+      li
+        form.navbar-form.navbar-left#searchForm(role="form" name="searchForm")
+          .form-group
+            input.form-control.col-lg-8(type="text" placeholder="Search")
+      li.dropdown
+        a.dropdown-toggle(href='' data-toggle='dropdown' role='button' aria-expanded='false')
+          span.glyphicon.glyphicon-th-large
+        ul.dropdown-menu(role='menu' ng-include="'partials/navbarTask'")
+      li.dropdown
+        a.dropdown-toggle(href='' data-toggle='dropdown' role='button' aria-expanded='false') Username
+          span.caret
+        ul.dropdown-menu(role='menu')
+          li
+            a(href='') My Settings
+          li.divider
+          li
+            a(href='/user/signout') Logout

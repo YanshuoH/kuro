@@ -1,0 +1,16 @@
+.container
+  .row
+    .col-sm-12
+      .panel.panel-primary
+        .panel-heading
+          h3.panel-title Task Form
+        .panel-body
+            .col-sm-5
+              form.form-horizontal#taskForm(role='form' name='taskForm' novalidate='novalidate' ng-submit='submitForm()')
+                .form-group
+                  label(for='title') Title
+                  input.form-control#title(type='text' name='title' ng-model='formData.title' placeholder='Title')
+                .form-group
+                  label(for='description') Description
+                  input.form-control#description(type='textarea' name='description' ng-model='formData.description' placeholder='Description')
+                button.btn.btn-default(type='submit') Submit

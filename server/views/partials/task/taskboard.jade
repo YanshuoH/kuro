@@ -1,0 +1,67 @@
+.taskboard
+  //- .row
+  //-   .col-md-12
+  //-     h1.page-header {{ project.ref}} / {{ project.title }} Board
+  //-     ul.nav.nav-pills
+  //-       li
+  //-         a Filters: 
+  //-       li.active
+  //-         a(href='') All
+  //-       li
+  //-         a(href='') Assigne To Me
+  //-       li
+  //-         a(href='') Created By Me
+  //-       li
+  //-         a.dropdown-toggle(data-toggle='dropdown' href='') Category
+  //-           span.caret
+  //-         ul.dropdown-menu(role='menu')
+  //-           li
+  //-             a(href='#') Cat 1
+  //-             a(href='#') Cat 2
+  //-             a(href='#') Cat 3
+  //- hr
+  //- .row
+  //-   .col-md-12.col-sm-12
+  //-     .row.board-title
+  //-       .col-md-12.col-sm-12
+  //-         .panel.panel-default
+  //-           .panel-heading
+  //-             .row 
+  //-               .col-md-3.col-sm-6
+  //-                 strong To do
+  //-                 span.badge 12
+  //-               .col-md-3.col-sm-6
+  //-                 strong In progress
+  //-                 span.badge 12
+  //-               .col-md-3.col-sm-6
+  //-                 strong Need Information
+  //-                 span.badge 12
+  //-               .col-md-3.col-sm-6
+  //-                 strong Done
+  //-                 span.badge 12
+  //-     .col-md-3.col-sm-6.todo
+  //-     .col-md-3.col-sm-6.inprogress
+  //-       .row.late
+  //-         .col-md-12.col-sm-12.board-col
+  //-       .row.urgent
+  //-         .col-md-12.col-sm-12.board-col
+  //-       .row.critical
+  //-         .col-md-12.col-sm-12.board-col
+  //-       .row.else
+  //-         .col-md-12.col-sm-12.board-col
+  //-           .list-group
+  //-               a.list-group-item(ng-repeat='task in tasks' href='/task/{{ task.shortId }}')
+  //-                 h4.list-group-heading {{ task.title }}
+  //-                 p.list-group-item-text {{ task.description }}
+  //-     .col-md-3.col-sm-6
+  //-       .row.late
+  //-         .col-md-12.col-sm-12.board-col
+  //-       .row.urgent
+  //-         .col-md-12.col-sm-12.board-col
+  //-       .row.critical
+  //-         .col-md-12.col-sm-12.board-col
+  //-           .list-group
+  //-               a.list-group-item(ng-repeat='task in tasks' href='/task/{{ task.shortId }}')
+  //-                 h4.list-group-heading {{ task.title }}
+  //-                 p.list-group-item-text {{ task.description }}
+  //-       .row.else

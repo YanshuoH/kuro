@@ -1,0 +1,139 @@
+.main-content {
+  margin-left: 70px;
+}
+
+.right {
+  float: right;
+}
+/*
+ * Personal
+ */
+.personal button.btn-new-project{
+  position: absolute;
+  right: 0px;
+}
+
+
+/*
+ * Project
+ */
+
+.project .main {
+  padding-left: 35px;
+}
+
+.project .main .page-header {
+  padding-bottom: 9px;
+  margin: 20px 0 0 0;
+  border-bottom: 0;
+}
+
+.project .project-description {
+  font-size: 20px;
+  color: #999;
+}
+
+.project .content-header {
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+}
+
+/* Hide for mobile, show later */
+.nav-sidebar {
+  display: none;
+}
+@media (min-width: 768px) {
+  .nav-sidebar {
+    position: absolute;
+    top: 52px;
+    width: 70px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    overflow-x: hidden;
+    overflow-y: hidden; /* Scrollable contents if viewport is shorter than content. */
+    background-color: #222222;
+    border-right: 1px solid #eee;
+  }
+}
+
+/* Sidebar navigation */
+.nav-sidebar > ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-sidebar > ul li {
+  display: block;
+  border: 0;
+  border-top: 1px #5c5c5c solid;
+  position: relative;
+}
+
+.nav-sidebar > ul li a {
+  display: block;
+  position: relative;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: #eeeeee;
+}
+
+
+.nav-sidebar > ul li.active a,
+.nav-sidebar > ul li a:focus,
+.nav-sidebar > ul li a:hover {
+  background-color: #9a1616;
+  color: #ffffff;
+}
+
+.nav-sidebar .custom-glyphicon {
+  font-size: 25px;
+}
+
+.taskboard .page-header {
+  margin: 10px 0 0 20px;
+  border-bottom: 0;
+}
+
+/*
+ * Taskboard
+ */
+.taskboard .seperator {
+    border-bottom: 1px solid #eee;
+}
+
+.taskboard .board-col {
+   border-right: 1px dashed #333;
+}
+
+/*
+ * Task
+ */
+.task .page-header {
+  padding-bottom: 9px;
+  margin: 20px 0 0 0;
+  border-bottom: 0;
+}
+
+.task .content-header {
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+}
+
+@media only screen and (min-device-width: 768px) {
+  .task .rg-vertical-separator {
+    border-right: 1px solid #eee;
+  }
+}
+
+.task .panel.panel-default.activity {
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+.task .panel-default.activity{
+  border-color: transparent;
+}

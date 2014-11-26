@@ -1,0 +1,19 @@
+.row
+  .col-md-12
+    ul.list-group
+      li.list-group-item(ng-repeat='user in project.users')
+        strong {{ user.username }}
+
+.row
+  .col-md-12
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title Add User
+      .panel-body
+        .col-sm-12
+          form.form-horizontal#addUserForm(role='form' name='addUserForm' novalidate='novalidate' ng-submit='addUserSubmitForm()')
+            .form-group
+              label(for='username') Username
+              input.form-control#title(type='text' name='username' ng-model='formData.username' placeholder='Username')
+            .form-group
+              button.btn.btn-default(type='submit') Submit
