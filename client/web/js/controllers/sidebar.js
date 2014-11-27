@@ -2,8 +2,8 @@
 
 var kuroApp = angular.module('Kuro');
 
-kuroApp.controller('SidebarCtrl', function($scope, $http, $route, $routeParams, $location, apiService) {
-    $scope.reload = function(url) {
-        $route.reload();
+kuroApp.controller('SidebarCtrl', function($scope, navbarData) {
+    $scope.reloadArchive = function(url) {
+        navbarData.setShowTaskboard(false);
     }
 })

@@ -3,19 +3,28 @@
 var kuroApp = angular.module('Kuro');
 
 
-kuroApp.controller('BoardCtrl', function($scope, $http, $location, $routeParams, apiService, urlParserService) {
+kuroApp.controller('BoardCtrl', function($scope, $http, $location, $routeParams, apiService, urlParserService, navbarData) {
     $scope.projects = [];
     $scope.projectId;
-    $scope.showTaskboard = false;
+    $scope.showTaskboard = navbarData.getShowTaskboard();
+
+    // Syn with navbarData
+    $scope.$watch(function () { return navbarData.getShowTaskboard(); }, function (showTaskboard) {
+        $scope.showTaskboard = showTaskboard;
+    });
 
     if (typeof($routeParams.projectId) !== 'undefined') {
-        $scope.showTaskboard = true;
+        navbarData.setShowTaskboard(true);
         $scope.projectId = $routeParams;
     }
 
     $scope.$on('$locationChangeStart', function(event, next, current) {
         // project list -> taskboard : get project id
         $scope.projectId = urlParserService.getProjectId(next);
+        if ($scope.projectId && next.indexOf('taskboard') > -1) {
+            navbarData.setShowTaskboard(true);
+            $scope.showTaskboardFunc($scope.projectId);
+        }
     });
 
 
@@ -30,12 +39,12 @@ kuroApp.controller('BoardCtrl', function($scope, $http, $location, $routeParams,
             $scope.user = user;
         });
 
-    $scope.showTaskboardFunc = function(projectShortId) {
-        apiService.getTaskList(projectShortId)
+    $scope.showTaskboardFunc = function(projectId) {
+        apiService.getTaskList(projectId)
           .then(function(tasks) {
-            $location.path('/project/' + projectShortId + '/taskboard', false);
-            $scope.showTaskboard = true;
-            $scope.tasks = projectShortId;
+            $location.path('/project/' + projectId + '/taskboard', false);
+            navbarData.setShowTaskboard(true);
+            $scope.tasks = tasks;
           })
     }
     $scope.createProject = function() {
