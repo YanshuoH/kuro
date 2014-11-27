@@ -3,18 +3,25 @@
 var kuroApp = angular.module('Kuro');
 
 
-kuroApp.controller('BoardCtrl', function($scope, $http, $location, $routeParams, apiService, urlParserService, navbarData) {
+kuroApp.controller('BoardCtrl', function($scope, $http, $location, $routeParams, $timeout, apiService, urlParserService, navbarData) {
     $scope.projects = [];
     $scope.projectId;
+    $scope.showTaskboardDelay = 500;
     $scope.showTaskboard = navbarData.getShowTaskboard();
+    $scope.hideProjectListLong = navbarData.getHideProjectListLong();
 
     // Syn with navbarData
-    $scope.$watch(function () { return navbarData.getShowTaskboard(); }, function (showTaskboard) {
+    $scope.$watch(function () { return navbarData.getShowTaskboard(); }, function(showTaskboard) {
         $scope.showTaskboard = showTaskboard;
+    });
+
+    $scope.$watch(function() { return navbarData.getHideProjectListLong(); }, function(hideProjectListLong) {
+        $scope.hideProjectListLong = navbarData.getHideProjectListLong();
     });
 
     if (typeof($routeParams.projectId) !== 'undefined') {
         navbarData.setShowTaskboard(true);
+        navbarData.setHideProjectListLong(true);
         $scope.projectId = $routeParams;
     }
 
@@ -22,11 +29,9 @@ kuroApp.controller('BoardCtrl', function($scope, $http, $location, $routeParams,
         // project list -> taskboard : get project id
         $scope.projectId = urlParserService.getProjectId(next);
         if ($scope.projectId && next.indexOf('taskboard') > -1) {
-            navbarData.setShowTaskboard(true);
             $scope.showTaskboardFunc($scope.projectId);
         }
     });
-
 
     apiService.getProjectList()
         .then(function(projects) {
@@ -40,10 +45,14 @@ kuroApp.controller('BoardCtrl', function($scope, $http, $location, $routeParams,
         });
 
     $scope.showTaskboardFunc = function(projectId) {
+        navbarData.setHideProjectListLong(true);
+        $timeout(function() {
+            navbarData.setShowTaskboard(true);
+        }, $scope.showTaskboardDelay);
+
         apiService.getTaskList(projectId)
           .then(function(tasks) {
             $location.path('/project/' + projectId + '/taskboard', false);
-            navbarData.setShowTaskboard(true);
             $scope.tasks = tasks;
           })
     }

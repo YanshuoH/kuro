@@ -1,4 +1,16 @@
-.taskboard
+.panel.panel-default
+  .panel-heading.clearfix
+    h4.panel-title.pull-left Taskboard
+    .dropdown.pull-right
+      a.dropdown-toggle.glyphicon.glyphicon-chevron-down(href='' data-toggle='dropdown')
+      ul.dropdown-menu(role='menu')
+        li
+          a(href='/project/{{project.shortId}}/task/create') Create new project
+        li.divider
+        li
+          a Other filters
+  .panel-body
+    
   //- .row
   //-   .col-md-12
   //-     h1.page-header {{ project.ref}} / {{ project.title }} Board

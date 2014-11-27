@@ -141,3 +141,16 @@
 .task .panel-default.activity{
   border-color: transparent;
 }
+
+/*
+ * For ng-animate slide
+ */
+.animate-hide {
+  -webkit-transition: all linear 0.5s;
+  transition: all linear 0.5s;
+  opacity: 1;
+}
+
+.animate-hide.ng-hide {
+  opacity: 0;
+}

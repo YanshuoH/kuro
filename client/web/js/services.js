@@ -5,7 +5,8 @@ var kuroApp = angular.module('Kuro');
 
 kuroApp.factory('navbarData', function() {
     var data = {
-        showTaskboard: false
+        showTaskboard: false,
+        hideProjectListLong: false
     };
 
     return {
@@ -14,6 +15,12 @@ kuroApp.factory('navbarData', function() {
         },
         setShowTaskboard: function(show) {
             data.showTaskboard = show;
+        },
+        getHideProjectListLong: function() {
+            return data.hideProjectListLong;
+        },
+        setHideProjectListLong: function(hide) {
+            data.hideProjectListLong = hide;
         }
     };
 })

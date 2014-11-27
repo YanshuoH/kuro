@@ -1,7 +1,8 @@
 'use strict';
 
 var kuro = angular.module('Kuro', [
-    'ngRoute'
+    'ngRoute',
+    'ngAnimate'
 ]);
 
 kuro.run(['$route', '$rootScope', '$location', function ($route, $rootScope, $location) {

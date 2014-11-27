@@ -10,7 +10,7 @@
         li
           a Other filters
   .panel-body
-    .table-responsive#project-list-long(ng-hide='showTaskboard')
+    .table-responsive#project-list-long(ng-hide='hideProjectListLong')
       table.table
         tbody
           tr(ng-repeat='project in projects')
@@ -25,7 +25,7 @@
               .col-sm-1
                 a(href='/project/{{project.shortId}}/edit')
                   span.glyphicon.glyphicon-pencil
-    .list-group#project-list-short(ng-show='showTaskboard')
+    .list-group#project-list-short(ng-show='hideProjectListLong')
       a.list-group-item(href='' ng-repeat='project in projects' ng-click='showTaskboardFunc(project.shortId)') {{ project.title }}
 
 

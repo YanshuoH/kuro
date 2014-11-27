@@ -16,7 +16,7 @@ kuro.directive('resizeProject', function () {
     return {
         link: function(scope, element, attrs) {
             element.bind('click', function(e) {
-                $('#projectList').switchClass('col-sm-8', 'col-sm-4', 500);
+                $('#projectList').switchClass('col-sm-8', 'col-sm-4', scope.showTaskboardDelay);
             })
         }
     }
