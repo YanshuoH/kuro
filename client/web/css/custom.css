@@ -127,4 +127,6 @@
 
 .animate-hide.ng-hide {
   opacity: 0;
+  -webkit-transition: all linear 0s;
+  transition: all linear 0s;
 }
