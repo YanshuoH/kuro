@@ -31,7 +31,7 @@ var UserRepository = require(config.path.repository + '/user');
  * Important params!!!
  * Clear database or not
  */
-var removeAll = false;
+var removeAll = true;
 
 async.waterfall([
     // First, remove all data in db
@@ -157,17 +157,34 @@ function insertAction(dataFixture, dataRepository, dataModel, parentName, parent
 }
 var taskFixture = [
     {
-        title: "test1",
+        title: "Low Todo",
         description: "test description 1",
-
+        status: 0,
+        priority: 0
     },
     {
-        title: "test2",
+        title: "Normal Todo",
         description: "test description 2",
+        status: 0,
+        priority: 1
     },
     {
-        title: "test3",
+        title: "Urgent QA",
         description: "test description 3",
+        status: 1,
+        priority: 2
+    },
+    {
+        title: "Urgent Done",
+        description: "test description 3",
+        status: 2,
+        priority: 2
+    },
+    {
+        title: "Low Done",
+        description: "test description 3",
+        status: 2,
+        priority: 0
     }
 ]
 

@@ -3,12 +3,27 @@
 var kuroApp = angular.module('Kuro');
 
 
-kuroApp.controller('BoardCtrl', function($scope, $http, $location, $routeParams, $timeout, apiService, urlParserService, navbarData) {
+kuroApp.controller('BoardCtrl', function(
+    $scope,
+    $http,
+    $location,
+    $routeParams,
+    $timeout,
+    apiService,
+    urlParserService,
+    taskboardService,
+    navbarData) {
+    /*
+     * Begining of controller
+     */
     $scope.projects = [];
     $scope.projectId;
     $scope.showTaskboardDelay = 500;
     $scope.showTaskboard = navbarData.getShowTaskboard();
     $scope.hideProjectListLong = navbarData.getHideProjectListLong();
+
+    $scope.priorityData = ['urgent', 'normal', 'low'];
+    $scope.statusData = ['Todo', 'QA', 'Done'];
 
     // Syn with navbarData
     $scope.$watch(function () { return navbarData.getShowTaskboard(); }, function(showTaskboard) {
@@ -22,7 +37,12 @@ kuroApp.controller('BoardCtrl', function($scope, $http, $location, $routeParams,
     if (typeof($routeParams.projectId) !== 'undefined') {
         navbarData.setShowTaskboard(true);
         navbarData.setHideProjectListLong(true);
-        $scope.projectId = $routeParams;
+        $scope.projectId = $routeParams.projectId;
+        apiService.getTaskList($scope.projectId)
+            .then(function(tasks) {
+                $scope.tasks = taskboardService.generateTaskboardGrid(tasks);
+                console.log($scope.tasks);
+          });
     }
 
     $scope.$on('$locationChangeStart', function(event, next, current) {
@@ -30,6 +50,10 @@ kuroApp.controller('BoardCtrl', function($scope, $http, $location, $routeParams,
         $scope.projectId = urlParserService.getProjectId(next);
         if ($scope.projectId && next.indexOf('taskboard') > -1) {
             $scope.showTaskboardFunc($scope.projectId);
+            apiService.getTaskList($scope.projectId)
+              .then(function(tasks) {
+                $scope.tasks = taskboardService.generateTaskboardGrid(tasks);
+              });
         }
     });
 
@@ -38,23 +62,14 @@ kuroApp.controller('BoardCtrl', function($scope, $http, $location, $routeParams,
             $scope.projects = projects;
         });
 
-    $scope.user;
-    apiService.getUserInfo()
-        .then(function(user) {
-            $scope.user = user;
-        });
-
     $scope.showTaskboardFunc = function(projectId) {
         navbarData.setHideProjectListLong(true);
+        $location.path('/project/' + projectId + '/taskboard', false);
+
         $timeout(function() {
             navbarData.setShowTaskboard(true);
         }, $scope.showTaskboardDelay);
 
-        apiService.getTaskList(projectId)
-          .then(function(tasks) {
-            $location.path('/project/' + projectId + '/taskboard', false);
-            $scope.tasks = tasks;
-          })
     }
     $scope.createProject = function() {
         $location.path('/project/create');

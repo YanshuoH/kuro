@@ -5,38 +5,12 @@
 .right {
   float: right;
 }
-/*
- * Personal
- */
-.personal button.btn-new-project{
-  position: absolute;
-  right: 0px;
+
+.taskboard-row {
+  overflow: hidden;
+  background-color: #5c5c5c;
 }
 
-
-/*
- * Project
- */
-
-.project .main {
-  padding-left: 35px;
-}
-
-.project .main .page-header {
-  padding-bottom: 9px;
-  margin: 20px 0 0 0;
-  border-bottom: 0;
-}
-
-.project .project-description {
-  font-size: 20px;
-  color: #999;
-}
-
-.project .content-header {
-  border-bottom: 1px solid #eee;
-  margin-bottom: 20px;
-}
 
 .nav-logo {
   border: 0;

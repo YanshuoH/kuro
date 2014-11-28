@@ -40,6 +40,52 @@ kuroApp.service('urlParserService', function() {
     }
 });
 
+kuroApp.service('taskboardService', function() {
+    var priorityMapping = {
+        '0': 'low',
+        '1': 'normal',
+        '2': 'urgent'
+    };
+
+    var statusMapping = {
+        '0': 'Todo',
+        '1': 'QA',
+        '2': 'Done'
+    }
+
+    var iteratePriority = function(task, grid) {
+        var priority = priorityMapping[task.priority.toString()];
+        if (typeof(grid[priority]) === 'undefined') {
+            grid[priority] = {};
+        }
+        iterateStatus(task, grid[priority]);
+    }
+
+    var iterateStatus = function(task, subGrid) {
+        var status = statusMapping[task.status.toString()];
+        if (typeof(subGrid[status]) === 'undefined') {
+            subGrid[status] = [task];
+        } else {
+            subGrid[status].push(task);
+        }
+    }
+
+    var generateTaskboardGrid = function(tasks) {
+        var grid = {};
+        // two level: priority/late, status
+        for (var i=0; i<tasks.length; i++) {
+            var task = tasks[i];
+            iteratePriority(task, grid);
+        }
+
+        return grid;
+    }
+
+    return {
+        generateTaskboardGrid: generateTaskboardGrid
+    }
+});
+
 kuroApp.service('userApiService', function($http, $q) {
     return {
         signin: signin,

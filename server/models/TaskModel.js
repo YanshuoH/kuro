@@ -22,6 +22,7 @@ var TaskModelSchema = new mongoose.Schema({
     description: {type: String},
     media: {},
     date: {
+        end: {type: Date, default: Date.now},
         created: {type: Date, default: Date.now},
         updated: {type: Date, default: Date.now},
     },
