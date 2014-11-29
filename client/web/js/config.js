@@ -68,6 +68,10 @@ kuro.config(function ($routeProvider, $locationProvider) {
             templateUrl: 'partials/task/taskForm',
             controller: 'TaskFormCtrl'
         })
+        .when('/test', {
+            templateUrl: 'partials/test',
+            controller: 'TestCtrl'
+        })
         .otherwise({
           redirectTo: '/'
         });

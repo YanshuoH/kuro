@@ -1,0 +1,8 @@
+.row
+  .col-md-6
+    .panel-default
+      .panel-body
+        .list-group(data-drop='true' ng-model='projects' jqyoui-droppable='{multiple:true}')
+          .list-group-item(ng-repeat='project in projects' ng-model='projects' ng-show='project.ref' data-drag='true' data-jqyoui-options="{revert: 'invalid'}" jqyoui-draggable="{index: {{$index}},animate:true}")
+            a {{ project.title }}
+  .col-md-6

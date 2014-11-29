@@ -2,7 +2,8 @@
 
 var kuro = angular.module('Kuro', [
     'ngRoute',
-    'ngAnimate'
+    'ngAnimate',
+    'ngDragDrop'
 ]);
 
 kuro.run(['$route', '$rootScope', '$location', function ($route, $rootScope, $location) {

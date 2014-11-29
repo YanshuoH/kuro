@@ -7,10 +7,14 @@
 }
 
 .taskboard-row {
+  margin: 1px 5px 1px 5px;
   overflow: hidden;
   background-color: #5c5c5c;
 }
 
+.taskboard-col {
+  padding: 5px 5px 5px 5px;
+}
 
 .nav-logo {
   border: 0;
