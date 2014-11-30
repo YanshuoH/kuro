@@ -172,7 +172,7 @@ var taskFixture = [
         title: "Urgent QA",
         description: "test description 3",
         status: 1,
-        priority: 2
+        priority: 1
     },
     {
         title: "Urgent Done",

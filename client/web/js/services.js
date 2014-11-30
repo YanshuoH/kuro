@@ -53,36 +53,53 @@ kuroApp.service('taskboardService', function() {
         '2': 'Done'
     }
 
-    var iteratePriority = function(task, grid) {
-        var priority = priorityMapping[task.priority.toString()];
-        if (typeof(grid[priority]) === 'undefined') {
-            grid[priority] = {};
-        }
-        iterateStatus(task, grid[priority]);
+    var getKeyByValue = function(obj, value) {
+        for (var prop in obj) {
+                if (obj.hasOwnProperty(prop) ) {
+                     if (obj[prop] === value)
+                         return prop;
+                }
+            }
+        };
+
+    var insertIntoGrid = function(grid, task) {
+        grid[priorityMapping[task.priority.toString()]]
+            [statusMapping[task.status.toString()]].push(task);
     }
 
-    var iterateStatus = function(task, subGrid) {
-        var status = statusMapping[task.status.toString()];
-        if (typeof(subGrid[status]) === 'undefined') {
-            subGrid[status] = [task];
-        } else {
-            subGrid[status].push(task);
-        }
-    }
-
-    var generateTaskboardGrid = function(tasks) {
+    var initTaskboardGrid = function() {
         var grid = {};
-        // two level: priority/late, status
-        for (var i=0; i<tasks.length; i++) {
-            var task = tasks[i];
-            iteratePriority(task, grid);
+        for (var priority in priorityMapping) {
+            grid[priorityMapping[priority]] = {};
+            for (var status in statusMapping) {
+                grid[priorityMapping[priority]][statusMapping[status]] = [];
+            }
         }
 
         return grid;
     }
 
+    var generateTaskboardGrid = function(tasks) {
+        var grid = initTaskboardGrid();
+        // two level: priority/late, status
+        for (var i=0; i<tasks.length; i++) {
+            var task = tasks[i];
+            insertIntoGrid(grid, task);
+        }
+
+        return grid;
+    }
+
+    var generateUpdateData = function(priority, status) {
+        return {
+            priority: parseInt(getKeyByValue(priorityMapping, priority)),
+            status: parseInt(getKeyByValue(statusMapping, status))
+        };
+    }
+
     return {
-        generateTaskboardGrid: generateTaskboardGrid
+        generateTaskboardGrid: generateTaskboardGrid,
+        generateUpdateData: generateUpdateData
     }
 });
 

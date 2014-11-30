@@ -39,6 +39,8 @@ var TaskModelSchema = new mongoose.Schema({
 var requiredFields = [
     'creatorId',
     'projectId',
+    'priority',
+    'status',
     // 'ref',
     'title',
     'description',

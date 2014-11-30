@@ -12,6 +12,7 @@ kuroApp.controller('TestCtrl', function($scope, apiService) {
             $scope.projects = projects;
         });
 
+    $scope.list = [];
     $scope.dropCallback = function(event, ui) {
         console.log('Drop!');
     }

@@ -8,14 +8,16 @@
 
 .taskboard-row {
   margin: 1px 5px 1px 5px;
-  overflow: hidden;
-  background-color: #5c5c5c;
+  <!--background-color: #5c5c5c;-->
 }
 
 .taskboard-col {
   padding: 5px 5px 5px 5px;
 }
 
+.taskboard-col .task-item {
+  z-index: 100;
+}
 .nav-logo {
   border: 0;
   border-right: 2px #5c5c5c solid;
