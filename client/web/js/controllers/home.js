@@ -6,14 +6,11 @@ kuroApp.controller('HomeCtrl', function($scope, $http) {
 
 });
 
-kuroApp.controller('TestCtrl', function($scope, apiService) {
-    apiService.getProjectList()
-        .then(function(projects) {
-            $scope.projects = projects;
-        });
-
-    $scope.list = [];
-    $scope.dropCallback = function(event, ui) {
-        console.log('Drop!');
+kuroApp.controller('TestCtrl', function($scope, $modal, $templateCache, apiService) {
+    $scope.open = function () {
+        var modalInstance = $modal.open({
+            templateUrl: 'testModal',
+            controller: 'TestCtrl',
+        })
     }
 });

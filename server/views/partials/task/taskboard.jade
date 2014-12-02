@@ -12,6 +12,6 @@
   .panel-body
     .row.taskboard-row(ng-repeat='priority in priorityData' ng-if='typeof(tasks[priority]) !== "undefined"')
       .col-md-4.taskboard-col(ng-repeat='status in statusData')
-        .list-group(ng-model='tasks[priority][status]' data-drop='true' jqyoui-droppable='{multiple:true,onDrop:"dropCallback(priority, status)",stack: true}')
+        .list-group(ng-model='tasks[priority][status]' data-drop='true' jqyoui-droppable='{onDrop:"dropCallback(priority, status)",stack: true}')
           a.list-group-item placeholder
-          a.list-group-item.task-item(href='' ng-repeat='task in tasks[priority][status] track by $index' ng-model='tasks[priority][status]' data-drag='true' data-jqyoui-options="{revert: 'invalid'}" jqyoui-draggable="{index: {{$index}},animate:true, onStart:'dragStartCallback(task)'}") {{ task.title }}
+          a.list-group-item.task-item(href='' ng-repeat='task in tasks[priority][status] track by $index' ng-model='tasks[priority][status]' data-drag='true' data-jqyoui-options="{revert: 'invalid'}" jqyoui-draggable="{index: {{$index}}, onStart:'dragStartCallback(task)'}") {{ task.title }}
