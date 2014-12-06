@@ -59,9 +59,15 @@ kuroApp.controller('BoardCtrl', function(
         }
     });
 
-    $scope.$on('$locationChangeStart', function(current, old) {
+    $scope.$on('$locationChangeSuccess', function(current, old) {
         $scope.shouldShowTaskModal($location.hash());
     });
+
+    // If init page should show task modal
+    $timeout(function() {
+        $scope.shouldShowTaskModal($location.hash());
+    }, 1000)
+    
 
     apiService.getProjectList()
         .then(function(projects) {
