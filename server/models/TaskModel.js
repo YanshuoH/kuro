@@ -12,6 +12,7 @@ var ObjectId = mongoose.Schema.ObjectId;
 var TaskModelSchema = new mongoose.Schema({
     creatorId: {type: ObjectId, ref: 'user'},
     projectId: {type: ObjectId, ref: 'project'},
+    assignTo: {type: ObjectId, ref: 'user'}
     ref: {type: String, trim: true},
     title: {type: String, trim: true},
     priority: {type: Number, default: 0},
@@ -20,6 +21,19 @@ var TaskModelSchema = new mongoose.Schema({
         name: {type: String, trim: true}
     },
     description: {type: String},
+    link: [{
+        type: {type: String, trim: true},
+        content: {type: String}
+    }],
+    activity: [{
+        type: {type: String, trim: true},
+        user: {
+            _id: {type: ObjectId, ref: 'user'},
+            username: {type: String}
+        }
+        at: {type: Date}
+        content: {type: String}
+    }]
     media: {},
     date: {
         end: {type: Date, default: Date.now},

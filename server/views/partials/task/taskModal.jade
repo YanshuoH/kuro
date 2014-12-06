@@ -1,8 +1,8 @@
 script(type="text/ng-template" id="taskModal")
   .modal-header
-    h3 {{ task.title }}
+    h4 {{ task.ref }}/{{ task.title }}
   .modal-body
-    .row.task-cell.task-detail
+    .row.task-row.task-detail
       .col-md-6.task-cell.task-date
         ul
           li Updated at : {{ task.date.updated | date:'yyyy-MM-dd HH:mm' }}
@@ -12,6 +12,24 @@ script(type="text/ng-template" id="taskModal")
         ul
           li status : {{ task.status }}
           li priority: {{ task.priority }}
+      .col-md-6.task-cell.task-date(ng-show='task.assignTo')
+        ul
+          li assignTo : {{ task.assignTo }}
+      .col-md-6.task-cell.task-date
+        ul
+          li Estimation: {{ task.time.estimation }}
+          li Consomation: {{ task.time.consomation }}
+    .row.task-row.task-description
+      .col-md-12
+        h4 Description: 
+        p {{ task.description }}
+    .row.task-row.task-link(ng-show='task.link')
+      .col-md-12
+        ul
+          li(ng-repeat='link in task.link') {{ link.type }} - {{ link.content }}
+    .row.task-row.task-activity
+      .col-md-12
+        h4 Activities
 //- .container-fluid.task
 //-   .row.content-header
 //-     .col-md-12.col-md-offset-1.col-sm-12

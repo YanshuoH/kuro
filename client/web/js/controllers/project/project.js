@@ -23,6 +23,7 @@ kuroApp.controller('BoardCtrl', function(
     $scope.showTaskboardDelay = 500;
     $scope.showTaskboard = navbarData.getShowTaskboard();
     $scope.hideProjectListLong = navbarData.getHideProjectListLong();
+    $scope.isDrag = false;
 
     $scope.priorityData = ['urgent', 'normal', 'low'];
     $scope.statusData = ['Todo', 'QA', 'Done'];
@@ -101,8 +102,10 @@ kuroApp.controller('BoardCtrl', function(
         }
     };
 
-    $scope.addHash = function(hash) {
-        $location.hash(hash);
+    $scope.addHash = function(hash, $event) {
+        if (!$scope.isDrag) {
+            $location.hash(hash);
+        }
     }
 
     $scope.openTaskModal = function(taskId) {
@@ -144,10 +147,12 @@ kuroApp.controller('BoardCtrl', function(
             .then(function(response) {
                 console.log(response);
             })
+        $scope.isDrag = false;
     };
 
     $scope.dragStartCallback = function(event, ui, task) {
         $scope.taskDragged = task;
+        $scope.isDrag = true;
     }
 })
 
