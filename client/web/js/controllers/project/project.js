@@ -9,6 +9,7 @@ kuroApp.controller('BoardCtrl', function(
     $location,
     $routeParams,
     $timeout,
+    $modal,
     apiService,
     urlParserService,
     taskboardService,
@@ -35,6 +36,7 @@ kuroApp.controller('BoardCtrl', function(
         $scope.hideProjectListLong = navbarData.getHideProjectListLong();
     });
 
+    // Dispatch view
     if (typeof($routeParams.projectId) !== 'undefined') {
         navbarData.setShowTaskboard(true);
         navbarData.setHideProjectListLong(true);
@@ -55,6 +57,10 @@ kuroApp.controller('BoardCtrl', function(
                 $scope.tasks = taskboardService.generateTaskboardGrid(tasks);
               });
         }
+    });
+
+    $scope.$on('$locationChangeStart', function(current, old) {
+        $scope.shouldShowTaskModal($location.hash());
     });
 
     apiService.getProjectList()
@@ -88,6 +94,42 @@ kuroApp.controller('BoardCtrl', function(
             }
         }
     };
+
+    $scope.addHash = function(hash) {
+        $location.hash(hash);
+    }
+
+    $scope.openTaskModal = function(taskId) {
+        var modalInstance = $modal.open({
+            templateUrl: 'taskModal',
+            controller: 'TaskCtrl',
+            size: 'lg'
+        })
+        // After close event
+        modalInstance.result.then(
+            function () {
+                // Submit
+                },
+            function () {
+                // Close
+                // Clear hash
+                $location.hash('');
+            }
+        );
+    }
+
+    $scope.shouldShowTaskModal = function(hash) {
+        var hashParams = urlParserService.getTaskParamFromHash($location.hash());
+        if (typeof(hashParams.taskId) !== 'undefined') {
+            $scope.openTaskModal(hashParams.taskId);
+        }
+    }
+
+    // If task modal should open
+    // if ($location.hash() !== '') {
+    //     $openModalFuncCalled = true;
+    //     $scope.shouldShowTaskModal($location.hash());
+    // }
 
     $scope.dropCallback = function(event, ui, priority, status) {
         // update task

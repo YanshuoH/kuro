@@ -16,17 +16,20 @@ kuroApp.controller('TaskBoardCtrl', function($scope, $http, $routeParams, apiSer
 });
 
 
-kuroApp.controller('TaskCtrl', function($scope, $http, $route, $routeParams, $location, apiService) {
-    $scope.taskId = $routeParams.taskId;
-    $scope.projectId = $routeParams.projectId;
+kuroApp.controller('TaskCtrl', function($scope, $http, $route, $routeParams, $location, apiService, urlParserService) {
+    var hashParams = urlParserService.getTaskParamFromHash($location.hash());
+    if (typeof(hashParams.taskId) === 'undefined') {
+        throw 'Not a legay hash query';
+    } else {
+        $scope.hashParams = hashParams;
+        $scope.taskId = $scope.hashParams.taskId;
+    }
 
-    $scope.isNew = true;
-    $scope.formData = {};
+    // Route param is no longer working because no route config for this controller
+    $scope.projectId = $scope.projectId = urlParserService.getProjectId($location.path());
     apiService.getTask($scope.projectId, $scope.taskId)
         .then(function(task) {
-            $scope.isNew = false;
             $scope.task = task;
-            $scope.formData = task;
         });
 
     $scope.changeHash = function(hash) {

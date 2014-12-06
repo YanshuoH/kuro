@@ -27,7 +27,25 @@ kuroApp.factory('navbarData', function() {
 
 kuroApp.service('urlParserService', function() {
     return {
-        getProjectId: getProjectId
+        getProjectId: getProjectId,
+        getTaskParamFromHash: getTaskParamFromHash
+    }
+
+    function parseQuery(query) {
+        var a = query.split('&');
+        if (a == '') {
+            return {};
+        }
+        var b = {};
+        for (var i = 0; i < a.length; ++i) {
+            var p=a[i].split('=', 2);
+            if (p.length == 1) {
+                b[p[0]] = '';
+            }
+            else
+                b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, ' '));
+        }
+        return b;
     }
 
     function getProjectId(url) {
@@ -37,6 +55,11 @@ kuroApp.service('urlParserService', function() {
             return url.match(/\/project\/(\d+)/)[1];
         }
         return undefined;
+    }
+
+    function getTaskParamFromHash(hash) {
+        var params = parseQuery(hash);
+        return params;
     }
 });
 
