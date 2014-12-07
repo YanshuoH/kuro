@@ -76,52 +76,6 @@
   font-size: 25px;
 }
 
-.taskboard .page-header {
-  margin: 10px 0 0 20px;
-  border-bottom: 0;
-}
-
-/*
- * Taskboard
- */
-.taskboard .seperator {
-    border-bottom: 1px solid #eee;
-}
-
-.taskboard .board-col {
-   border-right: 1px dashed #333;
-}
-
-/*
- * Task
- */
-.task .page-header {
-  padding-bottom: 9px;
-  margin: 20px 0 0 0;
-  border-bottom: 0;
-}
-
-.task .content-header {
-  border-bottom: 1px solid #eee;
-  margin-bottom: 20px;
-}
-
-@media only screen and (min-device-width: 768px) {
-  .task .rg-vertical-separator {
-    border-right: 1px solid #eee;
-  }
-}
-
-.task .panel.panel-default.activity {
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-}
-
-.task .panel-default.activity{
-  border-color: transparent;
-}
-
 /*
  * For ng-animate slide
  */
@@ -135,4 +89,23 @@
   opacity: 0;
   -webkit-transition: all linear 0s;
   transition: all linear 0s;
+}
+
+/*
+ * For edit in place
+ */
+.edit-in-place span {
+  cursor: pointer;
+}
+
+.edit-in-place input {
+  display: none;
+}
+
+.edit-in-place.active span {
+  display: none;
+}
+
+.edit-in-place.active input {
+  display: inline-block;
 }
