@@ -26,3 +26,8 @@ exports.taskPartials = function(req, res) {
 	var name = req.params.name;
 	res.render('partials/task/' + name);
 }
+
+exports.includePartials = function(req, res) {
+    var name = req.params.name;
+    res.render('partials/include/' + name);
+}

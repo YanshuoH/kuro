@@ -98,14 +98,17 @@
   cursor: pointer;
 }
 
-.edit-in-place input {
+.edit-in-place input,
+.edit-in-place select {
   display: none;
 }
 
-.edit-in-place.active span {
+.edit-in-place.active span,
+.edit-in-place.active select {
   display: none;
 }
 
-.edit-in-place.active input {
+.edit-in-place.active input,
+.edit-in-place.active select {
   display: inline-block;
 }

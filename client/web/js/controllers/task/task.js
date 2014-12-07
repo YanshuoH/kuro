@@ -19,7 +19,7 @@ kuroApp.controller('TaskBoardCtrl', function($scope, $http, $routeParams, apiSer
 kuroApp.controller('TaskCtrl', function($scope, $http, $route, $routeParams, $location, apiService, urlParserService) {
     var hashParams = urlParserService.getTaskParamFromHash($location.hash());
     if (typeof(hashParams.taskId) === 'undefined') {
-        throw 'Not a legay hash query';
+        throw 'Not a legal hash query';
     } else {
         $scope.hashParams = hashParams;
         $scope.taskId = $scope.hashParams.taskId;

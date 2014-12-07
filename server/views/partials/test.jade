@@ -2,6 +2,6 @@
   .col-md-6
     ul
       li(ng-repeat='contact in contacts')
-        edit-in-place(value='contact.name')
+        edit-in-place(type='priority' value='contact.name')
     ul
       li(ng-repeat='contact in contacts') {{ contact.name }}

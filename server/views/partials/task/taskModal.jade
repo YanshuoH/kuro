@@ -10,7 +10,8 @@ script(type="text/ng-template" id="taskModal")
           li(ng-show='task.date.due') Due date: {{ task.date.due }}
       .col-md-6.task-cell.task-date
         ul
-          li status : {{ task.status }}
+          li status :
+            edit-in-place(value='task.status')
           li priority: {{ task.priority }}
       .col-md-6.task-cell.task-date(ng-show='task.assignTo')
         ul
@@ -21,7 +22,7 @@ script(type="text/ng-template" id="taskModal")
           li Consomation: {{ task.time.consomation }}
     .row.task-row.task-description
       .col-md-12
-        h4 Description: 
+        h4 Description:
         p {{ task.description }}
     .row.task-row.task-link(ng-show='task.link')
       .col-md-12

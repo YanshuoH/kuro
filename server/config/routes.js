@@ -19,6 +19,7 @@ module.exports = function(app, config, passport) {
     app.get('/partials/user/:name', routes.userPartials);
     app.get('/partials/project/:name', routes.projectPartials);
     app.get('/partials/task/:name', routes.taskPartials);
+    app.get('/partials/include/:name', routes.includePartials);
     /**
      * JSON API
     */

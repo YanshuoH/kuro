@@ -8,7 +8,7 @@ kuroApp.controller('HomeCtrl', function($scope, $http) {
 
 kuroApp.controller('TestCtrl', function($scope, $modal, $templateCache, apiService) {
   $scope.contacts = [
-    { name: 'Sharon'},
-    { name: 'Steve'}
+    { name: 'Urgent'},
+    { name: 'Normal'}
   ];
 });
