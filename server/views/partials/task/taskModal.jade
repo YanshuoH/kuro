@@ -33,6 +33,15 @@ script(type="text/ng-template" id="taskModal")
     .row.task-row.task-activity
       .col-md-12
         h4 Activities
+          a.btn.btn-primary.btn-xs(href='') Add comment
+        tabset
+          tab(heading='All')
+            p all
+          tab(heading='Comments')
+            p Comments
+  .modal-footer
+    button.btn.btn-default(data-dismiss='modal') Close
+    button.btn.btn-primary Save Changes
 //- .container-fluid.task
 //-   .row.content-header
 //-     .col-md-12.col-md-offset-1.col-sm-12
