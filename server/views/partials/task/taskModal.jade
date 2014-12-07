@@ -1,6 +1,7 @@
 script(type="text/ng-template" id="taskModal")
   .modal-header
-    h4 {{ task.ref }}/{{ task.title }}
+    h4
+      edit-in-place(type='default' value='task.title')
   .modal-body
     .row.task-row.task-detail
       .col-md-6.task-cell.task-date
@@ -11,8 +12,9 @@ script(type="text/ng-template" id="taskModal")
       .col-md-6.task-cell.task-date
         ul
           li status :
-            edit-in-place(value='task.status')
-          li priority: {{ task.priority }}
+            edit-in-place(type='status' value='task.status')
+          li priority: 
+            edit-in-place(type='priority' value='task.priority')
       .col-md-6.task-cell.task-date(ng-show='task.assignTo')
         ul
           li assignTo : {{ task.assignTo }}
@@ -23,7 +25,7 @@ script(type="text/ng-template" id="taskModal")
     .row.task-row.task-description
       .col-md-12
         h4 Description:
-        p {{ task.description }}
+        edit-in-place(type='description' value='task.description')
     .row.task-row.task-link(ng-show='task.link')
       .col-md-12
         ul

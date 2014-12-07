@@ -94,21 +94,25 @@
 /*
  * For edit in place
  */
+.edit-in-place p,
 .edit-in-place span {
   cursor: pointer;
 }
 
 .edit-in-place input,
+.edit-in-place textarea,
 .edit-in-place select {
   display: none;
 }
 
 .edit-in-place.active span,
+.edit-in-place.active p,
 .edit-in-place.active select {
   display: none;
 }
 
 .edit-in-place.active input,
+.edit-in-place.active textarea,
 .edit-in-place.active select {
   display: inline-block;
 }
