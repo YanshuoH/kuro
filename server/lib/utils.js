@@ -85,3 +85,13 @@ exports.arrayCompare = function(array1, array2) {
     }
     return true;
 }
+
+exports.errorHandler = function(res, err) {
+    if (typeof(err.status) !== 'undefined') {
+        return res.status(err.status).json(err.message);
+    } else {
+        return res.status(500).json({
+            message: 'Something went wrong'
+        });
+    }
+}

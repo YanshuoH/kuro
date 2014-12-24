@@ -1,4 +1,7 @@
 var config = require('../config/config');
+
+var errorHandler = require(config.path.lib + '/errorHandler');
+
 var TaskRepository = require(config.path.repository + '/task');
 
 
@@ -9,10 +12,16 @@ var TaskRepository = require(config.path.repository + '/task');
  * Fetch parent project info into task data, only return project fields in criteria
  */
 exports.loadByShortId = function(req, res, next, id) {
+    if (!req.isAuthenticated()) {
+        return errorHandler.handle(res, {
+            status: 401,
+            message: 'Please login with your account'
+        });
+    }
     var projectId = req.project._id;
     TaskRepository.loadTaskFetchProject(id, projectId, function(err, task) {
         if (err) {
-            return next(err);
+            return errorHandler.handle(res, err);
         }
         req.task = task;
         next();
@@ -43,8 +52,7 @@ exports.listByProject = function(req, res) {
     // TODO, only return title, description...except media sort of big thing
     TaskRepository.listByProject(req.project._id.toString(), function(err, tasks) {
         if (err) {
-            console.log(err);
-            res.send(err);
+            return errorHandler.handle(res, err);
         } else {
             res.json(tasks);
         }
@@ -59,7 +67,7 @@ exports.listByProject = function(req, res) {
 exports.create = function(req, res) {
     TaskRepository.create(req, function(err, task) {
         if (err) {
-            res.send(err);
+            return errorHandler.handle(res, err);
         } else {
             res.json(task);
         }
@@ -74,7 +82,7 @@ exports.create = function(req, res) {
 exports.update = function(req, res) {
     TaskRepository.update(req, function(err, task) {
         if (err) {
-            res.send(err);
+            return errorHandler.handle(res, err);
         } else {
             res.json(task);
         }

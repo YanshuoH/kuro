@@ -2,6 +2,8 @@ var async = require('async');
 
 var config = require('../config/config');
 var utils = require(config.path.lib + '/utils');
+var errorHandler = require(config.path.lib + '/errorHandler');
+
 var ProjectRepository = require(config.path.repository + '/project');
 
 var mongoose = require('mongoose');
@@ -13,9 +15,15 @@ var ProjectModel = mongoose.model('ProjectModel');
  * When :projectShortId detected in url, load and fetch project in req
  */
 exports.loadByShortId = function(req, res, next, id) {
+    if (!req.isAuthenticated()) {
+        return errorHandler.handle(res, {
+            status: 401,
+            message: 'Please login with your account'
+        });
+    }
     ProjectRepository.loadByShortId(id, function(err, project) {
         if (err) {
-            return next(err);
+            return errorHandler.handle(res, err);
         }
         req.project = project;
         next();
@@ -86,7 +94,7 @@ exports.create = function(req, res) {
 exports.update = function(req, res) {
     ProjectRepository.update(req, function(err, project) {
         if (err) {
-            res.send(err);
+            return errorHandler.handle(res, err);
         } else {
             res.json(project);
         }
@@ -101,7 +109,7 @@ exports.update = function(req, res) {
 exports.addUser = function(req, res) {
     ProjectRepository.addUser(req, function(err, user) {
         if (err) {
-            res.status(500).json(err);
+            return errorHandler.handle(res, err);
         } else {
             res.json(user);
         }
