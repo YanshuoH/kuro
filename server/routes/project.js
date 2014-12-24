@@ -75,11 +75,10 @@ exports.listByIds = function(req, res) {
  *
  * POST
  */
-// TODO: migrate to repository
 exports.create = function(req, res) {
     ProjectRepository.create(req, function(err, project) {
         if (err) {
-            res.send(err);
+            return errorHandler.handle(res, err);
         } else {
             res.json(project);
         }
