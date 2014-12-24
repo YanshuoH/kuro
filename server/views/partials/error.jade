@@ -1,6 +1,5 @@
-div(ng-include="'partials/navbar'")
-.container
-  .header
+.container(ng-controller='ErrorCtrl')
+  .header(ng-if='hasError')
     .jumbotron
       h1 Sorry!
       p.lead {{ wording }}

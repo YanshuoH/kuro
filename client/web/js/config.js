@@ -9,10 +9,6 @@ kuro.config(function ($routeProvider, $locationProvider) {
             templateUrl: 'partials/home',
             controller: 'HomeCtrl'
         })
-        .when('/unauthorize', {
-            templateUrl: 'partials/error',
-            controller: 'ErrorCtrl'
-        })
         .when('/user/signup', {
             templateUrl: 'partials/user/signup',
             controller: 'SignupCtrl'
@@ -75,5 +71,6 @@ kuro.config(function ($routeProvider, $locationProvider) {
         .otherwise({
           redirectTo: '/'
         });
+
     $locationProvider.html5Mode(true);
 });

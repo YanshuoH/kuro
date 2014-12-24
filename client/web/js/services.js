@@ -25,6 +25,26 @@ kuroApp.factory('navbarData', function() {
     };
 })
 
+kuroApp.factory('errorData', function() {
+    // Default
+    var errorContent = {
+        status: 200,
+        message: ''
+    }
+
+    return {
+        getErrorContent: function() {
+            return errorContent;
+        },
+        setErrorContent: function(status, message) {
+            errorContent = {
+                status: status,
+                message: message
+            };
+        }
+    }
+})
+
 kuroApp.service('urlParserService', function() {
     return {
         getProjectId: getProjectId,
@@ -183,7 +203,7 @@ kuroApp.service('userApiService', function($http, $q) {
 });
 
 // http://www.bennadel.com/blog/2612-using-the-http-service-in-angularjs-to-make-ajax-requests.htm
-kuroApp.service('apiService', function($http, $q) {
+kuroApp.service('apiService', function($http, $q, errorData) {
     return {
         getTask: getTask,
         createTask: createTask,
@@ -293,9 +313,14 @@ kuroApp.service('apiService', function($http, $q) {
     }
     // Private
     function handleError(response, status) {
+        console.log(response);
         if (!angular.isObject(response.data) || !response.data.error) {
-            console.log(response);
-            return $q.reject("An unknown error occurred");
+            if (response.status == 500) {
+                errorData.setErrorContent(response.status, response.data.message);
+            } else if (response.status == 401) {
+                errorData.setErrorContent(response.status, response.data.message);
+            }
+            return $q.reject(response.data.message);
         }
 
         // TODO: location redirect to error page
@@ -306,6 +331,12 @@ kuroApp.service('apiService', function($http, $q) {
 
     // Private
     function handleSuccess(response) {
+        console.log(response);
+        // no content found and not for task modal
+        if (response.status == 204 && 
+            !/\/api\/project\/.*\/task\//g.exec(response.config.url)) {
+            errorData.setErrorContent(response.status, 'No content found');
+        }
         return response.data;
     }
 })
