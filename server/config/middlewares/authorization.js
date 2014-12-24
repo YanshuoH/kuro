@@ -2,16 +2,12 @@
  *  Generic require login routing middleware
  */
 var msgTemplate = {
-    '403' :
-        {
-            status: 401,
-            message: 'You are not authorized'
-        },
-    '404' :
-        {
-            status: 404,
-            message: 'Page not found'
-        }
+    'login' : {
+        message: 'Please login with your account'
+    },
+    'authorize': {
+        message: 'This account does not have access to the project'
+    }
 }
 
 
@@ -19,7 +15,7 @@ exports.requiresLogin = function (req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     }
-    res.send(msgTemplate['403']);
+    res.status(401).json(msgTemplate['login']);
 }
 
 exports.project = {
@@ -28,7 +24,7 @@ exports.project = {
         if (index > -1) {
             return next();
         }
-        res.send(msgTemplate['403']);
+        res.status(401).json(msgTemplate['authorize']);
     }
 }
 
@@ -38,6 +34,6 @@ exports.task = {
         if (index > -1) {
             return next();
         }
-        res.send(msgTemplate['403']);
+        res.status(401).json(msgTemplate['authorize']);
     }
 }
