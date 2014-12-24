@@ -17,7 +17,10 @@ exports.load = function(id, cb) {
                 if (err) {
                     callback(err);
                 } else if (!project) {
-                    callback(new Error('Failed to load Project ' + id));
+                    callback({
+                        status: 204,
+                        message: 'Failed to load project by id ' + id
+                   });
                 }
                 callback(null, project);
             });
@@ -33,7 +36,10 @@ exports.loadByShortId = function(projectShortId, cb) {
                 if (err) {
                     callback(err);
                 } else if (!project) {
-                   callback(new Error('Failed to load Project by shortId ' + projectShortId));
+                   callback({
+                        status: 204,
+                        message: 'Failed to load project by shortId ' + projectShortId
+                   });
                 } else {
                     callback(null, project);
                 }
