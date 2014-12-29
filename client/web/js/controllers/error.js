@@ -12,4 +12,12 @@ kuroApp.controller('ErrorCtrl', function($scope, $location, errorData) {
             $scope.wording = errorContent.message
         }
     });
+
+    // Syn with modalErrorData
+    $scope.$watch(function () { return errorData.getModalErrorContent(); }, function(modalErrorContent) {
+        if (typeof(modalErrorContent.message) !== 'undefined' && modalErrorContent.message.length > 0) {
+            $scope.modalHasError = true;
+            $scope.wording = modalErrorContent.message
+        }
+    });
 });

@@ -30,7 +30,12 @@ kuroApp.factory('errorData', function() {
     var errorContent = {
         status: 200,
         message: ''
-    }
+    };
+
+    var modalErrorContent = {
+        status: 200,
+        message: ''
+    };
 
     return {
         getErrorContent: function() {
@@ -41,8 +46,17 @@ kuroApp.factory('errorData', function() {
                 status: status,
                 message: message
             };
+        },
+        setModalErrorContent: function(status, message) {
+            modalErrorContent = {
+                status: status,
+                message: message
+            }
+        },
+        getModalErrorContent: function() {
+            return modalErrorContent;
         }
-    }
+    };
 })
 
 kuroApp.service('urlParserService', function() {
@@ -315,10 +329,12 @@ kuroApp.service('apiService', function($http, $q, errorData) {
     function handleError(response, status) {
         console.log(response);
         if (!angular.isObject(response.data) || !response.data.error) {
-            if (response.status == 500) {
-                errorData.setErrorContent(response.status, response.data.message);
-            } else if (response.status == 401) {
-                errorData.setErrorContent(response.status, response.data.message);
+            if (response.status == 500 || response.status == 401) {
+                if (/\/api\/project\/.*\/task\//g.exec(response.config.url)) {
+                    errorData.setModalErrorContent(response.status, response.data.message);
+                } else {
+                    errorData.setErrorContent(response.status, response.data.message);
+                }
             }
             return $q.reject(response.data.message);
         }
@@ -332,11 +348,15 @@ kuroApp.service('apiService', function($http, $q, errorData) {
     // Private
     function handleSuccess(response) {
         console.log(response);
-        // no content found and not for task modal
-        if (response.status == 204 && 
-            !/\/api\/project\/.*\/task\//g.exec(response.config.url)) {
-            errorData.setErrorContent(response.status, 'No content found');
+        // for task modal
+        if (response.status == 204) {
+            if (/\/api\/project\/.*\/task\//g.exec(response.config.url)) {
+                errorData.setModalErrorContent(response.status, 'No content found');
+            } else {
+                errorData.setErrorContent(response.status, 'No content found');
+            }
         }
+
         return response.data;
     }
 })

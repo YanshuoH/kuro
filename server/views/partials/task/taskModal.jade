@@ -3,6 +3,8 @@ script(type="text/ng-template" id="taskModal")
     h4
       edit-in-place(type='default' value='task.title')
   .modal-body
+    .row
+      .col-md-12(ng-include="'partials/task/taskError'")
     .row.task-row.task-detail
       .col-md-6.task-cell.task-date
         ul
