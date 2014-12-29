@@ -16,21 +16,32 @@ kuroApp.controller('TaskBoardCtrl', function($scope, $http, $routeParams, apiSer
 });
 
 
-kuroApp.controller('TaskCtrl', function($scope, $http, $route, $routeParams, $location, apiService, urlParserService) {
-    var hashParams = urlParserService.getTaskParamFromHash($location.hash());
-    if (typeof(hashParams.taskId) === 'undefined') {
-        throw 'Not a legal hash query';
-    } else {
-        $scope.hashParams = hashParams;
-        $scope.taskId = $scope.hashParams.taskId;
-    }
+kuroApp.controller('TaskCtrl', function($scope, $http, $route, $routeParams, $location, apiService, urlParserService, taskModalData) {
 
-    // Route param is no longer working because no route config for this controller
-    $scope.projectId = $scope.projectId = urlParserService.getProjectId($location.path());
-    apiService.getTask($scope.projectId, $scope.taskId)
-        .then(function(task) {
-            $scope.task = task;
-        });
+    $scope.$watch(function() {
+        return $location.hash();
+    }, function(value) {
+        if (!!value) {
+            $scope.loadTaskFromHash(value);
+        }
+    })
+
+    $scope.loadTaskFromHash = function(hash) {
+        var hashParams = urlParserService.getTaskParamFromHash($location.hash());
+        if (typeof(hashParams.taskId) === 'undefined') {
+            throw 'Not a legal hash query';
+        } else {
+            $scope.hashParams = hashParams;
+            $scope.taskId = $scope.hashParams.taskId;
+        }
+
+        // Route param is no longer working because no route config for this controller
+        $scope.projectId = $scope.projectId = urlParserService.getProjectId($location.path());
+        apiService.getTask($scope.projectId, $scope.taskId)
+            .then(function(task) {
+                $scope.task = task;
+            });
+    }
 
     $scope.changeHash = function(hash) {
         $location.hash(hash);

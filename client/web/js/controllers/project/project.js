@@ -112,23 +112,25 @@ kuroApp.controller('BoardCtrl', function(
     $scope.openTaskModal = function(taskId) {
         // Close opened modal
         // $modalStack.dismissAll();
-
-        var modalInstance = $modal.open({
-            templateUrl: 'taskModal',
-            controller: 'TaskCtrl',
-            size: 'lg'
-        })
-        // After close event
-        modalInstance.result.then(
-            function () {
-                // Submit
-                },
-            function () {
-                // Close
-                // Clear hash
-                $location.hash('');
-            }
-        );
+        // If no modal opened
+        if (!$modalStack.getTop()) {
+            var modalInstance = $modal.open({
+                templateUrl: 'taskModal',
+                controller: 'TaskCtrl',
+                size: 'lg'
+            })
+            // After close event
+            modalInstance.result.then(
+                function () {
+                    // Submit
+                    },
+                function () {
+                    // Close
+                    // Clear hash
+                    $location.hash('');
+                }
+            );
+        }
     }
 
     $scope.shouldShowTaskModal = function(hash) {
