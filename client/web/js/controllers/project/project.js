@@ -10,6 +10,7 @@ kuroApp.controller('BoardCtrl', function(
     $routeParams,
     $timeout,
     $modal,
+    $modalStack,
     apiService,
     urlParserService,
     taskboardService,
@@ -48,7 +49,7 @@ kuroApp.controller('BoardCtrl', function(
           });
     }
 
-    $scope.$on('$locationChangeStart', function(event, next, current) {
+    $scope.$on('$routeChangeStart', function(event, next, current) {
         // project list -> taskboard : get project id
         $scope.projectId = urlParserService.getProjectId(next);
         if ($scope.projectId && next.indexOf('taskboard') > -1) {
@@ -109,6 +110,9 @@ kuroApp.controller('BoardCtrl', function(
     }
 
     $scope.openTaskModal = function(taskId) {
+        // Close opened modal
+        // $modalStack.dismissAll();
+
         var modalInstance = $modal.open({
             templateUrl: 'taskModal',
             controller: 'TaskCtrl',
