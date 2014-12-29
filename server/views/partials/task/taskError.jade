@@ -1,0 +1,4 @@
+.container-fluid(ng-controller='ErrorCtrl')
+  .alert.alert-dismissable.alert-danger(ng-if='modalHasError')
+    button.close(type='button' data-dismiss='alert') ×
+    p {{ wording }}
