@@ -55,6 +55,12 @@ kuroApp.factory('errorData', function() {
         },
         getModalErrorContent: function() {
             return modalErrorContent;
+        },
+        clear: function() {
+            modalErrorContent = {
+                status: 200,
+                message: ''
+            }
         }
     };
 })
@@ -62,7 +68,8 @@ kuroApp.factory('errorData', function() {
 kuroApp.service('urlParserService', function() {
     return {
         getProjectId: getProjectId,
-        getTaskParamFromHash: getTaskParamFromHash
+        getTaskParamFromHash: getTaskParamFromHash,
+        isOnlyHashChange: isOnlyHashChange
     }
 
     function parseQuery(query) {
@@ -94,6 +101,15 @@ kuroApp.service('urlParserService', function() {
     function getTaskParamFromHash(hash) {
         var params = parseQuery(hash);
         return params;
+    }
+
+    function isOnlyHashChange(next, current) {
+        var nextWithoutHash = next.substring(0, next.indexOf('#'))
+        var currentWithoutHash = current.substring(0, current.indexOf('#'))
+
+        if (nextWithoutHash === currentWithoutHash) {
+            return true;
+        }
     }
 });
 
@@ -355,6 +371,7 @@ kuroApp.service('apiService', function($http, $q, errorData) {
             } else {
                 errorData.setErrorContent(response.status, 'No content found');
             }
+            return $q.reject(response.data.message);
         }
 
         return response.data;

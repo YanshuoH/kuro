@@ -16,8 +16,16 @@ kuroApp.controller('TaskBoardCtrl', function($scope, $http, $routeParams, apiSer
 });
 
 
-kuroApp.controller('TaskCtrl', function($scope, $http, $route, $routeParams, $location, apiService, urlParserService, taskModalData) {
-
+kuroApp.controller('TaskCtrl', function(
+    $scope,
+    $http,
+    $route,
+    $routeParams,
+    $location,
+    apiService,
+    urlParserService,
+    errorData)
+{
     $scope.$watch(function() {
         return $location.hash();
     }, function(value) {
@@ -39,6 +47,7 @@ kuroApp.controller('TaskCtrl', function($scope, $http, $route, $routeParams, $lo
         $scope.projectId = $scope.projectId = urlParserService.getProjectId($location.path());
         apiService.getTask($scope.projectId, $scope.taskId)
             .then(function(task) {
+                errorData.clear();
                 $scope.task = task;
             });
     }

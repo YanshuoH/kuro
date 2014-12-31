@@ -18,6 +18,8 @@ kuroApp.controller('ErrorCtrl', function($scope, $location, errorData) {
         if (typeof(modalErrorContent.message) !== 'undefined' && modalErrorContent.message.length > 0) {
             $scope.modalHasError = true;
             $scope.wording = modalErrorContent.message
+        } else if (typeof(modalErrorContent.message) !== 'undefined' && modalErrorContent.message.length === 0) {
+            $scope.modalHasError = false;
         }
     });
 });
