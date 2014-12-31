@@ -49,15 +49,19 @@ kuroApp.controller('BoardCtrl', function(
           });
     }
 
-    $scope.$on('$routeChangeStart', function(event, next, current) {
-        // project list -> taskboard : get project id
-        $scope.projectId = urlParserService.getProjectId(next);
-        if ($scope.projectId && next.indexOf('taskboard') > -1) {
-            $scope.showTaskboardFunc($scope.projectId);
-            apiService.getTaskList($scope.projectId)
-              .then(function(tasks) {
-                $scope.tasks = taskboardService.generateTaskboardGrid(tasks);
-              });
+    $scope.$on('$locationChangeStart', function(event, next, current) {
+        if (urlParserService.isOnlyHashChange(next, current)) {
+            // do nothing
+        } else {
+            // project list -> taskboard : get project id
+            $scope.projectId = urlParserService.getProjectId(next);
+            if ($scope.projectId !== 'undefined' && next.indexOf('taskboard') > -1) {
+                $scope.showTaskboardFunc($scope.projectId);
+                apiService.getTaskList($scope.projectId)
+                  .then(function(tasks) {
+                    $scope.tasks = taskboardService.generateTaskboardGrid(tasks);
+                  });
+            }
         }
     });
 
