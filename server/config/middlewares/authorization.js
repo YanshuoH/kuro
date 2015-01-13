@@ -3,11 +3,11 @@
  */
 var msgTemplate = {
     'login' : {
-        status: 401
+        status: 401,
         message: 'Please login with your account'
     },
     'authorize': {
-        status: 401
+        status: 401,
         message: 'This account does not have access to the project'
     }
 }
