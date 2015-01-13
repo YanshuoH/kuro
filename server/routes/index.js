@@ -3,9 +3,13 @@
  * GET home page.
  */
 
-exports.index = function(req, res){
+exports.index = function(req, res) {
     res.render('index');
 };
+
+exports.home = function(req, res) {
+    res.render('home');
+}
 
 exports.partials = function (req, res) {
     var name = req.params.name;

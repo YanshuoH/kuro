@@ -15,6 +15,7 @@ var taskAuth = [auth.requiresLogin, auth.task.hasAuthorization];
 module.exports = function(app, config, passport) {
     // serve index and view partials
     app.get('/', routes.index);
+    app.get('/home', routes.home);
     app.get('/partials/:name', routes.partials);
     app.get('/partials/user/:name', routes.userPartials);
     app.get('/partials/project/:name', routes.projectPartials);
