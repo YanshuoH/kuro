@@ -19,6 +19,21 @@ exports.load = function(req, res, next, id) {
 }
 
 /*
+ * @path('/api/user/login_check')
+ * Only with login status can trigger this fonction
+ */
+exports.loginCheck = function(req, res) {
+    if (req.isAuthenticated()) {
+        return res.json({
+            'status': 200,
+            'message': 'User is logged in'
+        })
+    }
+
+    return res.send(false);
+}
+
+/*
  * @path('/api/user/:userId') || @path('/api/user/info')
  *
  * Return JSON user

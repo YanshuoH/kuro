@@ -30,6 +30,7 @@ module.exports = function(app, config, passport) {
     app.post('/api/user/create', user.editor);
     app.put('/api/user/edit', globalAuth, user.editor);
     app.get('/api/user/info', globalAuth, user.show);
+    app.get('/api/user/login_check', globalAuth, user.loginCheck);
     app.get('/api/user/:userId', user.show);
     app.param('userId', user.load);
     // Project
