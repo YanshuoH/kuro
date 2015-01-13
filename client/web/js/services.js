@@ -180,8 +180,18 @@ kuroApp.service('userApiService', function($http, $q) {
     return {
         signin: signin,
         signup: signup,
-        signout: signout
+        signout: signout,
+        loginCheck: loginCheck
     };
+
+    function loginCheck() {
+        var request = $http({
+            method: 'GET',
+            url: '/api/user/login_check'
+        })
+
+        return request.then(handleSuccess, handleError);
+    }
 
     function signin(formData) {
         var request = $http({
