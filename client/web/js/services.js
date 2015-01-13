@@ -1,7 +1,9 @@
 'use strict';
 
+var appName = document.querySelector('html').getAttribute('ng-app')
+
 /* Services */
-var kuroApp = angular.module('Kuro');
+var kuroApp = angular.module(appName);
 
 kuroApp.factory('navbarData', function() {
     var data = {
@@ -63,6 +65,29 @@ kuroApp.factory('errorData', function() {
             }
         }
     };
+})
+
+kuroApp.factory('Auth', function(userApiService) {
+    var user;
+
+    return {
+        setUser: setUser,
+        getUser: getUser,
+        loginCheck: loginCheck
+    }
+
+    function setUser(aUser) {
+        user = aUser;
+    }
+
+    function getUser() {
+        return user;
+    }
+
+    function loginCheck(callback) {
+        userApiService.loginCheck()
+            .then(callback);
+    }
 })
 
 kuroApp.service('urlParserService', function() {

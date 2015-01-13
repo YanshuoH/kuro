@@ -1,0 +1,27 @@
+doctype html
+
+html(ng-app="KuroHome")
+  head
+    meta(charset='utf8')
+    base(href='/home')
+    title Kuro - Simplyfy your life by management
+    link(rel='stylesheet', href='/css/bootstrap.css')
+    link(rel='stylesheet', href='/css/home.css')
+
+  body
+    .container
+      .row
+        .col-md-6
+          p
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nec quam eget massa lobortis varius vitae sagittis purus. Donec venenatis, mi in feugiat mattis, justo diam commodo libero, vitae tempor diam tellus a neque. Integer cursus tellus nisi, ut imperdiet turpis sagittis sed. In semper vitae erat a bibendum. Etiam sed orci accumsan, feugiat ex id, volutpat velit. Sed tellus ex, porttitor ut dui in, tempus imperdiet purus. Donec vel auctor magna. Mauris blandit tincidunt magna, sit amet sodales magna. Donec ornare eros a tellus fermentum, vel elementum felis volutpat. Integer feugiat tellus non posuere convallis. Nulla dapibus enim a scelerisque interdum. Nulla nec ornare enim. Curabitur at justo at mi efficitur tristique. Integer nec suscipit elit, non tincidunt magna.
+        .col-md-6
+          div(ng-include="'partials/user/signin'")
+          div(ng-include="'partials/user/signup'")
+
+    script(src='/js/lib/jquery-1.11.1.min.js')
+    script(src='/js/lib/bootstrap.min.js')
+    script(src='/js/lib/angular/angular.js')
+    script(src='/js/lib/ui-bootstrap-tpls-0.12.0.min.js')
+    script(src='/js/app.home.js')
+    script(src='/js/controllers/user/user.js')
+    script(src='/js/services.js')

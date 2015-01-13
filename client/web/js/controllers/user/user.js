@@ -1,6 +1,8 @@
 'use strict';
 
-var kuroApp = angular.module('Kuro');
+var appName = document.querySelector('html').getAttribute('ng-app')
+
+var kuroApp = angular.module(appName);
 
 kuroApp.controller('SignupCtrl', function($scope, $http, $location, userApiService) {
     $scope.formData = {};
