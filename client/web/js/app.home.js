@@ -4,8 +4,10 @@ var KuroHome = angular.module('KuroHome', [
     'ui.bootstrap',
 ]);
 
-KuroHome.run(['$location', 'Auth', function($location, Auth) {
+KuroHome.run(['$location', '$window', 'Auth', function($location, $window, Auth) {
     Auth.loginCheck(function(response) {
-        console.log(response);
+        if (typeof(response.status) !== 'undefined' && response.status === 200) {
+            $window.location.href = $window.location.origin + '/archive';
+        }
     })
 }]);
