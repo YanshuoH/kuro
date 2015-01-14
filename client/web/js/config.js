@@ -4,11 +4,6 @@ var kuro = angular.module('Kuro');
 
 kuro.config(function ($routeProvider, $locationProvider) {
     $routeProvider
-        // project board
-        .when('/', {
-            templateUrl: 'partials/home',
-            controller: 'HomeCtrl'
-        })
         .when('/user/signup', {
             templateUrl: 'partials/user/signup',
             controller: 'SignupCtrl'

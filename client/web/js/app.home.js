@@ -9,5 +9,5 @@ KuroHome.run(['$location', '$window', 'Auth', function($location, $window, Auth)
         if (typeof(response.status) !== 'undefined' && response.status === 200) {
             $window.location.href = $window.location.origin + '/archive';
         }
-    })
+    });
 }]);

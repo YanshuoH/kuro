@@ -4,7 +4,7 @@ var appName = document.querySelector('html').getAttribute('ng-app')
 
 var kuroApp = angular.module(appName);
 
-kuroApp.controller('SignupCtrl', function($scope, $http, $location, userApiService) {
+kuroApp.controller('SignupCtrl', function($scope, $http, $location, $window, userApiService) {
     $scope.formData = {};
     window.formData = $scope.formData;
     $scope.submitForm = function() {
@@ -17,7 +17,7 @@ kuroApp.controller('SignupCtrl', function($scope, $http, $location, userApiServi
     }
 });
 
-kuroApp.controller('SigninCtrl', function($scope, $http, $location, userApiService) {
+kuroApp.controller('SigninCtrl', function($scope, $http, $location, $window, userApiService) {
     $scope.formData = {};
     $scope.submitForm = function() {
         userApiService.signin($scope.formData)
