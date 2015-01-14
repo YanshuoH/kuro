@@ -129,12 +129,14 @@ kuroApp.service('urlParserService', function() {
     }
 
     function isOnlyHashChange(next, current) {
-        var nextWithoutHash = next.substring(0, next.indexOf('#'))
-        var currentWithoutHash = current.substring(0, current.indexOf('#'))
+        var nextWithoutHash = next.substring(0, next.indexOf('#'));
+        var currentWithoutHash = current.substring(0, current.indexOf('#'));
 
-        if (nextWithoutHash === currentWithoutHash) {
+        if ((currentWithoutHash || currentWithoutHash) && nextWithoutHash === currentWithoutHash) {
             return true;
         }
+
+        return false;
     }
 });
 
