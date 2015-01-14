@@ -30,7 +30,11 @@ exports.loginCheck = function(req, res) {
         })
     }
 
-    return res.send(false);
+    return res.json({
+        status: 401,
+        message: 'Please login with your account'
+    });
+
 }
 
 /*

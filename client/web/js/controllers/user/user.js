@@ -10,8 +10,9 @@ kuroApp.controller('SignupCtrl', function($scope, $http, $location, userApiServi
     $scope.submitForm = function() {
         userApiService.signup($scope.formData)
             .then(function(response) {
-                console.log(response);
-                $location.path('/board');
+                if (typeof(response.status) !== 'undefined' && response.status === 200) {
+                    $window.location.href = $window.location.origin + '/archive';
+                }
             })
     }
 });
@@ -21,8 +22,9 @@ kuroApp.controller('SigninCtrl', function($scope, $http, $location, userApiServi
     $scope.submitForm = function() {
         userApiService.signin($scope.formData)
             .then(function(response) {
-                console.log(response);
-                $location.path('/board');
+                if (typeof(response.status) !== 'undefined' && response.status === 200) {
+                    $window.location.href = $window.location.origin + '/archive';
+                }
             });
     }
 });

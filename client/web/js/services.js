@@ -213,7 +213,7 @@ kuroApp.service('userApiService', function($http, $q) {
         var request = $http({
             method: 'GET',
             url: '/api/user/login_check'
-        })
+        });
 
         return request.then(handleSuccess, handleError);
     }
@@ -250,8 +250,7 @@ kuroApp.service('userApiService', function($http, $q) {
     // Private
     function handleError(response, status) {
         if (!angular.isObject(response.data) || !response.data.error) {
-            console.log(response.data);
-            return $q.reject("An unknown error occurred");
+            return $q.reject(response.data);
         }
 
         // TODO: location redirect to error page
