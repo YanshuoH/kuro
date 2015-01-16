@@ -1,6 +1,7 @@
 var config = require('../config/config');
 
 var errorHandler = require(config.path.lib + '/errorHandler');
+var successHandler = require(config.path.lib + '/successHandler')
 
 var TaskRepository = require(config.path.repository + '/task');
 
@@ -85,6 +86,27 @@ exports.update = function(req, res) {
             return errorHandler.handle(res, err);
         } else {
             res.json(task);
+        }
+    });
+}
+
+/*
+ * @path(/api/project/:projectShortId/task/:taskShortId/edit/activity)
+ *
+ * PUT
+ */
+exports.updateActivity = function(req, res) {
+    var formData = req.body;
+    formData.user = {
+        _id: req.user._id,
+        username: req.user.username
+    };
+    formData.at = Date.now();
+    TaskRepository.updateActivity(formData, req.task, function(err, task) {
+        if (err) {
+            return errorHandler.handle(res, err);
+        } else {
+            return successHandler.handle(res, 'task', 'update');
         }
     });
 }

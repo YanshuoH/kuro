@@ -32,7 +32,7 @@ var TaskModelSchema = new mongoose.Schema({
             username: {type: String},
         },
         at: {type: Date},
-        content: {type: String}
+        content: {}
     }],
     media: {},
     date: {

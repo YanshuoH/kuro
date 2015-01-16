@@ -274,6 +274,7 @@ kuroApp.service('apiService', function($http, $q, errorData) {
         getTask: getTask,
         createTask: createTask,
         putTask: putTask,
+        putTaskActivity: putTaskActivity,
         getTaskList: getTaskList,
         getProject: getProject,
         createProject: createProject,
@@ -306,6 +307,16 @@ kuroApp.service('apiService', function($http, $q, errorData) {
         var request = $http({
             method: 'PUT',
             url: '/api/project/' + projectShortId + '/task/' + taskShortId + '/edit',
+            data: formData
+        });
+
+        return request.then(handleSuccess, handleError);
+    }
+
+    function putTaskActivity(formData, projectShortId, taskShortId) {
+        var request = $http({
+            method: 'PUT',
+            url: '/api/project/' + projectShortId + '/task/' + taskShortId + '/edit/activity',
             data: formData
         });
 

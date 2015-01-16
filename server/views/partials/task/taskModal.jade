@@ -35,7 +35,13 @@ script(type="text/ng-template" id="taskModal")
     .row.task-row.task-activity
       .col-md-12
         h4 Activities
-          a.btn.btn-primary.btn-xs(href='') Add comment
+          a.btn.btn-primary.btn-xs(href='' ng-click='toggleCommentFormFunc()') Add comment
+        #taskCommentForm(ng-show='showCommentForm')
+          form.form-horizontal#taskCommentForm(role='form' name='taskCommentForm' novalidate='novalidate' ng-submit='submitCommentForm()')
+            .form-group
+              label(for='Comment') Comment
+              input.form-control#description(type='textarea' name='comment' ng-model='commentFormData.comment' placeholder='Comment')
+            button.btn.btn-default(type='submit') Submit
         tabset
           tab(heading='All')
             p all

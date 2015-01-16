@@ -47,6 +47,7 @@ module.exports = function(app, config, passport) {
     app.get('/api/project/:projectShortId/task/:taskShortId', taskAuth, task.show);
     app.param('taskShortId', task.loadByShortId);
     app.put('/api/project/:projectShortId/task/:taskShortId/edit', taskAuth, task.update);
+    app.put('/api/project/:projectShortId/task/:taskShortId/edit/activity', taskAuth, task.updateActivity);
     app.post('/api/project/:projectShortId/task/create', projectAuth, task.create);
 
     // redirect all others to the index (HTML5 history)

@@ -77,7 +77,7 @@ exports.jsonListByProjectFetch = function(projectId, cb) {
  * Maybe this part shall called entity/manager
  */
 exports.save = function(task, callback) {
-    // task.date.updated = Date.now();
+    task.date.updated = Date.now();
     task.save(callback);
 }
 
@@ -116,4 +116,9 @@ exports.update = function(req, callback) {
             });
         }
     ], callback);
+}
+
+exports.updateActivity = function(formData, task, callback) {
+    task.activity.push(formData);
+    exports.save(task, callback);
 }

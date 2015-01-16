@@ -26,13 +26,16 @@ kuroApp.controller('TaskCtrl', function(
     urlParserService,
     errorData)
 {
+    $scope.commentFormData = {};
+    $scope.showCommentForm = false;
+
     $scope.$watch(function() {
         return $location.hash();
     }, function(value) {
         if (!!value) {
             $scope.loadTaskFromHash(value);
         }
-    })
+    });
 
     $scope.loadTaskFromHash = function(hash) {
         var hashParams = urlParserService.getTaskParamFromHash($location.hash());
@@ -50,12 +53,29 @@ kuroApp.controller('TaskCtrl', function(
                 errorData.clear();
                 $scope.task = task;
             });
-    }
+    };
 
     $scope.changeHash = function(hash) {
         $location.hash(hash);
-    }
+    };
 
+    /*
+     * @param Boolean show
+     */
+    $scope.toggleCommentFormFunc = function() {
+        $scope.showCommentForm = !$scope.showCommentForm;
+    };
+
+    $scope.submitCommentForm = function() {
+        var formData = {
+            type: 'comment',
+            content: $scope.commentFormData
+        };
+        apiService.putTaskActivity(formData, $scope.projectId, $scope.taskId)
+            .then(function(response) {
+                console.log(response);
+            });
+    };
 });
 
 kuroApp.controller('TaskFormCtrl', function($scope, $http, $routeParams, $location, apiService) {
@@ -88,7 +108,7 @@ kuroApp.controller('TaskFormCtrl', function($scope, $http, $routeParams, $locati
             apiService.putTask($scope.formData, $scope.projectId, $scope.task.shortId)
                 .then(function(response) {
                     console.log(response);
-                })
+                });
         }
-    }
+    };
 });
