@@ -203,6 +203,42 @@ kuroApp.service('taskboardService', function() {
     }
 });
 
+kuroApp.service('taskService', function() {
+    return {
+        retrieveComments: retrieveComments,
+        addActivity: addActivity
+    };
+
+    function retrieveComments(task) {
+        var comments = [];
+        for (var i=0; i<task.activity.length; i++) {
+            if (task.activity[i].type === 'comment') {
+                comments.push(task.activity[i]);
+            }
+        }
+        return comments;
+    }
+
+    function addActivity(type, activity, task, user) {
+        var activityModel = {
+            type: type,
+            user: {
+                _id: user._id,
+                username: user.username
+            },
+            at: Date.now()
+        };
+        activityModel.content = activity;
+
+        task.activity.push(activityModel);
+        if (type === 'comment') {
+            task.comments.push(activityModel);
+        }
+        return task;
+
+    }
+})
+
 kuroApp.service('userApiService', function($http, $q) {
     return {
         signin: signin,
