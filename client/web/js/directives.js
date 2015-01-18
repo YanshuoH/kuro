@@ -25,7 +25,9 @@ kuro.directive('resizeProject', function () {
 kuro.directive( 'editInPlace', function() {
     return {
         restrict: 'E',
-        scope: { value: '=' },
+        scope: {
+            value: '=',
+        },
         templateUrl: function(elem, attr) {
             return 'partials/include/' + attr.type;
         },
@@ -34,7 +36,6 @@ kuro.directive( 'editInPlace', function() {
 
             element.addClass('edit-in-place');
             $scope.editing = false;
-
             $scope.edit = function () {
                 $scope.editing = true;
                 element.addClass('active');
@@ -44,6 +45,7 @@ kuro.directive( 'editInPlace', function() {
             inputElement.blur(function() {
                 $scope.editing = false;
                 element.removeClass('active');
+                $scope.$emit('edit-in-place');
             });
         }
     };

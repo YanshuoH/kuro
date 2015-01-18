@@ -206,7 +206,8 @@ kuroApp.service('taskboardService', function() {
 kuroApp.service('taskService', function() {
     return {
         retrieveComments: retrieveComments,
-        addActivity: addActivity
+        addActivity: addActivity,
+        taskDiff: taskDiff
     };
 
     function retrieveComments(task) {
@@ -235,9 +236,37 @@ kuroApp.service('taskService', function() {
             task.comments.push(activityModel);
         }
         return task;
+    }
 
+    function taskDiff(oldTask, newTask) {
+        var content = {};
+        var ignoreFields = ['activity', 'date', 'comments'];
+
+        for (var prop in newTask) {
+            if (ignoreFields.indexOf(prop) > -1) {
+                continue;
+            }
+            if (typeof(oldTask[prop]) === 'undefined') {
+                content[prop] = newTask[prop];
+                continue;
+            }
+
+            if (typeof(newTask[prop]) === 'object') {
+                if (JSON.stringify(oldTask[prop]) !== JSON.stringify(newTask[prop])) {
+                    content[prop] = newTask[prop];
+                }
+                continue;
+            }
+
+            if (newTask[prop] !== oldTask[prop]) {
+                content[prop] = newTask[prop];
+                continue;
+            }
+        }
+        return content;
     }
 })
+
 
 kuroApp.service('userApiService', function($http, $q) {
     return {

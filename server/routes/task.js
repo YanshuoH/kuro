@@ -20,7 +20,7 @@ exports.loadByShortId = function(req, res, next, id) {
         });
     }
     var projectId = req.project._id;
-    TaskRepository.loadTaskFetchProject(id, projectId, function(err, task) {
+    TaskRepository.loadByShortId(id, projectId, function(err, task) {
         if (err) {
             return errorHandler.handle(res, err);
         }
@@ -36,10 +36,7 @@ exports.loadByShortId = function(req, res, next, id) {
  */
 exports.show = function(req, res) {
     var task = req.task;
-    // Change mongoose document to plain object
-    // in order to insert project json in response
-    task = task.toObject();
-    task.project = req.task.project;
+
     res.json(task);
 }
 

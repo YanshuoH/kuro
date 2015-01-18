@@ -29,7 +29,10 @@ kuroApp.controller('TaskCtrl', function(
     Auth)
 {
     $scope.commentFormData = {};
+    $scope.changeFormData = {};
     $scope.showCommentForm = false;
+    $scope.taskEdited = false;
+    $scope.originalTask;
 
     $scope.$watch(function() {
         return $location.hash();
@@ -38,6 +41,8 @@ kuroApp.controller('TaskCtrl', function(
             $scope.loadTaskFromHash(value);
         }
     });
+
+    $scope.$on('edit-in-place', function () { $scope.taskEdited = true; });
 
     $scope.loadTaskFromHash = function(hash) {
         var hashParams = urlParserService.getTaskParamFromHash($location.hash());
@@ -54,6 +59,7 @@ kuroApp.controller('TaskCtrl', function(
             .then(function(task) {
                 errorData.clear();
                 $scope.task = task;
+                $scope.originalTask = angular.copy(task);
                 $scope.task.comments = taskService.retrieveComments(task);
             });
     };
@@ -87,6 +93,25 @@ kuroApp.controller('TaskCtrl', function(
                 $scope.toggleCommentFormFunc();
             });
     };
+
+    $scope.saveChanges = function() {
+        var diffData = {
+            type: 'change',
+            content: taskService.taskDiff($scope.originalTask, $scope.task)
+        };
+        apiService.putTaskActivity(diffData, $scope.projectId, $scope.taskId)
+            .then(function(response) {
+                if (typeof(response.status) !== 'undefined') {
+                    errorData.setModalErrorContent(response.status, response.message);
+                    if (response.status === 200) {
+                        $scope.task = taskService.addActivity('change', $scope.diffData, $scope.task, Auth.getUser());
+                    }
+                    // reset diffData
+                    $scope.diffData = {};
+                    $scope.taskEdited = false;
+                }
+            })
+    }
 });
 
 kuroApp.controller('TaskFormCtrl', function($scope, $http, $routeParams, $location, apiService) {
