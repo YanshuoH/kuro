@@ -1,4 +1,5 @@
 var config = require('../config/config');
+var utils = require(config.path.lib + '/utils');
 var passport = require('passport');
 
 var UserRepository = require(config.path.repository + '/user')
@@ -25,8 +26,9 @@ exports.load = function(req, res, next, id) {
 exports.loginCheck = function(req, res) {
     if (req.isAuthenticated()) {
         return res.json({
-            'status': 200,
-            'message': 'User is logged in'
+            status: 200,
+            message: 'User is logged in',
+            user: utils.eraseCredentialFields(req.user)
         })
     }
 
@@ -75,11 +77,11 @@ exports.editor = function(req, res, next) {
 exports.signin = function(req, res, next) {
     passport.authenticate('local-signin', function(err, user, info) {
         if (err) {
-            return res.send(err);
+            return res.json(err);
         }
         // Generate a JSON response reflecting authentication status
         if (!user) {
-            return res.send(info);
+            return res.json(info);
         }
         // When using custom middleware to handle the callback msg,
         // It become the application's responsibility to call req.login
@@ -87,7 +89,7 @@ exports.signin = function(req, res, next) {
             if (err) {
                 console.log(err);
             }
-            return res.send(info);
+            return res.json(info);
         });
     })(req, res, next);
 }

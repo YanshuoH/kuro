@@ -95,3 +95,14 @@ exports.errorHandler = function(res, err) {
         });
     }
 }
+
+exports.eraseCredentialFields = function(user) {
+    user = user.toObject();
+    var credentialFields = ['password', 'hashed_password'];
+    for (var i=0; i<credentialFields.length; i++) {
+        if (user.hasOwnProperty(credentialFields[i])) {
+            delete user[credentialFields[i]];
+        }
+    }
+    return user;
+}

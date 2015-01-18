@@ -4,6 +4,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var UserModel = mongoose.model('UserModel');
 
 module.exports = function (passport, config) {
+    var utils = require(config.path.lib + '/utils');
     // serialize sessions
     passport.serializeUser(function(user, done) {
         done(null, user.id);
@@ -22,7 +23,7 @@ module.exports = function (passport, config) {
         },
         function(email, password, done) {
             process.nextTick(function() {
-                var options = {};
+                var options = {}
                 UserModel.findOne({ email: email }, options, function (err, user) {
                     if (err) { return done(err); }
                     if (!user) {
@@ -39,7 +40,8 @@ module.exports = function (passport, config) {
                     }
                     return done(null, user, {
                         status: 200,
-                        message: 'Login succeed'
+                        message: 'Login succeed',
+                        user: utils.eraseCredentialFields(user)
                     });
                 });
             });
