@@ -17,7 +17,7 @@ kuroApp.controller('SignupCtrl', function($scope, $http, $location, $window, use
     }
 });
 
-kuroApp.controller('SigninCtrl', function($scope, $http, $location, $window, userApiService) {
+kuroApp.controller('SigninCtrl', function($scope, $http, $location, $window, userApiService, Auth) {
     $scope.formData = {};
     $scope.submitForm = function() {
         userApiService.signin($scope.formData)

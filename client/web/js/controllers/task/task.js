@@ -22,9 +22,11 @@ kuroApp.controller('TaskCtrl', function(
     $route,
     $routeParams,
     $location,
+    taskService,
     apiService,
     urlParserService,
-    errorData)
+    errorData,
+    Auth)
 {
     $scope.commentFormData = {};
     $scope.showCommentForm = false;
@@ -52,6 +54,7 @@ kuroApp.controller('TaskCtrl', function(
             .then(function(task) {
                 errorData.clear();
                 $scope.task = task;
+                $scope.task.comments = taskService.retrieveComments(task);
             });
     };
 
@@ -73,7 +76,15 @@ kuroApp.controller('TaskCtrl', function(
         };
         apiService.putTaskActivity(formData, $scope.projectId, $scope.taskId)
             .then(function(response) {
-                console.log(response);
+                if (typeof(response.status) !== 'undefined') {
+                    errorData.setModalErrorContent(response.status, response.message);
+                    if (response.status === 200) {
+                        $scope.task = taskService.addActivity('comment', $scope.commentFormData, $scope.task, Auth.getUser());
+                    }
+                }
+                // reset formData
+                $scope.commentFormData = {}
+                $scope.toggleCommentFormFunc();
             });
     };
 });
