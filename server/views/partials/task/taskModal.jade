@@ -43,12 +43,14 @@ script(type="text/ng-template" id="taskModal")
               input.form-control#description(type='textarea' name='comment' ng-model='commentFormData.comment' placeholder='Comment')
             button.btn.btn-default(type='submit') Submit
         tabset
-          tab(heading='All')
-            p all
           tab(heading='Comments')
             blockquote(ng-repeat='comment in task.comments')
               p {{ comment.content.comment }}
-              small {{ comment.user.username }} - at {{ comment.at | date:'yyyy-MM-dd HH:mm' }}
+                small {{ comment.user.username }} - at {{ comment.at | date:'yyyy-MM-dd HH:mm' }}
+          tab(heading='All')
+            li(ng-repeat='activity in task.activity')
+              p {{ activity.type }}
+              small {{ activity.user.username }} - at {{ activity.at | date:'yyyy-MM-dd HH:mm' }}
   .modal-footer
     button.btn.btn-primary(href='' ng-click='saveChanges()' ng-if='taskEdited') Save Changes
     button.btn.btn-primary(href='' ng-click='resetChanges()' ng-if='taskEdited') Reset Changes

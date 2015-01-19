@@ -41,7 +41,7 @@ exports.fetchActivityToTask = function(task, options) {
     for (var i=0; i<task.activity.length; i++) {
         var activity = task.activity[i];
 
-        if (typeof(options.selectField) !== 'undefined' && options.selectField.length > 0) {
+        if (typeof(options) !== 'undefined' && typeof(options.selectField) !== 'undefined' && options.selectField.length > 0) {
             var existCheck = utils.checkPropertiesExist(options.selectField, activity.content);
             if (!existCheck) {
                 continue;
