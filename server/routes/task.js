@@ -35,7 +35,7 @@ exports.loadByShortId = function(req, res, next, id) {
  * Return JSON task
  */
 exports.show = function(req, res) {
-    var task = req.task;
+    var task = TaskRepository.fetchActivityToTask(req.task);
 
     res.json(task);
 }
@@ -52,7 +52,10 @@ exports.listByProject = function(req, res) {
         if (err) {
             return errorHandler.handle(res, err);
         } else {
-            res.json(tasks);
+            var options = {
+                selectField: ['title']
+            };
+            res.json(TaskRepository.fetchActivityToTaskList(tasks, options));
         }
     });
 }

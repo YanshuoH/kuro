@@ -113,3 +113,25 @@ exports.eraseCredentialFields = function(user) {
     }
     return user;
 }
+
+exports.checkPropertiesExist = function(props, source) {
+    var existCheck = false;
+    for (var i=0; i<props.length; i++) {
+        existCheck = exports.checkPropertyExist(props[i], source);
+        if (existCheck) {
+            return existCheck;
+        }
+    }
+
+    return existCheck;
+}
+
+exports.checkPropertyExist = function(prop, source) {
+    for (var sourceProp in source) {
+        if (prop === sourceProp) {
+            return true;
+        }
+    }
+
+    return false;
+}

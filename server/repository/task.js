@@ -23,7 +23,7 @@ exports.loadByShortId = function(taskShortId, projectId, cb) {
                         message: 'Failed to load task by shortId ' + taskShortId
                    });
                 } else {
-                    callback(null, exports.fetchActivityToTask(task));
+                    callback(null, task);
                 }
             });
         }
@@ -31,14 +31,23 @@ exports.loadByShortId = function(taskShortId, projectId, cb) {
 }
 
 /*
- * @param task TaskModel
+ * @param TaskModel task
+ * @param Object options - limit the field
  *
- * return task TaskModel
+ * return TaskModel task 
  */
-exports.fetchActivityToTask = function(task) {
+exports.fetchActivityToTask = function(task, options) {
     var changes = {};
     for (var i=0; i<task.activity.length; i++) {
         var activity = task.activity[i];
+
+        if (typeof(options.selectField) !== 'undefined' && options.selectField.length > 0) {
+            var existCheck = utils.checkPropertiesExist(options.selectField, activity.content);
+            if (!existCheck) {
+                continue;
+            }
+        }
+
         if (activity.type === 'comment') {
             continue;
         }
@@ -47,6 +56,20 @@ exports.fetchActivityToTask = function(task) {
 
     return utils.overrideObj(task, changes);
 }
+
+/*
+ * @param Array[TaskModel] tasks
+ * 
+ * return Array[TaskModel] tasks
+ */
+exports.fetchActivityToTaskList = function(tasks, options) {
+    for (var i=0; i<tasks.length; i++) {
+        tasks[i] = exports.fetchActivityToTask(tasks[i], options);
+    }
+
+    return tasks;
+}
+
 
 exports.loadTaskFetchProject = function(taskShortId, projectId, cb) {
     async.waterfall([
