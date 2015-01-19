@@ -22,6 +22,7 @@ kuroApp.controller('TaskCtrl', function(
     $route,
     $routeParams,
     $location,
+    $modalInstance,
     taskService,
     apiService,
     urlParserService,
@@ -29,9 +30,9 @@ kuroApp.controller('TaskCtrl', function(
     Auth)
 {
     $scope.commentFormData = {};
-    $scope.changeFormData = {};
     $scope.showCommentForm = false;
     $scope.taskEdited = false;
+    $scope.taskIsDirty = false;
     $scope.originalTask;
 
     $scope.$watch(function() {
@@ -104,14 +105,28 @@ kuroApp.controller('TaskCtrl', function(
                 if (typeof(response.status) !== 'undefined') {
                     errorData.setModalErrorContent(response.status, response.message);
                     if (response.status === 200) {
-                        $scope.task = taskService.addActivity('change', $scope.diffData, $scope.task, Auth.getUser());
+                        $scope.task = taskService.addActivity('change', diffData, $scope.task, Auth.getUser());
                     }
                     // reset diffData
-                    $scope.diffData = {};
+                    diffData = {};
+                    $scope.taskIsDirty = true;
                     $scope.taskEdited = false;
                 }
-            })
-    }
+            });
+    };
+
+    $scope.resetChanges = function() {
+        $scope.task =  angular.copy($scope.originalTask);
+        $scope.taskEdited = false;
+    };
+
+    $scope.close = function() {
+        if ($scope.taskIsDirty) {
+            $modalInstance.close($scope.task);
+        } else {
+            $modalInstance.close(null);
+        }
+    };
 });
 
 kuroApp.controller('TaskFormCtrl', function($scope, $http, $routeParams, $location, apiService) {

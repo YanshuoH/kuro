@@ -72,7 +72,7 @@ kuroApp.controller('BoardCtrl', function(
     // If init page should show task modal
     $timeout(function() {
         $scope.shouldShowTaskModal($location.hash());
-    }, 1000)
+    }, 1000);
     
 
     apiService.getProjectList()
@@ -121,19 +121,25 @@ kuroApp.controller('BoardCtrl', function(
             var modalInstance = $modal.open({
                 templateUrl: 'taskModal',
                 controller: 'TaskCtrl',
+                backdrop: false,
+                backdropClass: 'kidding',
                 size: 'lg'
-            })
+            });
             // After close event
             modalInstance.result.then(
-                function () {
-                    // Submit
-                    },
+                function (task) {
+                    if (task) {
+                        $scope.tasks = taskboardService.updateGridByTaskId(task, $scope.tasks);
+                    }
+                },
                 function () {
                     // Close
-                    // Clear hash
-                    $location.hash('');
                 }
             );
+
+            modalInstance.result.finally(function(task) {
+                $location.hash('');
+            });
         }
     }
 

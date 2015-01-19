@@ -129,10 +129,17 @@ kuroApp.service('urlParserService', function() {
     }
 
     function isOnlyHashChange(next, current) {
-        var nextWithoutHash = next.substring(0, next.indexOf('#'));
-        var currentWithoutHash = current.substring(0, current.indexOf('#'));
+        var nextWithoutHash = next;
+        var currentWithoutHash = current;
+        if (next.indexOf('#') > -1) {
+            nextWithoutHash = next.substring(0, next.indexOf('#'));
+        }
 
-        if ((currentWithoutHash || currentWithoutHash) && nextWithoutHash === currentWithoutHash) {
+        if (current.indexOf('#') > -1) {
+            currentWithoutHash = current.substring(0, current.indexOf('#'));
+        }
+
+        if (nextWithoutHash === currentWithoutHash) {
             return true;
         }
 
@@ -151,7 +158,7 @@ kuroApp.service('taskboardService', function() {
         '0': 'Todo',
         '1': 'QA',
         '2': 'Done'
-    }
+    };
 
     var getKeyByValue = function(obj, value) {
         for (var prop in obj) {
@@ -165,7 +172,7 @@ kuroApp.service('taskboardService', function() {
     var insertIntoGrid = function(grid, task) {
         grid[priorityMapping[task.priority.toString()]]
             [statusMapping[task.status.toString()]].push(task);
-    }
+    };
 
     var initTaskboardGrid = function() {
         var grid = {};
@@ -177,7 +184,7 @@ kuroApp.service('taskboardService', function() {
         }
 
         return grid;
-    }
+    };
 
     var generateTaskboardGrid = function(tasks) {
         var grid = initTaskboardGrid();
@@ -188,19 +195,35 @@ kuroApp.service('taskboardService', function() {
         }
 
         return grid;
-    }
+    };
 
     var generateUpdateData = function(priority, status) {
         return {
             priority: parseInt(getKeyByValue(priorityMapping, priority)),
             status: parseInt(getKeyByValue(statusMapping, status))
         };
+    };
+
+    var updateGridByTaskId = function(task, grid) {
+        for (var priority in grid) {
+            for (var status in grid[priority]) {
+                for (var i=0; i<grid[priority][status].length; i++) {
+                    if (task._id === grid[priority][status][i]._id) {
+                        grid[priority][status][i] = task;
+                        return grid;
+                    }
+                }
+            }
+        }
+
+        return grid;
     }
 
     return {
         generateTaskboardGrid: generateTaskboardGrid,
-        generateUpdateData: generateUpdateData
-    }
+        generateUpdateData: generateUpdateData, 
+        updateGridByTaskId: updateGridByTaskId
+    };
 });
 
 kuroApp.service('taskService', function() {

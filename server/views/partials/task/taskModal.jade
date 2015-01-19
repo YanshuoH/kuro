@@ -51,4 +51,5 @@ script(type="text/ng-template" id="taskModal")
               small {{ comment.user.username }} - at {{ comment.at | date:'yyyy-MM-dd HH:mm' }}
   .modal-footer
     button.btn.btn-primary(href='' ng-click='saveChanges()' ng-if='taskEdited') Save Changes
-    button.btn.btn-default(data-dismiss='modal') Close
+    button.btn.btn-primary(href='' ng-click='resetChanges()' ng-if='taskEdited') Reset Changes
+    button.btn.btn-default(href='' ng-click='close()') Close
