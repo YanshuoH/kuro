@@ -26,7 +26,7 @@ kuro.directive( 'editInPlace', function() {
     return {
         restrict: 'E',
         scope: {
-            value: '=',
+            value: '='
         },
         templateUrl: function(elem, attr) {
             return 'partials/include/' + attr.type;

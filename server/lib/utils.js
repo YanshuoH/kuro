@@ -64,6 +64,13 @@ exports.mergeObj = function (obj1,obj2){
     return obj3;
 }
 
+exports.overrideObj = function(source, change) {
+    for (var prop in change) {
+        source[prop] = change[prop];
+    }
+    return source;
+}
+
 // check if component is in container
 exports.inArray = function(component, container) {
     var length = container.length;

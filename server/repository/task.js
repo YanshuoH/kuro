@@ -23,11 +23,29 @@ exports.loadByShortId = function(taskShortId, projectId, cb) {
                         message: 'Failed to load task by shortId ' + taskShortId
                    });
                 } else {
-                    callback(null, task);
+                    callback(null, exports.fetchActivityToTask(task));
                 }
-            })
+            });
         }
     ], cb);
+}
+
+/*
+ * @param task TaskModel
+ *
+ * return task TaskModel
+ */
+exports.fetchActivityToTask = function(task) {
+    var changes = {};
+    for (var i=0; i<task.activity.length; i++) {
+        var activity = task.activity[i];
+        if (activity.type === 'comment') {
+            continue;
+        }
+        changes = utils.mergeObj(changes, activity.content);
+    }
+
+    return utils.overrideObj(task, changes);
 }
 
 exports.loadTaskFetchProject = function(taskShortId, projectId, cb) {
