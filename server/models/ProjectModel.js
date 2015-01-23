@@ -1,4 +1,4 @@
-// models/ProjecdtModel.js
+// models/ProjectModel.js
 var config = require('../config/config');
 var utils = require(config.path.lib + '/utils');
 var autoIncrement = require(config.path.lib + '/mongoose-auto-increment');
