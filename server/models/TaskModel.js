@@ -15,7 +15,7 @@ var TaskModelSchema = new mongoose.Schema({
     assignTo: {type: ObjectId, ref: 'user'},
     ref: {type: String, trim: true},
     title: {type: String, trim: true},
-    priority: {type: Number, default: 0},
+    priority: {type: ObjectId, ref: 'priority'},
     category: {
         id: {type: ObjectId},
         name: {type: String, trim: true}
@@ -44,7 +44,7 @@ var TaskModelSchema = new mongoose.Schema({
         estimation: {type: Number},
         consomation: {type: Number}
     },
-    status: {type: Number, default: 1}
+    status: {type: ObjectId, ref: 'status'}
 });
 
 /**

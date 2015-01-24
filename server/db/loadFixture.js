@@ -109,7 +109,7 @@ function handleInsertData(cb) {
             insertAction(userFixture, UserRepository, UserModel, null, null, callback);
         },
         // Insert project 
-        function(userId, callback) {
+        function(user, callback) {
             console.log('>> Insert Project');
             async.waterfall([
                 function(statusCallback){
@@ -129,23 +129,23 @@ function handleInsertData(cb) {
                         priorityCallback(null, statusIds, priorityIds);
                     });
                 }], function(err, statusIds, priorityIds) {
-                    insertAction(projectFixture, ProjectRepository, ProjectModel, 'creatorId', userId.toString(), callback, statusIds, priorityIds);
+                    insertAction(projectFixture, ProjectRepository, ProjectModel, 'creatorId', user._id.toString(), callback, statusIds, priorityIds);
             });
         },
-        function(projectId, userId, callback) {
+        function(project, userId, callback) {
             UserModel.load(userId.toString(), {}, function(err, user) {
                 if (err) console.log(err);
-                user.projectIds.push(projectId.toString());
+                user.projectIds.push(project._id.toString());
                 UserRepository.save(user, function(err) {
                     if (err) console.log(err);
-                    callback(null, projectId, userId);
+                    callback(null, project, userId);
                 });
             });
         },
         // Insert tasks
-        function(projectId, userId, callback) {
+        function(project, userId, callback) {
             console.log('>> Insert Task');
-            insertAction(taskFixture, TaskRepository, TaskModel, 'projectId', projectId, callback, userId);
+            insertAction(taskFixture, TaskRepository, TaskModel, 'projectId', project, callback, userId);
         }
     ], function(err) {
         if (err) console.log(err);
@@ -166,9 +166,13 @@ function insertAction(dataFixture, dataRepository, dataModel, parentName, parent
             data.statusData = userId;
             data.priorityData = priorityIds;
         }
+        // Is taskm model
         if (parentName == 'projectId') {
             data.creatorId = userId;
-            data.projectId = parentId;
+            // project model in place of parentId
+            data.projectId = parentId._id;
+            data.status = parentId.statusData[data.status];
+            data.priority = parentId.priorityData[data.priority];
         }
         var unit = new dataModel(data);
         dataRepository.save(unit, function(err) {
@@ -176,14 +180,14 @@ function insertAction(dataFixture, dataRepository, dataModel, parentName, parent
             if (parentName === 'projectId') {
                 callback();
             } else {
-                callback(unit._id);
+                callback(unit);
             }
         });
-    }, function(unitId) {
+    }, function(unit) {
         if (parentName === 'creatorId') {
-            cb(null, unitId, parentId);
+            cb(null, unit, parentId);
         } else {
-            cb(null, unitId);
+            cb(null, unit);
         }
     });
 }
