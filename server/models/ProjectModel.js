@@ -25,7 +25,13 @@ var ProjectModelSchema = new mongoose.Schema({
         created: {type: Date, default: Date.now},
         updated: {type: Date, default: Date.now}
     },
-    status: {type: Number, default: 1}
+    status: {type: Number, default: 1},
+    statusData: [
+        {type: ObjectId, ref: 'status'}
+    ],
+    priorityData: [
+        {type: ObjectId, ref: 'priority'}
+    ]
 });
 
 
@@ -39,6 +45,8 @@ var requiredFields = [
     'ref',
     'title',
     'description',
+    'statusData',
+    'priorityData'
 ];
 // Passing schema by ref, add required field validation
 utils.addRequiredValidation(ProjectModelSchema, requiredFields);

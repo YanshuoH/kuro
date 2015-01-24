@@ -20,6 +20,12 @@ var ProjectModel = con.model('ProjectModel', ProjectModelFile.ProjectModelSchema
 var UserModelFile = require(config.db.modelPath + '/UserModel')
 var UserModel = con.model('UserModel', UserModelFile.UserModelSchema);
 
+var StatusModelFile = require(config.db.modelPath + '/StatusModel');
+var StatusModel = con.model('StatusModel', StatusModelFile.StatusModelSchema);
+
+var PriorityModelFile = require(config.db.modelPath + '/PriorityModel');
+var PriorityModel = con.model('PriorityModel', PriorityModelFile.PriorityModelSchema);
+
 var ObjectId = require('mongoose').Types.ObjectId; 
 
 var IdentityCounter = con.model('IdentityCounter');
@@ -27,11 +33,14 @@ var IdentityCounter = con.model('IdentityCounter');
 var ProjectRepository = require(config.path.repository + '/project');
 var TaskRepository = require(config.path.repository + '/task');
 var UserRepository = require(config.path.repository + '/user');
+
 /*
  * Important params!!!
  * Clear database or not
  */
 var removeAll = true;
+
+
 
 async.waterfall([
     // First, remove all data in db
@@ -102,7 +111,26 @@ function handleInsertData(cb) {
         // Insert project 
         function(userId, callback) {
             console.log('>> Insert Project');
-            insertAction(projectFixture, ProjectRepository, ProjectModel, 'creatorId', userId.toString(), callback);
+            async.waterfall([
+                function(statusCallback){
+                    StatusModel.list({}, function(err, statusList) {
+                        var statusIds = [];
+                        for (var i=0; i<statusList.length; i++) {
+                            statusIds.push(statusList[i]._id);
+                        }
+                        statusCallback(null, statusIds);
+                    });
+                }, function(statusIds, priorityCallback) {
+                    PriorityModel.list({}, function(err, priorityList) {
+                        var priorityIds = [];
+                        for (var i=0; i<priorityList.length; i++) {
+                            priorityIds.push(priorityList[i]._id);
+                        }
+                        priorityCallback(null, statusIds, priorityIds);
+                    });
+                }], function(err, statusIds, priorityIds) {
+                    insertAction(projectFixture, ProjectRepository, ProjectModel, 'creatorId', userId.toString(), callback, statusIds, priorityIds);
+            });
         },
         function(projectId, userId, callback) {
             UserModel.load(userId.toString(), {}, function(err, user) {
@@ -125,14 +153,18 @@ function handleInsertData(cb) {
     })
 }
 
-function insertAction(dataFixture, dataRepository, dataModel, parentName, parentId, cb, userId) {
+function insertAction(dataFixture, dataRepository, dataModel, parentName, parentId, cb, userId, priorityIds) {
     async.each(dataFixture, function(data, callback) {
         if (parentName && parentId) {
             data[parentName] = parentId;
         }
+        // Is project model
         if (parentName == 'creatorId') {
             data.adminIds = [parentId];
             data.userIds = [parentId];
+            // userId, in place of statusIds
+            data.statusData = userId;
+            data.priorityData = priorityIds;
         }
         if (parentName == 'projectId') {
             data.creatorId = userId;
