@@ -33,10 +33,10 @@ exports.loadByShortId = function(req, res, next, id) {
 /*
  * @path('/api/project/:projectShortId')
  *
- * Return JSON project with tasks and users affected
+ * Return JSON project with optional fields affected
  */
 exports.show = function(req, res) {
-    var fetchOptions = ['fetchUser', 'fetchTask'];
+    var fetchOptions = ['fetchUser', 'fetchStatus', 'fetchPriority'];
     var project = req.project;
     ProjectRepository.fetch(project, fetchOptions, function(err, project) {
         if (err) {

@@ -7,6 +7,8 @@ var async = require('async');
 
 var mongoose = require('mongoose');
 var ProjectModel = mongoose.model('ProjectModel');
+var StatusModel = mongoose.model('StatusModel');
+var PriorityModel = mongoose.model('PriorityModel');
 
 
 exports.load = function(id, cb) {
@@ -77,6 +79,38 @@ exports.fetch = function(project, fetchOptions, cb) {
         });
     }
 
+    var fetchStatus = function(project, callback) {
+        var options = {
+            criteria: {
+                _id: { $in: project.statusData }
+            }
+        };
+        StatusModel.listToJson(options, function(err, statusResults) {
+            if (err) {
+                callback(err);
+            } else {
+                project.statusData = statusResults;
+                callback(null , project);
+            }
+        });
+    }
+
+    var fetchPriority = function(project, callback) {
+        var options = {
+            criteria: {
+                _id: { $in: project.priorityData }
+            }
+        };
+        PriorityModel.listToJson(options, function(err, priorityResults) {
+            if (err) {
+                callback(err);
+            } else {
+                project.priorityData = priorityResults;
+                callback(null, project);
+            }
+        });
+    }
+
     // generate query series
     var functions = [init];
     if (fetchOptions.length > 0) {
@@ -86,6 +120,14 @@ exports.fetch = function(project, fetchOptions, cb) {
 
         if (utils.inArray('fetchTask', fetchOptions)) {
             functions.push(fetchTask);
+        }
+
+        if (utils.inArray('fetchStatus', fetchOptions)) {
+            functions.push(fetchStatus);
+        }
+
+        if (utils.inArray('fetchPriority', fetchOptions)) {
+            functions.push(fetchPriority);
         }
     }
 
