@@ -1,10 +1,11 @@
 var config = require('../config/config');
+var async = require('async');
 
 var errorHandler = require(config.path.lib + '/errorHandler');
 var successHandler = require(config.path.lib + '/successHandler')
 
 var TaskRepository = require(config.path.repository + '/task');
-
+var ProjectRepository = require(config.path.repository + '/project');
 
 /*
  * @param taskShortId
@@ -43,19 +44,45 @@ exports.show = function(req, res) {
 /*
  * @path(/api/project/:projectId/taskboard)
  *
- * Return JSON tasks
+ * Return JSON {
+ *     tasks: tasks,
+ *     project: project
+ * }
  */
 exports.listByProject = function(req, res) {
     var options = {};
     // TODO, only return title, description...except media sort of big thing
-    TaskRepository.listByProject(req.project._id.toString(), function(err, tasks) {
+    async.waterfall([
+        function(callback) {
+            TaskRepository.listByProject(req.project._id.toString(), function(err, tasks) {
+                if (err) {
+                    return errorHandler.handle(res, err);
+                } else {
+                    var options = {
+                        selectField: ['title']
+                    };
+                    callback(null, TaskRepository.fetchActivityToTaskList(tasks, options));
+                }
+            });
+        },
+        function(tasks, callback) {
+            var fetchOptions = ['fetchStatus', 'fetchPriority']
+            ProjectRepository.fetch(req.project, fetchOptions, function(err, project) {
+                if (err) {
+                    return errorHandler.handle(res, err);
+                } else {
+                    callback(null, tasks, project)
+                }
+            });
+        }
+    ], function(err, tasks, project) {
         if (err) {
             return errorHandler.handle(res, err);
         } else {
-            var options = {
-                selectField: ['title']
-            };
-            res.json(TaskRepository.fetchActivityToTaskList(tasks, options));
+            res.json({
+                tasks: tasks,
+                project: project
+            });
         }
     });
 }

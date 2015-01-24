@@ -36,11 +36,11 @@ exports.loadByShortId = function(req, res, next, id) {
  * Return JSON project with optional fields affected
  */
 exports.show = function(req, res) {
-    var fetchOptions = ['fetchUser', 'fetchStatus', 'fetchPriority'];
+    var fetchOptions = ['fetchStatus', 'fetchPriority'];
     var project = req.project;
     ProjectRepository.fetch(project, fetchOptions, function(err, project) {
         if (err) {
-            res.send(err);
+            return errorHandler.handle(res, err);
         } else {
             res.json(project);
         }
