@@ -16,7 +16,8 @@ var StatusModelSchema = new mongoose.Schema({
     date: {
         created: {type: Date, default: Date.now},
         updated: {type: Date, default: Date.now}
-    }
+    },
+    weight: {type: Number, default: 0}
 });
 
 /**
@@ -25,7 +26,8 @@ var StatusModelSchema = new mongoose.Schema({
 var requiredFields = [
     'creatorId',
     'code',
-    'label'
+    'label',
+    'weight'
 ];
 // Passing schema by ref, add required field validation
 utils.addRequiredValidation(StatusModelSchema, requiredFields);

@@ -21,48 +21,58 @@ var creatorId =  mongoose.Types.ObjectId('STRINGOF12BT');
 var statusFixture = [
     {
         code: 'TD',
-        label: 'ToDo'
+        label: 'ToDo',
+        weight: 1
     },
     {
         code: 'IP',
-        label: 'In Progress'
+        label: 'In Progress',
+        weight: 2
     },
     {
         code: 'NI',
-        label: 'Need information'
+        label: 'Need information',
+        weight: 3
     },
     {
         code: 'RV',
-        label: 'Review'
+        label: 'Review',
+        weight: 4
     },
     {
         code: 'DN',
-        label: 'DONE'
+        label: 'DONE',
+        weight: 5
     }
 ];
 
 var priorityFixture = [
     {
         code: 'LW',
-        label: 'Low'
+        label: 'Low',
+        weight: 0
     },
     {
         code: 'NM',
-        label: 'Normal'
+        label: 'Normal',
+        weight: 1
     },
     {
         code: 'CT',
-        label: 'Critical'
+        label: 'Critical',
+        weight: 2
     },
     {
         code: 'BL',
-        label: 'Blocking'
+        label: 'Blocking',
+        weight: 3
     },
     {
         code: 'UG',
-        label: 'Urgent'
+        label: 'Urgent',
+        weight: 4
     }
-]
+];
 
 for (var i=0; i<statusFixture.length; i++) {
     var status = new StatusModel(statusFixture[i]);
