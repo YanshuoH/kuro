@@ -13,6 +13,7 @@ kuroApp.controller('BoardCtrl', function(
     $modalStack,
     apiService,
     urlParserService,
+    projectService,
     taskboardService,
     navbarData) {
     /*
@@ -20,6 +21,7 @@ kuroApp.controller('BoardCtrl', function(
      */
     $scope.projects = [];
     $scope.projectId;
+    $scope.currentProject = null;
     $scope.tasks = [];
     $scope.showTaskboardDelay = 500;
     $scope.showTaskboard = navbarData.getShowTaskboard();
@@ -38,15 +40,26 @@ kuroApp.controller('BoardCtrl', function(
         $scope.hideProjectListLong = navbarData.getHideProjectListLong();
     });
 
+    $scope.handleTaskboardData = function(taskboardData) {
+        $scope.currentProject = taskboardData.project;
+        // object data for mapping
+        $scope.priorityMapping = taskboardService.generatePriorityMapping($scope.currentProject.priorityData);
+        $scope.statusMapping = taskboardService.generateStatusMapping($scope.currentProject.statusData);
+        // taskboard grid
+        $scope.tasks = taskboardService.generateTaskboardGrid(taskboardData.tasks, $scope.statusMapping, $scope.priorityMapping);
+        // List sorted by weight
+        $scope.priorityList = taskboardService.generatePriorityList($scope.currentProject.priorityData);
+        $scope.statusList = taskboardService.generateStatusList($scope.currentProject.statusData);
+        console.log($scope.tasks);
+    }
+
     // Dispatch view
     if (typeof($routeParams.projectId) !== 'undefined') {
         navbarData.setShowTaskboard(true);
         navbarData.setHideProjectListLong(true);
         $scope.projectId = $routeParams.projectId;
         apiService.getTaskList($scope.projectId)
-            .then(function(tasks) {
-                $scope.tasks = taskboardService.generateTaskboardGrid(tasks);
-          });
+            .then($scope.handleTaskboardData);
     }
 
     $scope.$on('$locationChangeStart', function(event, next, current) {
@@ -58,9 +71,7 @@ kuroApp.controller('BoardCtrl', function(
             if ($scope.projectId !== 'undefined' && next.indexOf('taskboard') > -1) {
                 $scope.showTaskboardFunc($scope.projectId);
                 apiService.getTaskList($scope.projectId)
-                  .then(function(tasks) {
-                    $scope.tasks = taskboardService.generateTaskboardGrid(tasks);
-                  });
+                  .then($scope.handleTaskboardData);
             }
         }
     });
@@ -158,7 +169,7 @@ kuroApp.controller('BoardCtrl', function(
 
     $scope.dropCallback = function(event, ui, priority, status) {
         // update task
-        var putData = taskboardService.generateUpdateData(priority, status);
+        var putData = taskboardService.generateUpdateData(status, priority, $scope.statusMapping, $scope.priorityMapping);
         apiService.putTask(putData, $scope.projectId, $scope.taskDragged.shortId)
             .then(function(response) {
                 console.log(response);
@@ -183,7 +194,6 @@ kuroApp.controller('ProjectCtrl', function($scope, $http, $location, $routeParam
 
     apiService.getProject($scope.projectId)
         .then(function(project) {
-            console.log(project)
             $scope.project = project;
         })
 

@@ -147,18 +147,23 @@ kuroApp.service('urlParserService', function() {
     }
 });
 
-kuroApp.service('taskboardService', function() {
-    var priorityMapping = {
-        '0': 'low',
-        '1': 'normal',
-        '2': 'urgent'
+kuroApp.service('projectService', function() {
+    return {
+        searchProjectByShortId: searchProjectByShortId
     };
 
-    var statusMapping = {
-        '0': 'Todo',
-        '1': 'QA',
-        '2': 'Done'
-    };
+    function searchProjectByShortId(projectShortId, list) {
+        for (var i=0; i<list.length; i++) {
+            if (list[i].shortId.toString() === projectShortId.toString()) {
+                return list[i];
+            }
+        }
+
+        return null;
+    }
+})
+
+kuroApp.service('taskboardService', function() {
 
     var getKeyByValue = function(obj, value) {
         for (var prop in obj) {
@@ -169,13 +174,32 @@ kuroApp.service('taskboardService', function() {
             }
         };
 
-    var insertIntoGrid = function(grid, task) {
+    var generateStatusMapping = function(statusData) {
+        var statusMapping = {};
+        for (var i=0; i<statusData.length; i++) {
+            statusMapping[statusData[i]._id] = statusData[i].label;
+        }
+
+        return statusMapping;
+    }
+
+    var generatePriorityMapping = function(priorityData) {
+        var priorityMapping = {};
+        for (var j=0; j<priorityData.length; j++) {
+            priorityMapping[priorityData[j]._id] = priorityData[j].label;
+        }
+
+        return priorityMapping;
+    }
+
+    var insertIntoGrid = function(grid, task, statusMapping, priorityMapping) {
         grid[priorityMapping[task.priority.toString()]]
             [statusMapping[task.status.toString()]].push(task);
     };
 
-    var initTaskboardGrid = function() {
+    var initTaskboardGrid = function(statusMapping, priorityMapping) {
         var grid = {};
+
         for (var priority in priorityMapping) {
             grid[priorityMapping[priority]] = {};
             for (var status in statusMapping) {
@@ -186,21 +210,21 @@ kuroApp.service('taskboardService', function() {
         return grid;
     };
 
-    var generateTaskboardGrid = function(tasks) {
-        var grid = initTaskboardGrid();
+    var generateTaskboardGrid = function(tasks, statusMapping, priorityMapping) {
+        var grid = initTaskboardGrid(statusMapping, priorityMapping);
         // two level: priority/late, status
         for (var i=0; i<tasks.length; i++) {
             var task = tasks[i];
-            insertIntoGrid(grid, task);
+            insertIntoGrid(grid, task, statusMapping, priorityMapping);
         }
 
         return grid;
     };
 
-    var generateUpdateData = function(priority, status) {
+    var generateUpdateData = function(status, priority, statusMapping, priorityMapping) {
         return {
-            priority: parseInt(getKeyByValue(priorityMapping, priority)),
-            status: parseInt(getKeyByValue(statusMapping, status))
+            priority: getKeyByValue(priorityMapping, priority),
+            status: getKeyByValue(statusMapping, status)
         };
     };
 
@@ -217,12 +241,28 @@ kuroApp.service('taskboardService', function() {
         }
 
         return grid;
-    }
+    };
+
+    var generatePriorityList = function(priorityData) {
+        return priorityData.sort(function(a, b) {
+            return a.weight - b.weight;
+        });
+    };
+
+    var generateStatusList = function(statusData) {
+        return statusData.sort(function(a, b) {
+            return a.weight - b.weight;
+        })
+    };
 
     return {
         generateTaskboardGrid: generateTaskboardGrid,
         generateUpdateData: generateUpdateData, 
-        updateGridByTaskId: updateGridByTaskId
+        updateGridByTaskId: updateGridByTaskId,
+        generatePriorityList: generatePriorityList,
+        generateStatusList: generateStatusList,
+        generatePriorityMapping: generatePriorityMapping,
+        generateStatusMapping: generateStatusMapping
     };
 });
 
