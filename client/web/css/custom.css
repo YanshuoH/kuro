@@ -6,13 +6,21 @@
   float: right;
 }
 
+.taskboard-body {
+  white-space: nowrap;
+  overflow: auto;
+}
+
 .taskboard-row {
   margin: 1px 5px 1px 5px;
-  <!--background-color: #5c5c5c;-->
 }
 
 .taskboard-col {
   padding: 5px 5px 5px 5px;
+  display: inline-block;
+  width: 250px;
+  float:none;
+  vertical-align: top;
 }
 
 .taskboard-col .task-item {

@@ -9,7 +9,7 @@
         li.divider
         li
           a Other filters
-  .panel-body
+  .panel-body.taskboard-body
     .row.taskboard-row(ng-repeat='priority in priorityList' ng-if='typeof(tasks[priority.label]) !== "undefined"')
       .col-md-4.taskboard-col(ng-repeat='status in statusList')
         .list-group(ng-model='tasks[priority.label][status.label]' data-drop='true' jqyoui-droppable='{onDrop:"dropCallback(priority.label, status.label)",stack: true}')
