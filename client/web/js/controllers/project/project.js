@@ -28,9 +28,6 @@ kuroApp.controller('BoardCtrl', function(
     $scope.hideProjectListLong = navbarData.getHideProjectListLong();
     $scope.isDrag = false;
 
-    $scope.priorityData = ['urgent', 'normal', 'low'];
-    $scope.statusData = ['Todo', 'QA', 'Done'];
-
     // Syn with navbarData
     $scope.$watch(function () { return navbarData.getShowTaskboard(); }, function(showTaskboard) {
         $scope.showTaskboard = showTaskboard;
@@ -50,8 +47,7 @@ kuroApp.controller('BoardCtrl', function(
         // List sorted by weight
         $scope.priorityList = taskboardService.generatePriorityList($scope.currentProject.priorityData);
         $scope.statusList = taskboardService.generateStatusList($scope.currentProject.statusData);
-        console.log($scope.tasks);
-    }
+    };
 
     // Dispatch view
     if (typeof($routeParams.projectId) !== 'undefined') {
@@ -122,7 +118,7 @@ kuroApp.controller('BoardCtrl', function(
         if (!$scope.isDrag) {
             $location.hash(hash);
         }
-    }
+    };
 
     $scope.openTaskModal = function(taskId) {
         // Close opened modal
@@ -134,7 +130,15 @@ kuroApp.controller('BoardCtrl', function(
                 controller: 'TaskCtrl',
                 backdrop: false,
                 backdropClass: 'kidding',
-                size: 'lg'
+                size: 'lg',
+                resolve: {
+                    statusList: function() {
+                        return $scope.statusList;
+                    },
+                    priorityList: function() {
+                        return $scope.priorityList;
+                    }
+                }
             });
             // After close event
             modalInstance.result.then(
@@ -152,14 +156,14 @@ kuroApp.controller('BoardCtrl', function(
                 $location.hash('');
             });
         }
-    }
+    };
 
     $scope.shouldShowTaskModal = function(hash) {
         var hashParams = urlParserService.getTaskParamFromHash($location.hash());
         if (typeof(hashParams.taskId) !== 'undefined') {
             $scope.openTaskModal(hashParams.taskId);
         }
-    }
+    };
 
     // If task modal should open
     // if ($location.hash() !== '') {
@@ -180,7 +184,7 @@ kuroApp.controller('BoardCtrl', function(
     $scope.dragStartCallback = function(event, ui, task) {
         $scope.taskDragged = task;
         $scope.isDrag = true;
-    }
+    };
 })
 
 kuroApp.controller('ProjectCtrl', function($scope, $http, $location, $routeParams, apiService) {

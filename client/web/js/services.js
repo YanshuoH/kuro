@@ -252,12 +252,12 @@ kuroApp.service('taskboardService', function() {
     var generateStatusList = function(statusData) {
         return statusData.sort(function(a, b) {
             return a.weight - b.weight;
-        })
+        });
     };
 
     return {
         generateTaskboardGrid: generateTaskboardGrid,
-        generateUpdateData: generateUpdateData, 
+        generateUpdateData: generateUpdateData,
         updateGridByTaskId: updateGridByTaskId,
         generatePriorityList: generatePriorityList,
         generateStatusList: generateStatusList,

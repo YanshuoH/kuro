@@ -2,7 +2,20 @@
 
 var kuroApp = angular.module('Kuro');
 
-kuroApp.controller('TaskBoardCtrl', function($scope, $http, $routeParams, apiService) {
+kuroApp.controller('TaskBoardCtrl', [
+    '$scope',
+    '$http',
+    '$routeParams',
+    'apiService',
+function(
+    $scope,
+    $http,
+    $routeParams,
+    apiService)
+{
+    /*
+     * Begining of controller
+     */
     $scope.projectId = $routeParams.projectId;
     apiService.getTaskList($scope.projectId)
         .then(function(tasks) {
@@ -13,10 +26,24 @@ kuroApp.controller('TaskBoardCtrl', function($scope, $http, $routeParams, apiSer
         .then(function(project) {
             $scope.project = project;
         });
-});
+}]);
 
 
-kuroApp.controller('TaskCtrl', function(
+kuroApp.controller('TaskCtrl', [
+    '$scope',
+    '$http',
+    '$route',
+    '$routeParams',
+    '$location',
+    '$modalInstance',
+    'taskService',
+    'apiService',
+    'urlParserService',
+    'errorData',
+    'Auth',
+    'statusList',
+    'priorityList',
+function(
     $scope,
     $http,
     $route,
@@ -27,8 +54,13 @@ kuroApp.controller('TaskCtrl', function(
     apiService,
     urlParserService,
     errorData,
-    Auth)
+    Auth,
+    statusList,
+    priorityList)
 {
+    /*
+     * Begining of controller
+     */
     $scope.commentFormData = {};
     $scope.showCommentForm = false;
     $scope.taskEdited = false;
@@ -127,7 +159,7 @@ kuroApp.controller('TaskCtrl', function(
             $modalInstance.close(null);
         }
     };
-});
+}]);
 
 kuroApp.controller('TaskFormCtrl', function($scope, $http, $routeParams, $location, apiService) {
     $scope.formData = {};
