@@ -167,12 +167,12 @@ kuroApp.service('taskboardService', function() {
 
     var getKeyByValue = function(obj, value) {
         for (var prop in obj) {
-                if (obj.hasOwnProperty(prop) ) {
-                     if (obj[prop] === value)
-                         return prop;
-                }
+            if (obj.hasOwnProperty(prop) ) {
+                 if (obj[prop] === value)
+                     return prop;
             }
-        };
+        }
+    };
 
     var generateStatusMapping = function(statusData) {
         var statusMapping = {};
@@ -228,12 +228,14 @@ kuroApp.service('taskboardService', function() {
         };
     };
 
+    // Find task location and remove it, then push the new task to new location
     var updateGridByTaskId = function(task, grid) {
         for (var priority in grid) {
             for (var status in grid[priority]) {
                 for (var i=0; i<grid[priority][status].length; i++) {
                     if (task._id === grid[priority][status][i]._id) {
-                        grid[priority][status][i] = task;
+                        grid[priority][status].splice(i, 1);
+                        grid[task.priorityLabel][task.statusLabel].push(task);
                         return grid;
                     }
                 }
@@ -245,7 +247,7 @@ kuroApp.service('taskboardService', function() {
 
     var generatePriorityList = function(priorityData) {
         return priorityData.sort(function(a, b) {
-            return a.weight - b.weight;
+            return b.weight- a.weight;
         });
     };
 
@@ -270,7 +272,9 @@ kuroApp.service('taskService', function() {
     return {
         retrieveComments: retrieveComments,
         addActivity: addActivity,
-        taskDiff: taskDiff
+        taskDiff: taskDiff,
+        mapFields: mapFields,
+        getFieldsLabel: getFieldsLabel
     };
 
     function retrieveComments(task) {
@@ -298,13 +302,20 @@ kuroApp.service('taskService', function() {
         if (type === 'comment') {
             task.comments.push(activityModel);
         }
+
+        // Merge mapping fields to task
+        for (var prop in activity.content) {
+            if (['status', 'priority'].indexOf(prop) > -1) {
+                task[prop] = activity.content[prop];
+            }
+        }
+
         return task;
     }
 
     function taskDiff(oldTask, newTask) {
         var content = {};
         var ignoreFields = ['activity', 'date', 'comments'];
-
         for (var prop in newTask) {
             if (ignoreFields.indexOf(prop) > -1) {
                 continue;
@@ -324,6 +335,48 @@ kuroApp.service('taskService', function() {
             if (newTask[prop] !== oldTask[prop]) {
                 content[prop] = newTask[prop];
                 continue;
+            }
+        }
+
+        return content;
+    }
+
+    function getFieldsLabel(task, statusList, priorityList) {
+        // @var Array
+        var statusObj = statusList.filter(function(status) {
+            return status._id === task.status;
+        });
+
+        // @var Array
+        var priorityObj = priorityList.filter(function(priority) {
+            return priority._id === task.priority;
+        });
+
+        task.statusLabel = statusObj[0].label;
+        task.priorityLabel = priorityObj[0].label;
+    }
+
+    function getFieldId(label, fieldData) {
+        var targetObj = fieldData.filter(function(obj) {
+            return label === obj.label;
+        });
+        return targetObj[0]._id;
+    }
+
+    function mapFields(content, statusList, priorityList) {
+        var fieldsToMap = ['status', 'priority'];
+        var fieldData = null;
+        for (var i=0; i<fieldsToMap.length; i++) {
+            if (typeof(content[fieldsToMap[i] + 'Label']) !== 'undefined') {
+                switch(fieldsToMap[i]) {
+                    case 'status':
+                        fieldData = statusList;
+                        break;
+                    case 'priority':
+                        fieldData = priorityList;
+                        break;
+                }
+                content[fieldsToMap[i]] = getFieldId(content[fieldsToMap[i] + 'Label'], fieldData);
             }
         }
         return content;

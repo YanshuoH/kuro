@@ -59,7 +59,7 @@ exports.listByProject = function(req, res) {
                     return errorHandler.handle(res, err);
                 } else {
                     var options = {
-                        selectField: ['title']
+                        selectField: ['title', 'status', 'priority']
                     };
                     callback(null, TaskRepository.fetchActivityToTaskList(tasks, options));
                 }

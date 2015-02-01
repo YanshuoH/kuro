@@ -13,7 +13,7 @@
     .row.taskboard-row(ng-repeat='priority in priorityList' ng-if='typeof(tasks[priority.label]) !== "undefined"')
       .col-md-4.taskboard-col(ng-repeat='status in statusList')
         .list-group(ng-model='tasks[priority.label][status.label]' data-drop='true' jqyoui-droppable='{onDrop:"dropCallback(priority.label, status.label)",stack: true}')
-          a.list-group-item placeholder
+          a.list-group-item {{ priority.label }} -- {{ status.label }}
           a.list-group-item.task-item(href='' ng-repeat='task in tasks[priority.label][status.label] track by $index' ng-click='addHash("taskId=" + task.shortId, $event)' ng-model='tasks[priority.label][status.label]' data-drag='true' data-jqyoui-options="{revert: 'invalid'}" jqyoui-draggable="{index: {{$index}}, onStart:'dragStartCallback(task)'}") {{ task.title }}
 
 div(ng-include="'partials/task/taskModal'")

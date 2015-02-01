@@ -1,5 +1,3 @@
-span(ng-click='edit()' ng-bind='value')
-select(name='status' ng-model='value')
-  option(value='Todo') Todo
-  option(value='QA') QA
-  option(value='Done') Done
+span(ng-click='edit()' ng-bind='value' ng-init='initFieldData()')
+select(name='status' ng-model='item' ng-options='label for label in list' ng-change='updateItem()')
+

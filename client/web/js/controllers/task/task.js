@@ -67,6 +67,9 @@ function(
     $scope.taskIsDirty = false;
     $scope.originalTask;
 
+    $scope.statusList = statusList;
+    $scope.priorityList = priorityList;
+
     $scope.$watch(function() {
         return $location.hash();
     }, function(value) {
@@ -92,8 +95,9 @@ function(
             .then(function(task) {
                 errorData.clear();
                 $scope.task = task;
-                $scope.originalTask = angular.copy(task);
                 $scope.task.comments = taskService.retrieveComments(task);
+                taskService.getFieldsLabel($scope.task, $scope.statusList, $scope.priorityList);
+                $scope.originalTask = angular.copy(task);
             });
     };
 
@@ -130,7 +134,11 @@ function(
     $scope.saveChanges = function() {
         var diffData = {
             type: 'change',
-            content: taskService.taskDiff($scope.originalTask, $scope.task)
+            content: taskService.mapFields(
+                    taskService.taskDiff($scope.originalTask, $scope.task),
+                    $scope.statusList,
+                    $scope.priorityList
+                )
         };
         apiService.putTaskActivity(diffData, $scope.projectId, $scope.taskId)
             .then(function(response) {
@@ -159,6 +167,29 @@ function(
             $modalInstance.close(null);
         }
     };
+}]);
+
+kuroApp.controller('TaskFieldCtrl', [
+    '$scope',
+    'taskService',
+function(
+    $scope,
+    taskService
+    )
+{
+    if (typeof($scope.fielddata) !=='undefined' && $scope.fielddata instanceof Array) {
+        $scope.initFieldData = function() {
+            var list = [];
+            for (var i=0; i<$scope.fielddata.length; i++) {
+                list.push($scope.fielddata[i].label);
+            }
+            $scope.list = list;
+        }
+
+        $scope.updateItem = function () {
+            $scope.value = angular.copy($scope.item);
+        }
+    }
 }]);
 
 kuroApp.controller('TaskFormCtrl', function($scope, $http, $routeParams, $location, apiService) {

@@ -26,8 +26,10 @@ kuro.directive( 'editInPlace', function() {
     return {
         restrict: 'E',
         scope: {
-            value: '='
+            value: '=',
+            fielddata: '=',
         },
+        controller: 'TaskFieldCtrl',
         templateUrl: function(elem, attr) {
             return 'partials/include/' + attr.type;
         },

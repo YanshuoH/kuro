@@ -14,9 +14,9 @@ script(type="text/ng-template" id="taskModal")
       .col-md-6.task-cell.task-date
         ul
           li status :
-            edit-in-place(type='status' value='task.status')
+            edit-in-place(type='status' value='task.statusLabel' fielddata='statusList')
           li priority: 
-            edit-in-place(type='priority' value='task.priority')
+            edit-in-place(type='priority' value='task.priorityLabel' fielddata='priorityList')
       .col-md-6.task-cell.task-date(ng-show='task.assignTo')
         ul
           li assignTo : {{ task.assignTo }}
