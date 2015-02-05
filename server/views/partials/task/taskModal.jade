@@ -10,7 +10,12 @@ script(type="text/ng-template" id="taskModal")
         ul
           li Updated at : {{ task.date.updated | date:'yyyy-MM-dd HH:mm' }}
           li Created at : {{ task.date.created | date:'yyyy-MM-dd HH:mm' }}
-          li(ng-show='task.date.due') Due date: {{ task.date.due }}
+          li.form-inline Due date:
+            span.input-group
+              input.form-control(type='text' datepicker-popup='yyyy-MM-dd HH:mm' ng-model='task.date.due' is-open='opened' close-text='Close' ng-blur='taskEdited = true')
+              span.input-group-btn
+                button.btn.btn-default(type="button" ng-click='openDatepicker($event)')
+                  i.glyphicon.glyphicon-calendar
       .col-md-6.task-cell.task-date
         ul
           li status :

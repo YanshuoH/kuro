@@ -25,7 +25,7 @@ kuroApp.factory('navbarData', function() {
             data.hideProjectListLong = hide;
         }
     };
-})
+});
 
 kuroApp.factory('errorData', function() {
     // Default
@@ -53,7 +53,7 @@ kuroApp.factory('errorData', function() {
             modalErrorContent = {
                 status: status,
                 message: message
-            }
+            };
         },
         getModalErrorContent: function() {
             return modalErrorContent;
@@ -62,10 +62,10 @@ kuroApp.factory('errorData', function() {
             modalErrorContent = {
                 status: 200,
                 message: ''
-            }
+            };
         }
     };
-})
+});
 
 kuroApp.factory('Auth', function(userApiService) {
     var user;
@@ -74,7 +74,7 @@ kuroApp.factory('Auth', function(userApiService) {
         setUser: setUser,
         getUser: getUser,
         loginCheck: loginCheck
-    }
+    };
 
     function setUser(aUser) {
         user = aUser;
@@ -88,14 +88,29 @@ kuroApp.factory('Auth', function(userApiService) {
         userApiService.loginCheck()
             .then(callback);
     }
-})
+});
+
+kuroApp.service('utilService', function() {
+    // jQuery function
+    var isEmptyObject = function(obj) {
+        var prop;
+        for (prop in obj) {
+            return false;
+        }
+        return true;
+    };
+
+    return {
+        isEmptyObject: isEmptyObject
+    };
+});
 
 kuroApp.service('urlParserService', function() {
     return {
         getProjectId: getProjectId,
         getTaskParamFromHash: getTaskParamFromHash,
         isOnlyHashChange: isOnlyHashChange
-    }
+    };
 
     function parseQuery(query) {
         var a = query.split('&');
@@ -315,7 +330,7 @@ kuroApp.service('taskService', function() {
 
     function taskDiff(oldTask, newTask) {
         var content = {};
-        var ignoreFields = ['activity', 'date', 'comments'];
+        var ignoreFields = ['activity', 'comments'];
         for (var prop in newTask) {
             if (ignoreFields.indexOf(prop) > -1) {
                 continue;
@@ -327,7 +342,15 @@ kuroApp.service('taskService', function() {
 
             if (typeof(newTask[prop]) === 'object') {
                 if (JSON.stringify(oldTask[prop]) !== JSON.stringify(newTask[prop])) {
-                    content[prop] = newTask[prop];
+                    // If is due date case
+                    if (prop === 'date') {
+                        if (typeof(content[prop]) === 'undefined') {
+                            content[prop] = {};
+                        }
+                        content[prop]['due'] = newTask[prop]['due'];
+                    } else {
+                        content[prop] = newTask[prop];
+                    }
                 }
                 continue;
             }

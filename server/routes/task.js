@@ -66,12 +66,12 @@ exports.listByProject = function(req, res) {
             });
         },
         function(tasks, callback) {
-            var fetchOptions = ['fetchStatus', 'fetchPriority']
+            var fetchOptions = ['fetchStatus', 'fetchPriority'];
             ProjectRepository.fetch(req.project, fetchOptions, function(err, project) {
                 if (err) {
                     return errorHandler.handle(res, err);
                 } else {
-                    callback(null, tasks, project)
+                    callback(null, tasks, project);
                 }
             });
         }

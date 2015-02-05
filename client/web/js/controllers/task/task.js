@@ -43,6 +43,7 @@ kuroApp.controller('TaskCtrl', [
     'Auth',
     'statusList',
     'priorityList',
+    'utilService',
 function(
     $scope,
     $http,
@@ -56,7 +57,8 @@ function(
     errorData,
     Auth,
     statusList,
-    priorityList)
+    priorityList,
+    utilService)
 {
     /*
      * Begining of controller
@@ -101,6 +103,13 @@ function(
             });
     };
 
+    $scope.openDatepicker = function($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+
+        $scope.opened = true;
+    };
+
     $scope.changeHash = function(hash) {
         $location.hash(hash);
     };
@@ -126,7 +135,7 @@ function(
                     }
                 }
                 // reset formData
-                $scope.commentFormData = {}
+                $scope.commentFormData = {};
                 $scope.toggleCommentFormFunc();
             });
     };
@@ -140,19 +149,23 @@ function(
                     $scope.priorityList
                 )
         };
-        apiService.putTaskActivity(diffData, $scope.projectId, $scope.taskId)
-            .then(function(response) {
-                if (typeof(response.status) !== 'undefined') {
-                    errorData.setModalErrorContent(response.status, response.message);
-                    if (response.status === 200) {
-                        $scope.task = taskService.addActivity('change', diffData, $scope.task, Auth.getUser());
+        if (utilService.isEmptyObject(diffData.content)) {
+            errorData.setModalErrorContent(204, 'No change has been made.');
+        } else {
+            apiService.putTaskActivity(diffData, $scope.projectId, $scope.taskId)
+                .then(function(response) {
+                    if (typeof(response.status) !== 'undefined') {
+                        errorData.setModalErrorContent(response.status, response.message);
+                        if (response.status === 200) {
+                            $scope.task = taskService.addActivity('change', diffData, $scope.task, Auth.getUser());
+                        }
+                        // reset diffData
+                        diffData = {};
+                        $scope.taskIsDirty = true;
+                        $scope.taskEdited = false;
                     }
-                    // reset diffData
-                    diffData = {};
-                    $scope.taskIsDirty = true;
-                    $scope.taskEdited = false;
-                }
-            });
+                });
+        }
     };
 
     $scope.resetChanges = function() {

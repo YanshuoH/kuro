@@ -22,6 +22,9 @@ kuroApp.controller('ErrorCtrl', function($scope, $location, errorData) {
                 case 200:
                     $scope.messageType = 'alert-success';
                     break;
+                case 204:
+                    $scope.messageType = 'alert-info';
+                    break;
                 case 500:
                     $scope.messageType = 'alert-warning';
                     break;
