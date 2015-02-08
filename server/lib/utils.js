@@ -66,6 +66,9 @@ exports.mergeObj = function (obj1,obj2){
 
 exports.overrideObj = function(source, change) {
     for (var prop in change) {
+        if (typeof(source[prop]) === 'undefined') {
+            source[prop] = {};
+        }
         // if nested object
         if (typeof(change[prop]) === 'object') {
             exports.overrideObj(source[prop], change[prop]);
