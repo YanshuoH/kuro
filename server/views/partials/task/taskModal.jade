@@ -1,7 +1,10 @@
 script(type="text/ng-template" id="taskModal")
   .modal-header
-    h4
-      edit-in-place(type='default' value='task.title')
+    .bootstrap-dialog-header
+      .bootstrap-dialog-close-button
+        button.close(ng-click='close()') ×
+      h4
+        edit-in-place(type='default' value='task.title')
   .modal-body
     .row
       .col-md-12(ng-include="'partials/task/taskError'")
