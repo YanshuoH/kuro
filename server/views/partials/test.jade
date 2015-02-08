@@ -1,7 +1,5 @@
 .row
   .col-md-6
-    ul
-      li(ng-repeat='contact in contacts')
-        edit-in-place(type='priority' value='contact.name')
-    ul
-      li(ng-repeat='contact in contacts') {{ contact.name }}
+    button(ng-click='loadTemplate()') toggle template
+    .wrap(ng-if='templateBoolean')
+      .test(ng-include="'partials/project/projectList'")
