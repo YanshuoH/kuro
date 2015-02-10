@@ -2,12 +2,12 @@ var config = require('../config/config');
 var utils = require(config.path.lib + '/utils');
 var UserRepository = require(config.path.repository + '/user');
 var TaskRepository = require(config.path.repository + '/task');
+var StatusRepository = require(config.path.repository + '/status');
 
 var async = require('async');
 
 var mongoose = require('mongoose');
 var ProjectModel = mongoose.model('ProjectModel');
-var StatusModel = mongoose.model('StatusModel');
 var PriorityModel = mongoose.model('PriorityModel');
 
 
@@ -77,7 +77,7 @@ exports.fetch = function(project, fetchOptions, cb) {
                 callback(null, project);
             }
         });
-    }
+    };
 
     var fetchStatus = function(project, callback) {
         var options = {
@@ -85,15 +85,15 @@ exports.fetch = function(project, fetchOptions, cb) {
                 _id: { $in: project.statusData }
             }
         };
-        StatusModel.listToJson(options, function(err, statusResults) {
+        StatusRepository.loadListByProject(project._id, {}, function(err, statusList) {
             if (err) {
                 callback(err);
             } else {
-                project.statusData = statusResults;
+                project.statusData = statusList;
                 callback(null , project);
             }
         });
-    }
+    };
 
     var fetchPriority = function(project, callback) {
         var options = {
@@ -109,7 +109,7 @@ exports.fetch = function(project, fetchOptions, cb) {
                 callback(null, project);
             }
         });
-    }
+    };
 
     // generate query series
     var functions = [init];
