@@ -7,8 +7,8 @@ kuroApp.controller('HomeCtrl', function($scope, $http) {
 });
 
 kuroApp.controller('TestCtrl', function($scope, $modal, $templateCache, apiService) {
-  $scope.contacts = [
-    { name: 'Urgent'},
-    { name: 'Normal'}
-  ];
+    $scope.templateBoolean = false;
+    $scope.loadTemplate = function() {
+        $scope.templateBoolean = !$scope.templateBoolean;
+  }
 });
