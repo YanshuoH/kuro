@@ -1,6 +1,8 @@
 var routes = require('../routes/index');
 var task = require('../routes/task');
 var user = require('../routes/user');
+var status = require('../routes/status');
+var priority = require('../routes/priority');
 var project = require('../routes/project');
 
 var auth = require('./middlewares/authorization');
@@ -50,6 +52,11 @@ module.exports = function(app, config, passport) {
     app.put('/api/project/:projectShortId/task/:taskShortId/edit/activity', taskAuth, task.updateActivity);
     app.post('/api/project/:projectShortId/task/create', projectAuth, task.create);
 
+    // Fields
+    app.get('/api/status/default', status.loadDefaultList);
+    app.get('/api/status/:statusId', status.show);
+    app.get('/api/project/:projectShortId/status', status.loadStatusByProject);
+    app.param('statusId', status.loadById);
     // redirect all others to the index (HTML5 history)
     app.get('*', routes.index);
 }

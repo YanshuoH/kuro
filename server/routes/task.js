@@ -2,7 +2,7 @@ var config = require('../config/config');
 var async = require('async');
 
 var errorHandler = require(config.path.lib + '/errorHandler');
-var successHandler = require(config.path.lib + '/successHandler')
+var successHandler = require(config.path.lib + '/successHandler');
 
 var TaskRepository = require(config.path.repository + '/task');
 var ProjectRepository = require(config.path.repository + '/project');
