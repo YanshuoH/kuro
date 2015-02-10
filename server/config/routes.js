@@ -53,10 +53,17 @@ module.exports = function(app, config, passport) {
     app.post('/api/project/:projectShortId/task/create', projectAuth, task.create);
 
     // Fields
+    // Status
     app.get('/api/status/default', status.loadDefaultList);
     app.get('/api/status/:statusId', status.show);
     app.get('/api/project/:projectShortId/status', status.loadStatusByProject);
     app.param('statusId', status.loadById);
+    // Priority
+    app.get('/api/priority/default', priority.loadDefaultList);
+    app.get('/api/priority/:priorityId', priority.show);
+    app.get('/api/project/:projectShortId/priority', priority.loadPriorityByProject);
+    app.param('priorityId', priority.loadById);
+
     // redirect all others to the index (HTML5 history)
     app.get('*', routes.index);
 }
