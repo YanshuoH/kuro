@@ -3,7 +3,7 @@ var utils = require(config.path.lib + '/utils');
 var UserRepository = require(config.path.repository + '/user');
 var TaskRepository = require(config.path.repository + '/task');
 var StatusRepository = require(config.path.repository + '/status');
-
+var PriorityRepository = require(config.path.repository + '/priority');
 var async = require('async');
 
 var mongoose = require('mongoose');
@@ -101,12 +101,12 @@ exports.fetch = function(project, fetchOptions, cb) {
                 _id: { $in: project.priorityData }
             }
         };
-        PriorityModel.listToJson(options, function(err, priorityResults) {
+        PriorityRepository.loadListByProject(project._id, {}, function(err, priorityList) {
             if (err) {
                 callback(err);
             } else {
-                project.priorityData = priorityResults;
-                callback(null, project);
+                project.priorityData = priorityList;
+                callback(null , project);
             }
         });
     };
