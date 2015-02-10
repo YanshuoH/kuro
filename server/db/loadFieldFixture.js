@@ -22,26 +22,31 @@ var statusFixture = [
     {
         code: 'TD',
         label: 'ToDo',
+        type: 'default',
         weight: 1
     },
     {
         code: 'IP',
         label: 'In Progress',
+        type: 'default',
         weight: 2
     },
     {
         code: 'NI',
         label: 'Need information',
+        type: 'default',
         weight: 3
     },
     {
         code: 'RV',
         label: 'Review',
+        type: 'default',
         weight: 4
     },
     {
         code: 'DN',
         label: 'DONE',
+        type: 'default',
         weight: 5
     }
 ];
@@ -50,26 +55,31 @@ var priorityFixture = [
     {
         code: 'LW',
         label: 'Low',
+        type: 'default',
         weight: 0
     },
     {
         code: 'NM',
         label: 'Normal',
+        type: 'default',
         weight: 1
     },
     {
         code: 'CT',
         label: 'Critical',
+        type: 'default',
         weight: 2
     },
     {
         code: 'BL',
         label: 'Blocking',
+        type: 'default',
         weight: 3
     },
     {
         code: 'UG',
         label: 'Urgent',
+        type: 'default',
         weight: 4
     }
 ];

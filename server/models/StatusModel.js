@@ -13,6 +13,7 @@ var StatusModelSchema = new mongoose.Schema({
     creatorId: {type: ObjectId, ref: 'user'},
     code: {type: String, trim: true},
     label: {type: String, trim: true},
+    type: {type: String, trim: true},
     date: {
         created: {type: Date, default: Date.now},
         updated: {type: Date, default: Date.now}
