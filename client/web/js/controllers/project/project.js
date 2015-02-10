@@ -68,6 +68,10 @@ kuroApp.controller('BoardCtrl', function(
                 $scope.showTaskboardFunc($scope.projectId);
                 apiService.getTaskList($scope.projectId)
                   .then($scope.handleTaskboardData);
+            } else {
+                // taskboard -> project list
+                navbarData.setShowTaskboard(false);
+                navbarData.setHideProjectListLong(false);
             }
         }
     });
