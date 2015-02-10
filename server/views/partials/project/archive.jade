@@ -1,3 +1,4 @@
 .archive(ng-init="hidden = false")
   #projectList(ng-include="'partials/project/projectList'" ng-class='{"col-sm-8": !hideProjectListLong, "col-sm-4": hideProjectListLong}')
   .col-sm-8.animate-if#taskboard(ng-if='showTaskboard' ng-include="'partials/task/taskBoard'")
+  .col-sm-8.animate-if#projectForm(ng-if='showProjectForm' ng-include="'partials/project/projectForm'")

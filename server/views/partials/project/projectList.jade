@@ -23,7 +23,7 @@
                 strong Last update
                 p {{project.date.updated | date:'yyyy-MM-dd HH:mm'}}
               .col-sm-1
-                a(href='/project/{{project.shortId}}/edit')
+                a(href='' resize-project ng-click='showProjectFormFunc(project.shortId)')
                   span.glyphicon.glyphicon-pencil
     .list-group#project-list-short(ng-show='hideProjectListLong')
       a.list-group-item(href='' ng-repeat='project in projects' ng-click='showTaskboardFunc(project.shortId)') {{ project.title }}

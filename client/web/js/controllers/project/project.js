@@ -26,6 +26,7 @@ kuroApp.controller('BoardCtrl', function(
     $scope.showTaskboardDelay = 500;
     $scope.showTaskboard = navbarData.getShowTaskboard();
     $scope.hideProjectListLong = navbarData.getHideProjectListLong();
+    $scope.showProjectForm = navbarData.getShowProjectForm();
     $scope.isDrag = false;
 
     // Syn with navbarData
@@ -35,6 +36,10 @@ kuroApp.controller('BoardCtrl', function(
 
     $scope.$watch(function() { return navbarData.getHideProjectListLong(); }, function(hideProjectListLong) {
         $scope.hideProjectListLong = navbarData.getHideProjectListLong();
+    });
+
+    $scope.$watch(function() { return navbarData.getShowProjectForm(); }, function(showProjectForm) {
+        $scope.showProjectForm = showProjectForm;
     });
 
     $scope.handleTaskboardData = function(taskboardData) {
@@ -62,13 +67,20 @@ kuroApp.controller('BoardCtrl', function(
         if (urlParserService.isOnlyHashChange(next, current)) {
             // do nothing
         } else {
-            // project list -> taskboard : get project id
             $scope.projectId = urlParserService.getProjectId(next);
-            if ($scope.projectId !== 'undefined' && next.indexOf('taskboard') > -1) {
-                $scope.showTaskboardFunc($scope.projectId);
-                apiService.getTaskList($scope.projectId)
-                  .then($scope.handleTaskboardData);
+            if ($scope.projectId !== 'undefined') {
+                // project list -> taskboard : get project id
+                if (next.indexOf('taskboard') > -1) {
+                    $scope.showTaskboardFunc($scope.projectId);
+                    apiService.getTaskList($scope.projectId)
+                      .then($scope.handleTaskboardData);
+                } else if (next.indexOf('edit') > -1) {
+                    // project list -> project edit
+                    // TODO
+                }
+
             } else {
+                console.log(next, current);
                 // taskboard -> project list
                 navbarData.setShowTaskboard(false);
                 navbarData.setHideProjectListLong(false);
@@ -99,6 +111,15 @@ kuroApp.controller('BoardCtrl', function(
             navbarData.setShowTaskboard(true);
         }, $scope.showTaskboardDelay);
 
+    };
+
+    $scope.showProjectFormFunc = function(projectId) {
+        navbarData.setHideProjectListLong(true);
+        $location.path('/project/' + projectId + '/edit', false);
+
+        $timeout(function() {
+            navbarData.setShowProjectForm(true);
+        }, $scope.showTaskboardDelay);
     };
 
     $scope.createProject = function() {
@@ -216,7 +237,7 @@ kuroApp.controller('ProjectCtrl', function($scope, $http, $location, $routeParam
 
 kuroApp.controller('ProjectFormCtrl', function($scope, $http, $routeParams, $location, apiService) {
     $scope.projectId = $routeParams.projectId;
-    $scope.formData = {}
+    $scope.formData = {};
     $scope.isNew = true;
     if (typeof($routeParams.projectId) !== 'undefined') {
         apiService.getProject($scope.projectId)
