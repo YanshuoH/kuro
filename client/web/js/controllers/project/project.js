@@ -6,6 +6,7 @@ var kuroApp = angular.module('Kuro');
 kuroApp.controller('BoardCtrl', [
     '$scope',
     '$http',
+    '$route',
     '$location',
     '$routeParams',
     '$timeout',
@@ -20,6 +21,7 @@ kuroApp.controller('BoardCtrl', [
 function(
     $scope,
     $http,
+    $route,
     $location,
     $routeParams,
     $timeout,
@@ -34,6 +36,7 @@ function(
     /*
      * Begining of controller
      */
+    $scope.routeState = routeState;
     $scope.projects = [];
     $scope.projectId;
     $scope.currentProject = null;
@@ -69,13 +72,24 @@ function(
         $scope.statusList = taskboardService.generateStatusList($scope.currentProject.statusData);
     };
 
-    // Dispatch view
-    if (typeof($routeParams.projectId) !== 'undefined') {
-        navbarData.setShowTaskboard(true);
-        navbarData.setHideProjectListLong(true);
-        $scope.projectId = $routeParams.projectId;
-        apiService.getTaskList($scope.projectId)
-            .then($scope.handleTaskboardData);
+    // Dispatch view by route stage
+    switch($scope.routeState) {
+        case 'taskboard':
+            navbarData.setShowTaskboard(true);
+            navbarData.setHideProjectListLong(true);
+            $scope.projectId = $routeParams.projectId;
+            apiService.getTaskList($scope.projectId)
+                .then($scope.handleTaskboardData);
+            break;
+        case 'project.edit':
+            navbarData.setHideProjectListLong(true);
+            navbarData.setShowProjectForm(true);
+            // $scope.projectId = $routeParams.projectId;
+            break;
+        default:
+            // archive
+            navbarData.setHideProjectListLong(false);
+            navbarData.setShowTaskboard(false);
     }
 
     $scope.$on('$locationChangeStart', function(event, next, current) {
