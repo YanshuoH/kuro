@@ -14,6 +14,7 @@ kuroApp.controller('BoardCtrl', [
     '$modalStack',
     'apiService',
     'urlParserService',
+    'utilService',
     'projectService',
     'taskboardService',
     'navbarData',
@@ -29,6 +30,7 @@ function(
     $modalStack,
     apiService,
     urlParserService,
+    utilService,
     projectService,
     taskboardService,
     navbarData,
@@ -72,6 +74,23 @@ function(
         $scope.statusList = taskboardService.generateStatusList($scope.currentProject.statusData);
     };
 
+    $scope.showTaskboardFunc = function(projectId) {
+        navbarData.setHideProjectListLong(true);
+        $location.path('/project/' + projectId + '/taskboard', false);
+
+        $timeout(function() {
+            navbarData.setShowTaskboard(true);
+        }, $scope.showTaskboardDelay);
+    };
+
+    $scope.showProjectFormFunc = function(projectId) {
+        navbarData.setHideProjectListLong(true);
+        $location.path('/project/' + projectId + '/edit', false);
+
+        $timeout(function() {
+            navbarData.setShowProjectForm(true);
+        }, $scope.showTaskboardDelay);
+    };
     // Dispatch view by route stage
     switch($scope.routeState) {
         case 'taskboard':
@@ -82,35 +101,35 @@ function(
                 .then($scope.handleTaskboardData);
             break;
         case 'project.edit':
-            navbarData.setHideProjectListLong(true);
-            navbarData.setShowProjectForm(true);
-            // $scope.projectId = $routeParams.projectId;
+            $scope.projectId = $routeParams.projectId;
+            $scope.showProjectFormFunc($scope.projectId);
             break;
         default:
             // archive
             navbarData.setHideProjectListLong(false);
             navbarData.setShowTaskboard(false);
+            navbarData.setShowProjectForm(false);
     }
 
     $scope.$on('$locationChangeStart', function(event, next, current) {
+        var nextLocationPath = urlParserService.getLocationData(next).pathname;
         if (urlParserService.isOnlyHashChange(next, current)) {
             // do nothing
         } else {
-            $scope.projectId = urlParserService.getProjectId(next);
-            if ($scope.projectId !== 'undefined') {
-                // project list -> taskboard : get project id
-                if (next.indexOf('taskboard') > -1) {
-                    $scope.showTaskboardFunc($scope.projectId);
-                    apiService.getTaskList($scope.projectId)
-                      .then($scope.handleTaskboardData);
-                } else if (next.indexOf('edit') > -1) {
-                    // project list -> project edit
-                    // TODO
-                }
+            if ($route.routes['/project/:projectId/taskboard'].regexp.test(nextLocationPath)) {
+                // taskboard
+                $scope.projectId = urlParserService.getProjectId(next);
+                $scope.showTaskboardFunc($scope.projectId);
+                apiService.getTaskList($scope.projectId)
+                  .then($scope.handleTaskboardData);
+            } else if ($route.routes['/project/:projectId/edit'].regexp.test(nextLocationPath)) {
+                // project edit form
+                $scope.showProjectFormFunc($scope.projectId);
             } else {
-                // taskboard -> project list
+                // archive
                 navbarData.setShowTaskboard(false);
                 navbarData.setHideProjectListLong(false);
+                navbarData.setShowProjectForm(false);
             }
         }
     });
@@ -129,25 +148,6 @@ function(
         .then(function(projects) {
             $scope.projects = projects;
         });
-
-    $scope.showTaskboardFunc = function(projectId) {
-        navbarData.setHideProjectListLong(true);
-        $location.path('/project/' + projectId + '/taskboard', false);
-
-        $timeout(function() {
-            navbarData.setShowTaskboard(true);
-        }, $scope.showTaskboardDelay);
-
-    };
-
-    $scope.showProjectFormFunc = function(projectId) {
-        navbarData.setHideProjectListLong(true);
-        $location.path('/project/' + projectId + '/edit', false);
-
-        $timeout(function() {
-            navbarData.setShowProjectForm(true);
-        }, $scope.showTaskboardDelay);
-    };
 
     $scope.createProject = function() {
         $location.path('/project/create');
