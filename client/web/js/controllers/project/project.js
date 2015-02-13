@@ -16,6 +16,7 @@ kuroApp.controller('BoardCtrl', [
     'projectService',
     'taskboardService',
     'navbarData',
+    'routeState',
 function(
     $scope,
     $http,
@@ -28,7 +29,8 @@ function(
     urlParserService,
     projectService,
     taskboardService,
-    navbarData) {
+    navbarData,
+    routeState) {
     /*
      * Begining of controller
      */

@@ -23,6 +23,11 @@ kuro.config(function ($routeProvider, $locationProvider) {
         .when('/archive', {
             templateUrl: 'partials/project/archive',
             controller: 'BoardCtrl',
+            resolve: {
+                routeState: function() {
+                    return 'archive';
+                }
+            },
             reloadOnSearch: false
         })
         // be careful of the order create and :taskId
@@ -36,13 +41,24 @@ kuro.config(function ($routeProvider, $locationProvider) {
             reloadOnSearch: false
         })
         .when('/project/:projectId/edit', {
-            templateUrl: 'partials/project/projectForm',
-            controller: 'ProjectFormCtrl'
+            templateUrl: 'partials/project/archive',
+            controller: 'BoardCtrl',
+            resolve: {
+                routeState: function() {
+                    return 'project.edit';
+                }
+            },
+            reloadOnSearch: false
         })
         // task board
         .when('/project/:projectId/taskboard', {
             templateUrl: 'partials/project/archive',
             controller: 'BoardCtrl',
+            resolve: {
+                routeState: function() {
+                    return 'taskboard';
+                }
+            },
             reloadOnSearch: false
         })
         // be careful of the order create and :taskId
