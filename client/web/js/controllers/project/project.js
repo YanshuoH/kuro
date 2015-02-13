@@ -3,7 +3,20 @@
 var kuroApp = angular.module('Kuro');
 
 
-kuroApp.controller('BoardCtrl', function(
+kuroApp.controller('BoardCtrl', [
+    '$scope',
+    '$http',
+    '$location',
+    '$routeParams',
+    '$timeout',
+    '$modal',
+    '$modalStack',
+    'apiService',
+    'urlParserService',
+    'projectService',
+    'taskboardService',
+    'navbarData',
+function(
     $scope,
     $http,
     $location,
@@ -78,9 +91,7 @@ kuroApp.controller('BoardCtrl', function(
                     // project list -> project edit
                     // TODO
                 }
-
             } else {
-                console.log(next, current);
                 // taskboard -> project list
                 navbarData.setShowTaskboard(false);
                 navbarData.setHideProjectListLong(false);
@@ -210,7 +221,7 @@ kuroApp.controller('BoardCtrl', function(
         $scope.taskDragged = task;
         $scope.isDrag = true;
     };
-})
+}])
 
 kuroApp.controller('ProjectCtrl', function($scope, $http, $location, $routeParams, apiService) {
     $scope.currentHash = '';
