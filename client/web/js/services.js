@@ -107,8 +107,36 @@ kuroApp.service('utilService', function() {
         return true;
     };
 
+    // jQuery $.param
+    var serializeData = function(data) {
+        // If this is not an object, defer to native stringification.
+        if ( ! angular.isObject( data ) ) { 
+            return( ( data == null ) ? "" : data.toString() ); 
+        }
+
+        var buffer = [];
+
+        // Serialize each key in the object.
+        for ( var name in data ) { 
+            if ( ! data.hasOwnProperty( name ) ) { 
+                continue; 
+            }
+
+            var value = data[ name ];
+
+            buffer.push(
+                encodeURIComponent( name ) + "=" + encodeURIComponent( ( value == null ) ? "" : value )
+            ); 
+        }
+
+        // Serialize the buffer and clean it up for transportation.
+        var source = buffer.join( "&" ).replace( /%20/g, "+" ); 
+        return( source ); 
+    }
+
     return {
-        isEmptyObject: isEmptyObject
+        isEmptyObject: isEmptyObject,
+        serializeData: serializeData
     };
 });
 
@@ -488,7 +516,17 @@ kuroApp.service('userApiService', function($http, $q) {
 });
 
 // http://www.bennadel.com/blog/2612-using-the-http-service-in-angularjs-to-make-ajax-requests.htm
-kuroApp.service('apiService', function($http, $q, errorData) {
+kuroApp.service('apiService', [
+    '$http',
+    '$q',
+    'errorData',
+    'utilService',
+function(
+    $http,
+    $q,
+    errorData,
+    utilService)
+{
     return {
         getTask: getTask,
         createTask: createTask,
@@ -551,10 +589,19 @@ kuroApp.service('apiService', function($http, $q, errorData) {
         return request.then(handleSuccess, handleError);
     }
 
-    function getProject(projectShortId) {
+    function getProject(projectShortId, params) {
+        var serializedParams = '';
+        if (typeof(params) !== 'undefined' && params !== null) {
+            serializedParams = utilService.serializeData(params);
+        }
+
+        var url = '/api/project/' + projectShortId;
+        if (serializedParams.length > 0) {
+            url += '?' + serializedParams
+        }
         var request = $http({
             method: 'GET',
-            url: '/api/project/' + projectShortId
+            url: url
         });
 
         return request.then(handleSuccess, handleError);
@@ -642,4 +689,4 @@ kuroApp.service('apiService', function($http, $q, errorData) {
 
         return response.data;
     }
-})
+}]);

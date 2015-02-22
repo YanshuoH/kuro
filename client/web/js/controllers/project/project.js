@@ -34,7 +34,8 @@ function(
     projectService,
     taskboardService,
     navbarData,
-    routeState) {
+    routeState)
+{
     /*
      * Begining of controller
      */
@@ -124,6 +125,7 @@ function(
                   .then($scope.handleTaskboardData);
             } else if ($route.routes['/project/:projectId/edit'].regexp.test(nextLocationPath)) {
                 // project edit form
+                $scope.projectId = urlParserService.getProjectId(next);
                 $scope.showProjectFormFunc($scope.projectId);
             } else {
                 // archive
@@ -262,12 +264,32 @@ kuroApp.controller('ProjectCtrl', function($scope, $http, $location, $routeParam
     }
 });
 
-kuroApp.controller('ProjectFormCtrl', function($scope, $http, $routeParams, $location, apiService) {
-    $scope.projectId = $routeParams.projectId;
+kuroApp.controller('ProjectFormCtrl', [
+    '$scope',
+    '$http',
+    '$location',
+    'apiService',
+    'urlParserService',
+function(
+    $scope,
+    $http,
+    $location,
+    apiService,
+    urlParserService)
+{
+    /*
+     * Begining of controller
+     */
+    $scope.projectId = urlParserService.getProjectId($location.path());
     $scope.formData = {};
     $scope.isNew = true;
-    if (typeof($routeParams.projectId) !== 'undefined') {
-        apiService.getProject($scope.projectId)
+    if (typeof($scope.projectId) !== 'undefined') {
+        var param = {
+            fetchUser: 1,
+            fetchStatus: 1,
+            fetchPriority: 1
+        }
+        apiService.getProject($scope.projectId, param)
             .then(function(project) {
                 $scope.project = project;
                 $scope.formData = $scope.project;
@@ -288,4 +310,4 @@ kuroApp.controller('ProjectFormCtrl', function($scope, $http, $routeParams, $loc
                 });
         }
     }
-})
+}]);

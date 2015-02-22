@@ -1,4 +1,4 @@
-.panel.panel-primary
+.panel.panel-primary(ng-controller='ProjectFormCtrl')
   .panel-heading
     h3.panel-title Project Form
   .panel-body
@@ -13,6 +13,19 @@
         .form-group
           label(for='ref') Reference
           input.form-control#ref(type='text' name='ref' ng-model='formData.ref' placeholder='Reference')
-          p TODO: add user in list
+        .row
+          .col-md-6 Admin list
+            .list-group
+              .list-group-item(ng-repeat='admin in project.admins') {{ admin.username }}
+          .col-md-6 User list
+            .list-group
+              .list-group-item(ng-repeat='user in project.users') {{ user.username }}
+        .row
+          .col-md-6 Priority list
+            .list-group
+              .list-group-item(ng-repeat='priority in project.priorityData') {{ priority.label }}
+          .col-md-6 Status list
+            .list-group
+              .list-group-item(ng-repeat='status in project.statusData') {{ status.label }}
         .form-group
           button.btn.btn-default(type='submit') Submit
