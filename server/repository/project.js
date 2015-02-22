@@ -58,11 +58,32 @@ exports.fetch = function(project, fetchOptions, cb) {
     };
 
     var fetchUser = function(project, callback) {
-        UserRepository.listByIds(project.userIds, function(err, users) {
+        async.parallel({
+            users: function(userCallback) {
+                UserRepository.listByIds(project.userIds, function(err, users) {
+                    if (err) {
+                        userCallback(err);
+                    } else {
+                        userCallback(null, users)
+                    }
+                });
+            },
+            admins: function(adminCallback) {
+                UserRepository.listByIds(project.adminIds, function(err, admins) {
+                    if (err) {
+                        adminCallback(err);
+                    } else {
+                        adminCallback(null, admins);
+                    }
+                })
+            }
+        }, function(err, results) {
+            for (prop in results) {
+                project[prop] = results[prop];
+            }
             if (err) {
                 callback(err);
             } else {
-                project.users = users;
                 callback(null, project);
             }
         });

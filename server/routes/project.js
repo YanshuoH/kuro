@@ -5,6 +5,7 @@ var utils = require(config.path.lib + '/utils');
 var errorHandler = require(config.path.lib + '/errorHandler');
 
 var ProjectRepository = require(config.path.repository + '/project');
+var UserRepository = require(config.path.repository + '/user');
 
 var mongoose = require('mongoose');
 var ProjectModel = mongoose.model('ProjectModel');
@@ -36,7 +37,19 @@ exports.loadByShortId = function(req, res, next, id) {
  * Return JSON project with optional fields affected
  */
 exports.show = function(req, res) {
-    var fetchOptions = ['fetchStatus', 'fetchPriority'];
+    var fetchOptions = [];
+    if (req.query.hasOwnProperty('fetchStatus') && req.query.fetchStatus === '1') {
+        fetchOptions.push('fetchStatus');
+    }
+
+    if (req.query.hasOwnProperty('fetchPriority') && req.query.fetchPriority === '1') {
+        fetchOptions.push('fetchPriority');
+    }
+
+    if (req.query.hasOwnProperty('fetchUser') && req.query.fetchUser === '1') {
+        fetchOptions.push('fetchUser');
+    }
+
     var project = req.project;
     ProjectRepository.fetch(project, fetchOptions, function(err, project) {
         if (err) {
