@@ -116,7 +116,8 @@ kuroApp.service('urlParserService', function() {
     return {
         getProjectId: getProjectId,
         getTaskParamFromHash: getTaskParamFromHash,
-        isOnlyHashChange: isOnlyHashChange
+        isOnlyHashChange: isOnlyHashChange,
+        getLocationData: getLocationData
     };
 
     function parseQuery(query) {
@@ -166,6 +167,13 @@ kuroApp.service('urlParserService', function() {
         }
 
         return false;
+    }
+
+    function getLocationData(url) {
+        var parser = document.createElement('a');
+        parser.href = url;
+
+        return parser;
     }
 });
 
