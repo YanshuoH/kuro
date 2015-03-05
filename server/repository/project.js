@@ -110,6 +110,7 @@ exports.fetch = function(project, fetchOptions, cb) {
             if (err) {
                 callback(err);
             } else {
+                project.statusIds = project.statusData;
                 project.statusData = statusList;
                 callback(null , project);
             }
@@ -126,6 +127,7 @@ exports.fetch = function(project, fetchOptions, cb) {
             if (err) {
                 callback(err);
             } else {
+                project.priorityIds = project.priorityData;
                 project.priorityData = priorityList;
                 callback(null , project);
             }
@@ -207,12 +209,10 @@ exports.create = function(req, callback) {
     ], callback);
 }
 
-exports.update = function(req, callback) {
-    var project = req.project;
-    var formData = req.body;
+exports.update = function(project, body, callback) {
     async.waterfall([
         function(projectCallback) {
-            project.update(formData, function(err) {
+            project.update(body, function(err) {
                 if (err) {
                     projectCallback(err);
                 } else {

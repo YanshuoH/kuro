@@ -108,6 +108,22 @@ exports.listByProject = function(projectId, cb) {
     TaskModel.loadByProjectId(projectId, options, cb);
 }
 
+
+/**
+ * @param ObjectId projectId
+ * @param String   alias      alias name to find by
+ * @param ObjectId aliasId    aliasId to find by
+ *
+ * cb (err, tasks)
+ */
+exports.loadByProjectAndAlias = function(projectId, alias, aliasId, cb) {
+    var options = {
+        criteria: {}
+    };
+    options.criteria[alias] = aliasId;
+    TaskModel.loadByProjectId(projectId, options, cb);
+}
+
 exports.jsonListByProjectFetch = function(projectId, cb) {
     var options = {};
     // TODO, only return title, description...except media sort of big thing

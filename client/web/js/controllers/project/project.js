@@ -301,11 +301,13 @@ function(
     }
 
     $scope.removeAdmin = function(adminId) {
+        $scope.initForm();
         if ($scope.project.adminIds.indexOf(adminId) > -1) {
-            $scope.project.adminIds.splice($scope.project.adminIds.indexOf(adminId), 1);
+            var adminIds = angular.copy($scope.project.adminIds);
+            adminIds.splice(adminIds.indexOf(adminId), 1);
             // make form data
             var putAdminIdsData = {
-                adminIds: $scope.project.adminIds
+                adminIds: adminIds
             };
             apiService.putProject(putAdminIdsData, $scope.project.shortId)
                 .then(function(response) {
@@ -324,6 +326,35 @@ function(
                         }
                     }
                 });
+        }
+    }
+
+    $scope.removePriority = function(priorityId) {
+        $scope.initForm();
+        if ($scope.project.priorityIds.indexOf(priorityId) > -1) {
+            var priorityIds = angular.copy($scope.project.priorityIds);
+            priorityIds.splice(priorityIds.indexOf(priorityId), 1);
+            // make form data
+            var putPriorityIdsData = {
+                priorityData: priorityIds
+            };
+            apiService.putProject(putPriorityIdsData, $scope.project.shortId)
+                .then(function(response) {
+                    $scope.project.priorityData = $scope.project.priorityData.filter(function(priority) {
+                        return priority._id !== priorityId;
+                    });
+                    $scope.insertFormMessage('alert-success', 'Priority removed');
+                }, function(err) {
+                    if (err) {
+                        switch (err.status) {
+                            case 422:
+                                $scope.insertFormMessage('alert-info', err.message);
+                                break;
+                            default:
+                                $scope.insertFormMessage('alert-danger', err.message);
+                        }
+                    }
+                })
         }
     }
 

@@ -4,6 +4,7 @@ var config = require('../config/config');
 var utils = require(config.path.lib + '/utils');
 var errorHandler = require(config.path.lib + '/errorHandler');
 
+var TaskRepository = require(config.path.repository + '/task');
 var ProjectRepository = require(config.path.repository + '/project');
 var UserRepository = require(config.path.repository + '/user');
 
@@ -104,24 +105,71 @@ exports.create = function(req, res) {
  * PUT
  */
 exports.update = function(req, res) {
-    // Precautions
-    if (typeof(req.body['adminIds']) !== 'undefined') {
-        var diff = utils.arrayDiff(req.project.adminIds, req.body.adminIds);
-        if (diff.length === 1 && diff[0].toString() === req.user._id.toString()) {
-            return errorHandler.handle(res, {
-                status: 422,
-                message: 'You cannot remove yourself'
+    async.waterfall([
+        // Validations
+        function(callback) {
+            // All precautions whom's not async
+            if (typeof(req.body['adminIds']) !== 'undefined') {
+                var diff = utils.arrayDiff(req.project.adminIds, req.body.adminIds);
+                if (diff.length === 1 && diff[0].toString() === req.user._id.toString()) {
+                    callback({
+                        status: 422,
+                        message: 'You cannot remove yourself'
+                    });
+                } else {
+                    callback({
+                        status: 422,
+                        message: 'One admin per time'
+                    });
+                }
+            } else {
+                callback(null);
+            }
+        },
+        function(callback) {
+            if (typeof(req.body['priorityData']) !== 'undefined') {
+                var diff = utils.arrayDiff(req.project.priorityData, req.body.priorityData);
+                console.log(diff);
+                console.log(diff.length);
+                if (diff.length === 1) {
+                    TaskRepository.loadByProjectAndAlias(req.project._id, 'priority', diff[0].toString(), function(err, tasks) {
+                        if (tasks.length > 0) {
+                            callback({
+                                status: 422,
+                                message: 'You have task(s) attached to this priority'
+                            });
+                        } else {
+                            callback(null);
+                        }
+                    })
+                } else {
+                    callback({
+                        status: 422,
+                        message: 'One priority per time'
+                    });
+                }
+            } else {
+                callback(null);
+            }
+        }
+    ], function(err, result) {
+        if (err) {
+            errorHandler.handle(res, err);
+        } else {
+            ProjectRepository.update(req.project, req.body, function(err, project) {
+                if (err) {
+                    errorHandler.handle(res, err);
+                } else {
+                    res.json(project);
+                }
             });
         }
-    }
 
-    ProjectRepository.update(req.project, req.body, function(err, project) {
-        if (err) {
-            return errorHandler.handle(res, err);
-        } else {
-            res.json(project);
-        }
     });
+
+
+
+
 }
 
 /*
