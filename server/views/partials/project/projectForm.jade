@@ -3,6 +3,9 @@
     h3.panel-title Project Form
   .panel-body
     .col-sm-12
+      .alert.alert-dismissable(ng-if='formHasMessage' ng-class='formMessageType')
+        button.close(type='button' data-dismiss='alert') ×
+        p {{ formMessage }}
       form.form-horizontal#projectForm(role='form' name='projectForm' novalidate='novalidate' ng-submit='submitForm()')
         .form-group
           label(for='title') Title
@@ -17,15 +20,23 @@
           .col-md-6 Admin list
             .list-group
               .list-group-item(ng-repeat='admin in project.admins') {{ admin.username }}
+                a(href='' ng-click='removeAdmin(admin._id)')
+                  span.glyphicon.glyphicon-minus-sign.red.right(aria-hidden='true')
           .col-md-6 User list
             .list-group
               .list-group-item(ng-repeat='user in project.users') {{ user.username }}
+                a(href='' ng-click='removeUser(user._id)')
+                  span.glyphicon.glyphicon-minus-sign.red.right(aria-hidden='true')
         .row
           .col-md-6 Priority list
             .list-group
               .list-group-item(ng-repeat='priority in project.priorityData') {{ priority.label }}
+                a(href='' ng-click='removePriority(priority._id)')
+                  span.glyphicon.glyphicon-minus-sign.red.right(aria-hidden='true')
           .col-md-6 Status list
             .list-group
               .list-group-item(ng-repeat='status in project.statusData') {{ status.label }}
+                a(href='' ng-click='removeStatus(status._id)')
+                  span.glyphicon.glyphicon-minus-sign.red.right(aria-hidden='true')
         .form-group
           button.btn.btn-default(type='submit') Submit

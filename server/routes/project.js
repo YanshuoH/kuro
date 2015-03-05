@@ -99,12 +99,23 @@ exports.create = function(req, res) {
 }
 
 /*
- * @path(/api/project/:projectId/edit)
+ * @path(/api/project/:projectShortId/edit)
  *
  * PUT
  */
 exports.update = function(req, res) {
-    ProjectRepository.update(req, function(err, project) {
+    // Precautions
+    if (typeof(req.body['adminIds']) !== 'undefined') {
+        var diff = utils.arrayDiff(req.project.adminIds, req.body.adminIds);
+        if (diff.length === 1 && diff[0].toString() === req.user._id.toString()) {
+            return errorHandler.handle(res, {
+                status: 422,
+                message: 'You cannot remove yourself'
+            });
+        }
+    }
+
+    ProjectRepository.update(req.project, req.body, function(err, project) {
         if (err) {
             return errorHandler.handle(res, err);
         } else {

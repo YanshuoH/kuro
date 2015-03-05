@@ -283,6 +283,9 @@ function(
     $scope.projectId = urlParserService.getProjectId($location.path());
     $scope.formData = {};
     $scope.isNew = true;
+    $scope.formHasMessage = false;
+    $scope.formMessageType = 'alert-danger';
+
     if (typeof($scope.projectId) !== 'undefined') {
         var param = {
             fetchUser: 1,
@@ -295,6 +298,44 @@ function(
                 $scope.formData = $scope.project;
                 $scope.isNew = false;
             });
+    }
+
+    $scope.removeAdmin = function(adminId) {
+        if ($scope.project.adminIds.indexOf(adminId) > -1) {
+            $scope.project.adminIds.splice($scope.project.adminIds.indexOf(adminId), 1);
+            // make form data
+            var putAdminIdsData = {
+                adminIds: $scope.project.adminIds
+            };
+            apiService.putProject(putAdminIdsData, $scope.project.shortId)
+                .then(function(response) {
+                    $scope.project.admins = $scope.project.admins.filter(function(admin) {
+                        return admin._id !== adminId;
+                    });
+                    $scope.insertFormMessage('alert-success', 'Admin removed');
+                }, function(err) {
+                    if (err) {
+                        switch (err.status) {
+                            case 422:
+                                $scope.insertFormMessage('alert-info', err.message);
+                                break;
+                            default:
+                                $scope.insertFormMessage('alert-danger', err.message);
+                        }
+                    }
+                });
+        }
+    }
+
+    $scope.initForm = function() {
+        $scope.formHasMessage = false;
+        $scope.formMessage = '';
+    }
+
+    $scope.insertFormMessage = function(type, content) {
+        $scope.formHasMessage = true;
+        $scope.formMessage = content;
+        $scope.formMessageType = type;
     }
 
     $scope.submitForm = function() {

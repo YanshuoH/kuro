@@ -101,6 +101,14 @@ exports.arrayCompare = function(array1, array2) {
     return true;
 }
 
+exports.arrayDiff = function(array1, array2) {
+    var diff = array1.filter(function(el) {
+        return array2.indexOf(el.toString()) < 0;
+    });
+
+    return diff;
+}
+
 exports.errorHandler = function(res, err) {
     if (typeof(err.status) !== 'undefined') {
         return res.status(err.status).json(err.message);

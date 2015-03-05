@@ -656,7 +656,6 @@ function(
     }
     // Private
     function handleError(response, status) {
-        console.log(response);
         if (!angular.isObject(response.data) || !response.data.error) {
             if (response.status == 500 || response.status == 401) {
                 if (/\/api\/project\/.*\/task\//g.exec(response.config.url)) {
@@ -665,7 +664,7 @@ function(
                     errorData.setErrorContent(response.status, response.data.message);
                 }
             }
-            return $q.reject(response.data.message);
+            return $q.reject(response.data);
         }
 
         // TODO: location redirect to error page
@@ -676,7 +675,6 @@ function(
 
     // Private
     function handleSuccess(response) {
-        console.log(response);
         // for task modal
         if (response.status == 204) {
             if (/\/api\/project\/.*\/task\//g.exec(response.config.url)) {

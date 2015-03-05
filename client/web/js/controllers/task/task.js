@@ -100,6 +100,7 @@ function(
                 $scope.task.comments = taskService.retrieveComments(task);
                 taskService.getFieldsLabel($scope.task, $scope.statusList, $scope.priorityList);
                 $scope.originalTask = angular.copy(task);
+                $scope.taskEdited = false;
             });
     };
 
