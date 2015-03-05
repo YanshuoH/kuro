@@ -314,6 +314,7 @@ function(
                     $scope.project.admins = $scope.project.admins.filter(function(admin) {
                         return admin._id !== adminId;
                     });
+                    $scope.adminIds = adminIds;
                     $scope.insertFormMessage('alert-success', 'Admin removed');
                 }, function(err) {
                     if (err) {
@@ -343,6 +344,7 @@ function(
                     $scope.project.priorityData = $scope.project.priorityData.filter(function(priority) {
                         return priority._id !== priorityId;
                     });
+                    $scope.project.priorityIds = priorityIds;
                     $scope.insertFormMessage('alert-success', 'Priority removed');
                 }, function(err) {
                     if (err) {
@@ -354,7 +356,38 @@ function(
                                 $scope.insertFormMessage('alert-danger', err.message);
                         }
                     }
-                })
+                });
+        }
+    }
+
+    $scope.removeStatus = function(statusId) {
+        $scope.initForm();
+        if ($scope.project.statusIds.indexOf(statusId) > -1) {
+            var statusIds = angular.copy($scope.project.statusIds);
+            statusIds.splice(statusIds.indexOf(statusId), 1);
+
+            var putStatusIdsData = {
+                statusData: statusIds
+            };
+
+            apiService.putProject(putStatusIdsData, $scope.project.shortId)
+                .then(function(response) {
+                    $scope.project.statusData = $scope.project.statusData.filter(function(status) {
+                        return status._id !== statusId;
+                    });
+                    $scope.project.statusIds = statusIds;
+                    $scope.insertFormMessage('alert-success', 'Status removed')
+                }, function(err) {
+                    if (err) {
+                        switch (err.status) {
+                            case 422:
+                                $scope.insertFormMessage('alert-info', err.message);
+                                break;
+                            default:
+                                $scope.insertFormMessage('alert-danger', err.message);
+                        }
+                    }
+                });
         }
     }
 

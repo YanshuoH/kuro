@@ -127,10 +127,9 @@ exports.update = function(req, res) {
             }
         },
         function(callback) {
+            // For priority
             if (typeof(req.body['priorityData']) !== 'undefined') {
                 var diff = utils.arrayDiff(req.project.priorityData, req.body.priorityData);
-                console.log(diff);
-                console.log(diff.length);
                 if (diff.length === 1) {
                     TaskRepository.loadByProjectAndAlias(req.project._id, 'priority', diff[0].toString(), function(err, tasks) {
                         if (tasks.length > 0) {
@@ -151,6 +150,31 @@ exports.update = function(req, res) {
             } else {
                 callback(null);
             }
+        },
+        function(callback) {
+            // For status
+            if (typeof(req.body['statusData']) !== 'undefined') {
+                var diff = utils.arrayDiff(req.project.statusData, req.body.statusData);
+                if (diff.length === 1) {
+                    TaskRepository.loadByProjectAndAlias(req.project._id, 'status', diff[0].toString(), function(err, tasks) {
+                        if (tasks.length > 0) {
+                            callback({
+                                status: 422,
+                                message: 'You have task(s) attached to this status'
+                            });
+                        } else {
+                            callback(null);
+                        }
+                    });
+                } else {
+                    callback({
+                        status: 422,
+                        message: 'One status per time'
+                    });
+                }
+            } else {
+                callback(null);
+            }
         }
     ], function(err, result) {
         if (err) {
@@ -166,10 +190,6 @@ exports.update = function(req, res) {
         }
 
     });
-
-
-
-
 }
 
 /*
