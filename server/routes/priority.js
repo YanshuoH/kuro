@@ -62,3 +62,21 @@ exports.loadPriorityByProject = function(req, res) {
         res.json(priorityList);
     });
 };
+
+
+/**
+ * @path('/api/priority/create') POST
+ * 
+ * Return JSON priority data
+ */
+exports.create = function(req, res) {
+    var options = {};
+    console.log(req.body);
+    PriorityRepository.create(req.body, req.user, function(err, priority) {
+        if (err) {
+            console.log(err);
+            return errorHandler.handle(res, err);
+        }
+        res.json(priority);
+    });
+}

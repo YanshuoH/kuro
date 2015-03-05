@@ -41,6 +41,7 @@ module.exports = function(app, config, passport) {
     app.get('/api/project/:projectShortId', projectAuth, project.show);
     app.param('projectShortId', project.loadByShortId);
     app.put('/api/project/:projectShortId/edit', projectAuth, project.update);
+    app.put('/api/project/:projectShortId/priority/create', projectAuth, project.createAndAddPriority);
     app.post('/api/project/create', globalAuth, project.create);
     app.post('/api/project/:projectShortId/user/add', projectAuth, project.addUser);
 
@@ -63,6 +64,7 @@ module.exports = function(app, config, passport) {
     app.get('/api/priority/:priorityId', priority.show);
     app.get('/api/project/:projectShortId/priority', priority.loadPriorityByProject);
     app.param('priorityId', priority.loadById);
+    app.post('/api/priority/create', globalAuth, priority.create);
 
     // redirect all others to the index (HTML5 history)
     app.get('*', routes.index);

@@ -300,8 +300,58 @@ function(
             });
     }
 
+    $scope.addToList = function(dataModel, alias) {
+        var inputError = false;
+        if (typeof(dataModel) === 'undefined' || dataModel.length === 0) {
+            inputError = true;
+            $scope.insertFormMessage('alert-info', 'Please enter a valide input');
+        }
+        switch(alias) {
+            case 'priority':
+                if (inputError) {
+                    $scope.priorityHasError = true;
+                } else {
+                    $scope.priorityHasError = false;
+                }
+                addPriority(dataModel);
+                break;
+            case 'status':
+                break;
+            case 'admin':
+                // todo
+                break;
+            case 'user':
+                // todo
+                break;
+        }
+
+        function addPriority(dataModel) {
+            var code = makeCode(dataModel);
+            // make form data
+            var createPriorityData = {
+                label: dataModel,
+                code: code,
+                weight: 0
+            }
+            apiService.createPriorityToProject(createPriorityData, $scope.project.shortId)
+                .then(function(priority) {
+                    $scope.project.priorityData.push(priority);
+                    $scope.project.priorityIds.push(priority._id);
+                });
+        }
+
+        function makeCode(label) {
+            var codeArr = dataModel.split(' ');
+            var code = '';
+            for (var i=0; i<codeArr.length; i++) {
+                code += codeArr[i].substring(0, 1).toUpperCase();
+            }
+
+            return code;
+        }
+    }
+
     $scope.removeAdmin = function(adminId) {
-        $scope.initForm();
         if ($scope.project.adminIds.indexOf(adminId) > -1) {
             var adminIds = angular.copy($scope.project.adminIds);
             adminIds.splice(adminIds.indexOf(adminId), 1);
@@ -331,7 +381,6 @@ function(
     }
 
     $scope.removePriority = function(priorityId) {
-        $scope.initForm();
         if ($scope.project.priorityIds.indexOf(priorityId) > -1) {
             var priorityIds = angular.copy($scope.project.priorityIds);
             priorityIds.splice(priorityIds.indexOf(priorityId), 1);
@@ -361,7 +410,6 @@ function(
     }
 
     $scope.removeStatus = function(statusId) {
-        $scope.initForm();
         if ($scope.project.statusIds.indexOf(statusId) > -1) {
             var statusIds = angular.copy($scope.project.statusIds);
             statusIds.splice(statusIds.indexOf(statusId), 1);

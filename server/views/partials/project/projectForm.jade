@@ -19,6 +19,11 @@
         .row
           .col-md-6 Admin list
             .list-group
+              .list-group-item
+                .project-form-input
+                  input.form-control#adminInput(type='text' name='admim' ng-model='addAdminData')
+                  a.add-button.right
+                    span.glyphicon.glyphicon-plus-sign.green(type='button')
               .list-group-item(ng-repeat='admin in project.admins') {{ admin.username }}
                 a(href='' ng-click='removeAdmin(admin._id)')
                   span.glyphicon.glyphicon-minus-sign.red.right(aria-hidden='true')
@@ -30,11 +35,21 @@
         .row
           .col-md-6 Priority list
             .list-group
+              .list-group-item
+                .project-form-input(ng-class='{"has-error": priorityHasError}' )
+                  input.form-control#priorityInput(type='text' name='priority' ng-model='addPriorityData')
+                  a.add-button.right(href='' ng-click='addToList(addPriorityData, "priority")')
+                    span.glyphicon.glyphicon-plus-sign.green(type='button')
               .list-group-item(ng-repeat='priority in project.priorityData') {{ priority.label }}
                 a(href='' ng-click='removePriority(priority._id)')
                   span.glyphicon.glyphicon-minus-sign.red.right(aria-hidden='true')
           .col-md-6 Status list
             .list-group
+              .list-group-item
+                .project-form-input
+                  input.form-control#statusInput(type='text' name='status' ng-model='addStatusData')
+                  a.add-button.right
+                    span.glyphicon.glyphicon-plus-sign.green(type='button')
               .list-group-item(ng-repeat='status in project.statusData') {{ status.label }}
                 a(href='' ng-click='removeStatus(status._id)')
                   span.glyphicon.glyphicon-minus-sign.red.right(aria-hidden='true')

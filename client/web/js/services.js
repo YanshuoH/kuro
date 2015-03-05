@@ -538,7 +538,9 @@ function(
         putProject: putProject,
         getProjectList: getProjectList,
         addUserToProject: addUserToProject,
-        getUserInfo: getUserInfo
+        getUserInfo: getUserInfo,
+        createPriority: createPriority,
+        createPriorityToProject: createPriorityToProject,
     };
 
     function getTask(projectShortId, taskShortId) {
@@ -654,6 +656,27 @@ function(
 
         return request.then(handleSuccess, handleError);
     }
+
+    function createPriority(formData) {
+        var request = $http({
+            method: 'POST',
+            url: '/api/priority/create',
+            data: formData
+        });
+
+        return request.then(handleSuccess, handleError);
+    }
+
+    function createPriorityToProject(formData, projectShortId) {
+        var request = $http({
+            method: 'PUT',
+            url: '/api/project/' + projectShortId + '/priority/create',
+            data: formData
+        });
+
+        return request.then(handleSuccess, handleError);
+    }
+
     // Private
     function handleError(response, status) {
         if (!angular.isObject(response.data) || !response.data.error) {

@@ -6,6 +6,10 @@
   color: red;
 }
 
+.green {
+  color: #3fb618;
+}
+
 .right {
   float: right;
 }
@@ -145,4 +149,15 @@
 .edit-in-place.active textarea,
 .edit-in-place.active select {
   display: inline-block;
+}
+
+.project-form-input #adminInput,
+.project-form-input #priorityInput,
+.project-form-input #statusInput {
+  width: 90%;
+  display: inline-block;
+}
+
+.project-form-input .add-button {
+  margin-left: 10px;
 }

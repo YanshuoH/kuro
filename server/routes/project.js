@@ -7,6 +7,7 @@ var errorHandler = require(config.path.lib + '/errorHandler');
 var TaskRepository = require(config.path.repository + '/task');
 var ProjectRepository = require(config.path.repository + '/project');
 var UserRepository = require(config.path.repository + '/user');
+var PriorityRepository = require(config.path.repository + '/priority');
 
 var mongoose = require('mongoose');
 var ProjectModel = mongoose.model('ProjectModel');
@@ -111,11 +112,15 @@ exports.update = function(req, res) {
             // All precautions whom's not async
             if (typeof(req.body['adminIds']) !== 'undefined') {
                 var diff = utils.arrayDiff(req.project.adminIds, req.body.adminIds);
-                if (diff.length === 1 && diff[0].toString() === req.user._id.toString()) {
-                    callback({
-                        status: 422,
-                        message: 'You cannot remove yourself'
-                    });
+                if (diff.length === 1) {
+                    if (diff[0].toString() === req.user._id.toString()) {
+                        callback({
+                            status: 422,
+                            message: 'You cannot remove yourself'
+                        });
+                    } else {
+                        callback(null);
+                    }
                 } else {
                     callback({
                         status: 422,
@@ -206,3 +211,40 @@ exports.addUser = function(req, res) {
         }
     })
 };
+
+/**
+ * @path(/api/project/:projectShortId/priority/create) POST
+ * 
+ * return priority
+ * 
+ */
+exports.createAndAddPriority = function(req, res) {
+    async.waterfall([
+        function(callback) {
+            PriorityRepository.create(req.body, req.user, function(err, priority) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null, priority);
+                }
+            });
+        },
+        function(priority, callback) {
+            var project = req.project;
+            project.priorityData.push(priority._id);
+            ProjectRepository.save(project, function(err) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null, priority)
+                }
+            });
+        }
+    ], function(err, priority) {
+        if (err) {
+            return errorHandler.handle(res, err);
+        } else {
+            res.json(priority);
+        }
+    });
+}

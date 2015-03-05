@@ -77,3 +77,19 @@ exports.loadListByProject = function(projectId, options, cb) {
         }
     ], cb);
 };
+
+exports.save = function(priority, cb) {
+    priority.updated = Date.now();
+    priority.save(cb);
+}
+
+/*
+ * @param Object formData
+ *
+ * Callback(Object err, Object priority)
+ */
+exports.create = function(formData, user, cb) {
+    priority = new PriorityModel(formData);
+    priority['creatorId'] = user._id;
+    exports.save(priority, cb);
+}
