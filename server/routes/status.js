@@ -62,3 +62,19 @@ exports.loadStatusByProject = function(req, res) {
         res.json(statusList);
     });
 };
+
+
+/**
+ * @path('/api/status/create') POST
+ * 
+ * Return JSON status data
+ */
+exports.create = function(req, res) {
+    var options = {};
+    StatusRepository.create(req.body, req.user, function(err, status) {
+        if (err) {
+            return errorHandler.handle(res, err);
+        }
+        res.json(status);
+    });
+}

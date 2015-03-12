@@ -541,6 +541,8 @@ function(
         getUserInfo: getUserInfo,
         createPriority: createPriority,
         createPriorityToProject: createPriorityToProject,
+        createStatus: createStatus,
+        createStatusToProject: createStatusToProject
     };
 
     function getTask(projectShortId, taskShortId) {
@@ -671,6 +673,26 @@ function(
         var request = $http({
             method: 'PUT',
             url: '/api/project/' + projectShortId + '/priority/create',
+            data: formData
+        });
+
+        return request.then(handleSuccess, handleError);
+    }
+
+    function createStatus(formData) {
+        var request = $http({
+            method: 'POST',
+            url: '/api/status/create',
+            data: formData
+        });
+
+        return request.then(handleSuccess, handleError);
+    }
+
+    function createStatusToProject(formData, projectShortId) {
+        var request = $http({
+            method: 'PUT',
+            url: '/api/project/' + projectShortId + '/status/create',
             data: formData
         });
 

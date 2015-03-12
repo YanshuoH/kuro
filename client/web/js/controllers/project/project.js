@@ -316,6 +316,12 @@ function(
                 addPriority(dataModel);
                 break;
             case 'status':
+                if (inputError) {
+                    $scope.statusHasError = true;
+                } else {
+                    $scope.statusHasError = false;
+                }
+                addStatus(dataModel);
                 break;
             case 'admin':
                 // todo
@@ -332,14 +338,34 @@ function(
                 label: dataModel,
                 code: code,
                 weight: 0
-            }
+            };
             apiService.createPriorityToProject(createPriorityData, $scope.project.shortId)
                 .then(function(priority) {
                     $scope.project.priorityData.push(priority);
                     $scope.project.priorityIds.push(priority._id);
+                    $scope.addPriorityData = '';
+                    $scope.insertFormMessage('alert-success', 'Priority added');
                 });
         }
 
+        function addStatus(dataModel) {
+            var code = makeCode(dataModel);
+            //make form data
+            var createStatusData = {
+                label: dataModel,
+                code: code,
+                weight: 0
+            };
+            apiService.createStatusToProject(createStatusData, $scope.project.shortId)
+                .then(function(status) {
+                    $scope.project.statusData.push(status);
+                    $scope.project.statusIds.push(status._id);
+                    $scope.addStatusData = '';
+                    $scope.insertFormMessage('alert-success', 'Status added');
+                });
+        }
+
+        // make status/priority code
         function makeCode(label) {
             var codeArr = dataModel.split(' ');
             var code = '';

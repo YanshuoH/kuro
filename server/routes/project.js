@@ -8,6 +8,7 @@ var TaskRepository = require(config.path.repository + '/task');
 var ProjectRepository = require(config.path.repository + '/project');
 var UserRepository = require(config.path.repository + '/user');
 var PriorityRepository = require(config.path.repository + '/priority');
+var StatusRepository = require(config.path.repository + '/status');
 
 var mongoose = require('mongoose');
 var ProjectModel = mongoose.model('ProjectModel');
@@ -213,7 +214,7 @@ exports.addUser = function(req, res) {
 };
 
 /**
- * @path(/api/project/:projectShortId/priority/create) POST
+ * @path(/api/project/:projectShortId/priority/create) PUT
  * 
  * return priority
  * 
@@ -245,6 +246,43 @@ exports.createAndAddPriority = function(req, res) {
             return errorHandler.handle(res, err);
         } else {
             res.json(priority);
+        }
+    });
+}
+
+/**
+ * @path(/api/project/:projectShortId/status/create) PUT
+ * 
+ * return priority
+ * 
+ */
+exports.createAndAddStatus = function(req, res) {
+    async.waterfall([
+        function(callback) {
+            StatusRepository.create(req.body, req.user, function(err, status) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null, status);
+                }
+            });
+        },
+        function(status, callback) {
+            var project = req.project;
+            project.statusData.push(status._id);
+            ProjectRepository.save(project, function(err) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null, status);
+                }
+            });
+        }
+    ], function(err, status) {
+        if (err) {
+            return errorHandler.handle(res, err);
+        } else {
+            res.json(status);
         }
     });
 }

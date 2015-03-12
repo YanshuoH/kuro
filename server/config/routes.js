@@ -42,6 +42,7 @@ module.exports = function(app, config, passport) {
     app.param('projectShortId', project.loadByShortId);
     app.put('/api/project/:projectShortId/edit', projectAuth, project.update);
     app.put('/api/project/:projectShortId/priority/create', projectAuth, project.createAndAddPriority);
+    app.put('/api/project/:projectShortId/status/create', projectAuth, project.createAndAddStatus);
     app.post('/api/project/create', globalAuth, project.create);
     app.post('/api/project/:projectShortId/user/add', projectAuth, project.addUser);
 
@@ -59,6 +60,7 @@ module.exports = function(app, config, passport) {
     app.get('/api/status/:statusId', status.show);
     app.get('/api/project/:projectShortId/status', status.loadStatusByProject);
     app.param('statusId', status.loadById);
+    app.post('/api/status/create', globalAuth, status.create);
     // Priority
     app.get('/api/priority/default', priority.loadDefaultList);
     app.get('/api/priority/:priorityId', priority.show);

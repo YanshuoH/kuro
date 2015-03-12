@@ -77,3 +77,21 @@ exports.loadListByProject = function(projectId, options, cb) {
         }
     ], cb);
 };
+
+
+exports.save = function(status, cb) {
+    status.updated = Date.now();
+    status.save(cb);
+}
+
+
+/*
+ * @param Object formData
+ *
+ * Callback(Object err, Object status)
+ */
+exports.create = function(formData, user, cb) {
+    status = new StatusModel(formData);
+    status['creatorId'] = user._id;
+    exports.save(status, cb);
+}

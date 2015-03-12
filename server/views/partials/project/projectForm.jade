@@ -48,7 +48,7 @@
               .list-group-item
                 .project-form-input
                   input.form-control#statusInput(type='text' name='status' ng-model='addStatusData')
-                  a.add-button.right
+                  a.add-button.right(href='' ng-click='addToList(addStatusData, "status")')
                     span.glyphicon.glyphicon-plus-sign.green(type='button')
               .list-group-item(ng-repeat='status in project.statusData') {{ status.label }}
                 a(href='' ng-click='removeStatus(status._id)')

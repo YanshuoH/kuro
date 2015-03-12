@@ -71,7 +71,6 @@ exports.loadPriorityByProject = function(req, res) {
  */
 exports.create = function(req, res) {
     var options = {};
-    console.log(req.body);
     PriorityRepository.create(req.body, req.user, function(err, priority) {
         if (err) {
             console.log(err);
