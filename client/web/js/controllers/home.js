@@ -7,8 +7,16 @@ kuroApp.controller('HomeCtrl', function($scope, $http) {
 });
 
 kuroApp.controller('TestCtrl', function($scope, $modal, $templateCache, apiService) {
-    $scope.templateBoolean = false;
-    $scope.loadTemplate = function() {
-        $scope.templateBoolean = !$scope.templateBoolean;
-  }
+    $scope.items = [
+        'test1', 'test2', 'test3', 'test4'
+    ];
+
+    $scope.sortableOptions = {
+        itemMoved: function(event) {
+            console.log('moved');
+        },
+        orderChanged: function(event) {
+
+        }
+    };
 });

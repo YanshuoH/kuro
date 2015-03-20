@@ -5,7 +5,8 @@ var kuro = angular.module('Kuro', [
     'ngAnimate',
     'ngDragDrop',
     'ui.bootstrap',
-    'ui.router'
+    'ui.router',
+    'ui.sortable'
 ]);
 
 kuro.run(['$route', '$rootScope', '$location', function ($route, $rootScope, $location) {

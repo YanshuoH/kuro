@@ -375,7 +375,7 @@ function(
 
             return code;
         }
-    }
+    };
 
     $scope.removeAdmin = function(adminId) {
         if ($scope.project.adminIds.indexOf(adminId) > -1) {
@@ -404,7 +404,7 @@ function(
                     }
                 });
         }
-    }
+    };
 
     $scope.removePriority = function(priorityId) {
         if ($scope.project.priorityIds.indexOf(priorityId) > -1) {
@@ -433,7 +433,7 @@ function(
                     }
                 });
         }
-    }
+    };
 
     $scope.removeStatus = function(statusId) {
         if ($scope.project.statusIds.indexOf(statusId) > -1) {
@@ -463,30 +463,30 @@ function(
                     }
                 });
         }
-    }
+    };
 
     $scope.initForm = function() {
         $scope.formHasMessage = false;
         $scope.formMessage = '';
-    }
+    };
 
     $scope.insertFormMessage = function(type, content) {
         $scope.formHasMessage = true;
         $scope.formMessage = content;
         $scope.formMessageType = type;
-    }
+    };
 
     $scope.submitForm = function() {
         if ($scope.isNew) {
             apiService.createProject($scope.formData)
                 .then(function(response) {
                     console.log(response);
-                })
+                });
         } else {
             apiService.putProject($scope.formData, $scope.projectId)
                 .then(function(response) {
                     console.log(response);
                 });
         }
-    }
+    };
 }]);
