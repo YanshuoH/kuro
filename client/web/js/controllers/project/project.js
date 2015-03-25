@@ -295,6 +295,7 @@ function(
         apiService.getProject($scope.projectId, param)
             .then(function(project) {
                 $scope.project = project;
+                console.log($scope.project.statusData);
                 $scope.formData = $scope.project;
                 $scope.isNew = false;
             });
@@ -489,4 +490,13 @@ function(
                 });
         }
     };
+
+    $scope.statusSortableOptions = {
+        itemMoved: function(event) {
+            console.log('ng-sortable item moved');
+        },
+        orderChanged: function(event) {
+            console.log('ng-sortable order changed');
+        }
+    }
 }]);

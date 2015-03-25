@@ -1,8 +1,5 @@
 .row
-  .col-md-12
-    ul.list-group(ng-model='items' as-sortable='sortableOptions')
-      li.list-group-item(ng-repeat='item in items' as-sortable-item)
-        .as-sortable-item-handle(as-sortable-item-handle)
-          .row
-            .col-md-12
-              span {{ item }}
+  .col-md-2
+    ul.list-group(ng-if="statusData" data-ng-model='statusData' data-as-sortable='sortableOptions')
+      li.list-group-item(ng-repeat='item in statusData' data-as-sortable-item)
+        span.as-sortable-item-handle(data-as-sortable-item-handle) {{ item }}

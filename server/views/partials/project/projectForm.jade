@@ -44,13 +44,14 @@
                 a(href='' ng-click='removePriority(priority._id)')
                   span.glyphicon.glyphicon-minus-sign.red.right(aria-hidden='true')
           .col-md-6 Status list
-            .list-group
+            .list-group(ng-if='project.statusData' data-ng-model='project.statusData' data-as-sortable='statusSortableOptions')
               .list-group-item
                 .project-form-input
                   input.form-control#statusInput(type='text' name='status' ng-model='addStatusData')
                   a.add-button.right(href='' ng-click='addToList(addStatusData, "status")')
                     span.glyphicon.glyphicon-plus-sign.green(type='button')
-              .list-group-item(ng-repeat='status in project.statusData') {{ status.label }}
+              .list-group-item(ng-repeat='status in project.statusData' data-as-sortable-item) 
+                span.as-sortable-item-handle(data-as-sortable-item-handle) {{ status.label }}
                 a(href='' ng-click='removeStatus(status._id)')
                   span.glyphicon.glyphicon-minus-sign.red.right(aria-hidden='true')
         .form-group

@@ -2,24 +2,38 @@
 /* Mandatory CSS required for ng-sortable */
 /* ************************************** */
 
-.as-sortable-item {
-    -ms-touch-action: none;
-    touch-action: none;
+.as-sortable-placeholder {
+    min-height: 20px;
+    border-radius: 10px;
+    border: 1px dashed darkgrey;
+    box-sizing: border-box;
+    background-color: #dbdbdb;
+}
+
+.as-sortable-placeholder {
+    border: 1px dashed darkgrey;
+    box-sizing: border-box;
+    background-color: #dbdbdb;
+    list-style-type: none;
+}
+
+.as-sortable-drag {
+    opacity: .8;
+    position: absolute;
+    pointer-events: none;
+    z-index: 9999;
 }
 
 .as-sortable-item-handle {
     cursor: move;
 }
 
-.as-sortable-placeholder {
-}
-
-.as-sortable-drag {
-    position: absolute;
-    pointer-events: none;
-    z-index: 9999;
+.as-sortable-item {
+    -ms-touch-action: none;
+    touch-action: none;
 }
 
 .as-sortable-hidden {
     display: none !important;
 }
+
